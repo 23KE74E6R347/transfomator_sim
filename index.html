@@ -123,7 +123,7 @@ footer{margin:18px 0;text-align:right}.link{color:#315f8a;text-decoration:none;f
 <p class="small">Nimm gezielt Messwerte auf. Ändere möglichst immer nur <b>eine</b> unabhängige Größe.</p>
 <div class="actions"><button id="measure">Messwert aufnehmen</button><button id="clear" class="secondary">Tabelle löschen</button></div>
 <div class="tablewrap" style="margin-top:12px">
-<table><thead><tr><th>#</th><th>Versorgung</th><th>Modell</th><th>Last</th><th>U₁ / V</th><th>N₁</th><th>N₂</th><th>R / Ω</th><th>U₂ / V</th><th>I₁ / A</th><th>I₂ / A</th><th>P₁ / W</th><th>P₂ / W</th><th>η / %</th></tr></thead><tbody id="rows"></tbody></table>
+<table><thead><tr><th>#</th><th>Versorgung</th><th>Modell</th><th>Sekundärkreis</th><th>U₁ / V</th><th>N₁</th><th>N₂</th><th>R<sub>Last</sub> / Ω</th><th>U₂ / V</th><th>I₁ / A</th><th>I₂ / A</th><th>P₁ / W</th><th>P₂ / W</th><th>η / %</th></tr></thead><tbody id="rows"></tbody></table>
 </div>
 </section>
 
@@ -236,7 +236,7 @@ function draw(v){
  $("flux1").setAttribute("opacity",source==="ac"?"0.8":"0");$("flux2").setAttribute("opacity",source==="ac"?"0.45":"0");
 }
 function renderRows(){
- $("rows").innerHTML=rows.map((v,i)=>"<tr><td>"+(i+1)+"</td><td>"+(v.source==="ac"?"AC":"DC")+"</td><td>"+(v.model==="ideal"?"ideal":"real")+"</td><td>"+(v.loaded?"belastet":"leer")+"</td><td>"+v.U1.toFixed(1)+"</td><td>"+v.N1+"</td><td>"+v.N2+"</td><td>"+v.R+"</td><td>"+v.U2.toFixed(2)+"</td><td>"+v.I1.toFixed(3)+"</td><td>"+v.I2.toFixed(3)+"</td><td>"+v.P1.toFixed(2)+"</td><td>"+v.P2.toFixed(2)+"</td><td>"+(v.eta===null?"—":v.eta.toFixed(1))+"</td></tr>").join("");
+ $("rows").innerHTML=rows.map((v,i)=>"<tr><td>"+(i+1)+"</td><td>"+(v.source==="ac"?"AC":"DC")+"</td><td>"+(v.model==="ideal"?"ideal":"real")+"</td><td>"+(v.loaded?"belastet":"unbelastet")+"</td><td>"+v.U1.toFixed(1)+"</td><td>"+v.N1+"</td><td>"+v.N2+"</td><td>"+(v.loaded?v.R:"—")+"</td><td>"+v.U2.toFixed(2)+"</td><td>"+v.I1.toFixed(3)+"</td><td>"+v.I2.toFixed(3)+"</td><td>"+v.P1.toFixed(2)+"</td><td>"+v.P2.toFixed(2)+"</td><td>"+(v.eta===null?"—":v.eta.toFixed(1))+"</td></tr>").join("");
 }
 function animate(t){
  phase=t/1000*2*Math.PI*1.2;
