@@ -34,6 +34,45 @@ body{margin:0;background:#f4f6f8;color:#18202a;font-family:system-ui,-apple-syst
 </section>
 
 <section class="card">
+<h2>Konkrete Erwartungswerte für die Simulation</h2>
+<p>Beispiele für die schnelle Plausibilitätskontrolle.</p>
+<table>
+<tr><th>Versuch</th><th>Einstellung</th><th>Erwartungswert</th><th>Deutung</th></tr>
+<tr><td>A1</td><td>AC, ideal, unbelastet; U₁ = 12 V, N₁ = 200, N₂ = 400</td><td>U₂ = 24 V; I₂ = 0 A</td><td>Verdopplung der Sekundärspannung bei Verdopplung der Windungszahl.</td></tr>
+<tr><td>A2</td><td>AC, ideal, unbelastet; U₁ = 12 V, N₁ = 200, N₂ = 100</td><td>U₂ = 6 V; I₂ = 0 A</td><td>Halbe Windungszahl → halbe Sekundärspannung.</td></tr>
+<tr><td>B</td><td>AC, ideal, belastet; U₁ = 12 V, N₁ = 200, N₂ = 400, R = 20 Ω</td><td>U₂ = 24 V; I₂ = 1,20 A; P₂ = 28,80 W; I₁ = 2,40 A</td><td>P₁ = P₂.</td></tr>
+<tr><td>D</td><td>AC, Realmodell; U₁ = 12 V, N₁ = 200, N₂ = 400, R = 20 Ω</td><td>U₂ ≈ 23,90 V; I₂ ≈ 1,195 A; P₂ ≈ 28,57 W; η ≈ 99,6 %</td><td>Der äquivalente Innenwiderstand verursacht einen kleinen Spannungs- und Leistungsverlust.</td></tr>
+<tr><td>E</td><td>DC, gleiche Einstellung</td><td>U₂ = 0 V; I₂ = 0 A</td><td>Im eingeschwungenen Zustand keine dauerhafte Induktion.</td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2>Typische Schülerantworten und Bewertung</h2>
+<table>
+<tr><th>Aufgabe</th><th>Typische Antwort</th><th>Bewertung</th></tr>
+<tr><td>A</td><td>„Wenn N₂ größer wird, wird U₂ größer.“</td><td>Beobachtung korrekt. Für volle fachliche Qualität zusätzlich: proportionaler Zusammenhang und Bezug auf U₂/U₁ = N₂/N₁.</td></tr>
+<tr><td>B</td><td>„Mehr Windungen machen mehr Strom.“</td><td>Zu pauschal. Last und Leistungsbilanz müssen berücksichtigt werden.</td></tr>
+<tr><td>C</td><td>„Im Leerlauf ist Spannung da, aber kein Strom.“</td><td>Fachlich zentral und korrekt.</td></tr>
+<tr><td>D</td><td>„Wenn R kleiner wird, wird I₂ größer und die Spannung sinkt.“</td><td>Vollständig, wenn der Spannungseinbruch mit dem äquivalenten Innenwiderstand begründet wird.</td></tr>
+<tr><td>E</td><td>„Mit Gleichspannung funktioniert der Transformator nicht.“</td><td>Im Modell für den eingeschwungenen Zustand korrekt; präziser ist die Erklärung über die fehlende dauerhafte Flussänderung.</td></tr>
+<tr><td>F</td><td>„Der reale Transformator hat Verluste.“</td><td>Richtung stimmt, aber für Modellkritik zu unspezifisch. Konkrete Effekte nennen.</td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2>Kompaktes Bewertungsraster</h2>
+<table>
+<tr><th>Kriterium</th><th>Erreicht, wenn …</th></tr>
+<tr><td>Vorhersage</td><td>eine überprüfbare Aussage vor der Parameteränderung formuliert wird.</td></tr>
+<tr><td>Kontrollierte Untersuchung</td><td>gezielt eine unabhängige Größe verändert wird, während relevante andere Größen konstant bleiben.</td></tr>
+<tr><td>Messung</td><td>mehrere passende Messwerte aufgenommen und verglichen werden.</td></tr>
+<tr><td>Zusammenhang</td><td>die beobachtete Abhängigkeit sprachlich und/oder mathematisch korrekt beschrieben wird.</td></tr>
+<tr><td>Erklärung</td><td>die Beobachtung mit Transformatorgesetz, Leistungsbilanz bzw. Induktion begründet wird.</td></tr>
+<tr><td>Modellkritik</td><td>Idealmodell, vereinfachtes Realmodell und reale Transformatoren unterschieden werden.</td></tr>
+</table>
+</section>
+
+<section class="card">
 <h2>Modellgrenzen</h2>
 <div class="grid">
 <div class="box"><b>Idealmodell</b><br>Keine Verluste, keine Innenwiderstände; P₁ = P₂ bei Belastung.</div>
