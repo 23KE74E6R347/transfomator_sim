@@ -1,2 +1,166 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Transformator – virtuelle Untersuchung</title><style>body{font-family:system-ui,sans-serif;margin:0;background:#f5f6f8;color:#18202a}main{max-width:1100px;margin:auto;padding:22px}h1{margin-bottom:4px}.sub{color:#59636f}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 10px #0001}label{display:grid;grid-template-columns:180px 1fr 70px;gap:10px;align-items:center;margin:13px 0}input[type=range]{width:100%}.value{font-weight:700;text-align:right}.switch{display:flex;gap:8px;flex-wrap:wrap}button{border:0;border-radius:9px;padding:9px 13px;background:#25364a;color:#fff;cursor:pointer}button.secondary{background:#e7ebef;color:#18202a}.metric{font-size:1.15rem;margin:9px 0}.metric b{float:right}.formula{font-family:serif;background:#f0f2f5;padding:12px;border-radius:9px;text-align:center;font-size:1.25rem}canvas{width:100%;height:260px;border:1px solid #ddd;border-radius:10px;background:#fff}.warn{padding:10px;border-left:4px solid #d28a00;background:#fff7e6}@media(max-width:750px){.grid{grid-template-columns:1fr}label{grid-template-columns:130px 1fr 65px}}</style></head><body><main><h1>Transformator – virtuelle Untersuchung</h1>
-<p class="sub"><b>V0.2</b> · GitHub Pages-Prototyp</p><div class="sub">Idealmodell + einfaches Realmodell für den Vergleich von Leerlauf und Belastung</div><div class="grid" style="margin-top:16px"><section class="card"><h2>Primärseite</h2><label>Primärspannung U₁<input id="u1" type="range" min="1" max="24" step=".5" value="12"><span class="value" id="u1v"></span></label><label>Windungen N₁<input id="n1" type="range" min="50" max="1000" step="50" value="200"><span class="value" id="n1v"></span></label></section><section class="card"><h2>Sekundärseite</h2><label>Windungen N₂<input id="n2" type="range" min="50" max="1000" step="50" value="400"><span class="value" id="n2v"></span></label><div class="switch"><button id="loadOff" class="secondary">Leerlauf</button><button id="loadOn">Belastet</button></div><label>Lastwiderstand R<input id="r" type="range" min="1" max="100" step="1" value="20"><span class="value" id="rv"></span></label></section></div><section class="card" style="margin-top:16px"><h2>Messwerte</h2><div class="grid"><div><div class="metric">U₁ <b id="U1"></b></div><div class="metric">I₁ <b id="I1"></b></div><div class="metric">P₁ <b id="P1"></b></div></div><div><div class="metric">U₂ <b id="U2"></b></div><div class="metric">I₂ <b id="I2"></b></div><div class="metric">P₂ <b id="P2"></b></div></div></div><div class="metric">Wirkungsgrad η <b id="eta"></b></div><div class="formula">U₂ / U₁ = N₂ / N₁ &nbsp;&nbsp; | &nbsp;&nbsp; ideal: P₁ = P₂</div><p id="note" class="warn"></p></section><section class="card" style="margin-top:16px"><h2>Transformator-Modell</h2><canvas id="graph" width="1000" height="520"></canvas></section><section class="card" style="margin-top:16px"><h2>Untersuchungsaufträge</h2><ol><li>Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂. Wie hängt U₂ von N₂ ab?</li><li>Verdopple N₂. Verdoppelt sich U₂? Begründe mit dem Transformatorgesetz.</li><li>Schalte die Belastung ein. Was verändert sich gegenüber dem Leerlauf?</li><li>Verringere R. Was passiert mit I₂ und – im Realmodell – mit U₂?</li><li>Vergleiche die Leistungen auf Primär- und Sekundärseite. Warum sind sie im idealen Modell gleich, beim Realmodell aber nicht exakt?</li></ol><button id="reset" class="secondary">Zurücksetzen</button></section></main><script>const $=id=>document.getElementById(id);let loaded=true;["u1","n1","n2","r"].forEach(id=>$(id).addEventListener("input",update));$("loadOff").onclick=()=>{loaded=false;update()};$("loadOn").onclick=()=>{loaded=true;update()};$("reset").onclick=()=>{u1.value=12;n1.value=200;n2.value=400;r.value=20;loaded=true;update()};function update(){let U1=+u1.value,N1=+n1.value,N2=+n2.value,R=+r.value;let idealU2=U1*N2/N1;let rInt=.08;let U2=loaded?idealU2*R/(R+rInt):idealU2;let I2=loaded?U2/R:0;let P2=U2*I2;let P1=loaded?P2/.94:0;let I1=P1/U1;let eta=loaded?P2/P1*100:100;$("u1v").textContent=U1.toFixed(1)+" V";$("n1v").textContent=N1;$("n2v").textContent=N2;$("rv").textContent=R+" Ω";$("U1").textContent=U1.toFixed(2)+" V";$("U2").textContent=U2.toFixed(2)+" V";$("I2").textContent=I2.toFixed(3)+" A";$("P2").textContent=P2.toFixed(2)+" W";$("I1").textContent=I1.toFixed(3)+" A";$("P1").textContent=P1.toFixed(2)+" W";$("eta").textContent=loaded?eta.toFixed(1)+" %":"—";$("note").textContent=loaded?"Belastet: Im einfachen Realmodell verursacht der äquivalente Innenwiderstand einen kleinen Spannungsabfall. Je kleiner R, desto größer I₂ und desto stärker der Abfall.":"Leerlauf: I₂ ≈ 0. Die Sekundärspannung folgt hier dem idealen Übersetzungsverhältnis.";draw(N1,N2,U1,U2,I1,I2)}function draw(N1,N2,U1,U2,I1,I2){const c=$("graph"),x=c.getContext("2d"),w=c.width,h=c.height;x.clearRect(0,0,w,h);x.strokeStyle="#222";x.lineWidth=3;x.strokeRect(90,100,230,320);x.strokeRect(680,100,230,320);x.font="28px system-ui";x.fillText("Primär",155,80);x.fillText("Sekundär",740,80);x.font="22px system-ui";x.fillText("N₁ = "+N1,145,465);x.fillText("N₂ = "+N2,735,465);x.fillStyle="#d9dde2";x.fillRect(320,145,360,330);x.fillStyle="#fff";x.fillRect(345,175,310,270);x.strokeStyle="#b44";x.lineWidth=5;for(let i=0;i<7;i++){let yy=165+i*42;coil(x,250,yy,310,yy)}x.strokeStyle="#357";for(let i=0;i<7;i++){let yy=165+i*42;coil(x,690,yy,750,yy)}x.fillStyle="#18202a";x.font="20px system-ui";x.fillText("U₁ = "+U1.toFixed(1)+" V",115,140);x.fillText("U₂ = "+U2.toFixed(1)+" V",705,140);x.fillText("I₁ = "+I1.toFixed(3)+" A",115,400);x.fillText("I₂ = "+I2.toFixed(3)+" A",705,400)}function coil(c,x1,y,x2,y2){c.beginPath();for(let x=x1;x<=x2;x+=10)c.lineTo(x,y+10*Math.sin((x-x1)/10*Math.PI));c.stroke()}update();</script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Transformator – virtuelle Untersuchung</title>
+<style>
+:root{--bg:#f4f6f8;--card:#fff;--ink:#18202a;--muted:#64707d;--line:#d7dce2;--blue:#315f8a;--red:#b44949;--core:#cfd4da}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:1180px;margin:auto;padding:24px}.sub{color:var(--muted);margin:.25rem 0 1rem}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+h1{margin:0}h2{margin-top:0}.controls{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+label{display:grid;grid-template-columns:175px 1fr 75px;gap:10px;align-items:center;margin:13px 0}input[type=range]{width:100%}.value{font-weight:700;text-align:right}
+button{border:0;border-radius:9px;padding:9px 13px;background:#263d53;color:#fff;cursor:pointer}button.secondary{background:#e8edf1;color:var(--ink)}
+.switch{display:flex;gap:8px;flex-wrap:wrap}.switch button.active{outline:3px solid #b9c9d7}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px}.metric{padding:8px 0;border-bottom:1px solid #edf0f3}.metric b{float:right}
+.formula{font-family:Georgia,serif;background:#f0f3f5;border-radius:9px;padding:12px;text-align:center;font-size:1.12rem;margin-top:14px}
+.note{padding:11px 12px;border-left:4px solid #b87900;background:#fff7e4}.small{font-size:.9rem;color:var(--muted)}
+#transformer{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:10px;background:#fff}
+.tabs{display:flex;gap:8px;margin-bottom:12px}.tab{background:#e8edf1;color:var(--ink)}.tab.active{background:#263d53;color:#fff}
+.task{padding:10px 12px;border-left:4px solid var(--blue);background:#f4f8fb;margin:8px 0}.task strong{display:block;margin-bottom:3px}
+@media(max-width:800px){main{padding:14px}.grid,.controls,.metrics{grid-template-columns:1fr}label{grid-template-columns:130px 1fr 65px}}
+</style>
+</head>
+<body>
+<main>
+<h1>Transformator – virtuelle Untersuchung</h1>
+<div class="sub">Idealmodell und bewusst vereinfachtes Realmodell · Parameter verändern → Messwerte beobachten → Zusammenhang begründen</div>
+
+<section class="card">
+<h2>1. Einstellungen</h2>
+<div class="controls">
+<div>
+<h3>Primärseite</h3>
+<label>U₁<input id="u1" type="range" min="1" max="24" step=".5" value="12"><span class="value" id="u1v"></span></label>
+<label>N₁<input id="n1" type="range" min="50" max="1000" step="50" value="200"><span class="value" id="n1v"></span></label>
+</div>
+<div>
+<h3>Sekundärseite</h3>
+<label>N₂<input id="n2" type="range" min="50" max="1000" step="50" value="400"><span class="value" id="n2v"></span></label>
+<div class="switch"><button id="off">unbelastet</button><button id="on">belastet</button></div>
+<label>R<sub>Last</sub><input id="r" type="range" min="1" max="100" step="1" value="20"><span class="value" id="rv"></span></label>
+</div>
+</div>
+<div class="tabs"><button id="ideal" class="tab">Idealmodell</button><button id="real" class="tab active">Vereinfachtes Realmodell</button></div>
+<div id="modelText" class="small"></div>
+</section>
+
+<section class="card" style="margin-top:16px">
+<h2>2. Transformator</h2>
+<svg id="transformer" viewBox="0 0 1100 470" role="img" aria-label="Schematische Darstellung eines Transformators">
+<defs>
+<marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#315f8a"/></marker>
+<marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#b44949"/></marker>
+</defs>
+<rect x="375" y="80" width="350" height="310" rx="8" fill="#cfd4da" stroke="#59636f" stroke-width="3"/>
+<rect x="405" y="110" width="290" height="250" fill="white" stroke="#59636f" stroke-width="3"/>
+<text x="550" y="58" text-anchor="middle" font-size="27" font-weight="700">Eisenkern</text>
+<g id="primaryCoil"></g><g id="secondaryCoil"></g>
+<text x="165" y="65" text-anchor="middle" font-size="28" font-weight="700">Primärseite</text>
+<text x="935" y="65" text-anchor="middle" font-size="28" font-weight="700">Sekundärseite</text>
+<text id="u1svg" x="75" y="120" font-size="22"></text><text id="i1svg" x="75" y="390" font-size="22"></text>
+<text id="u2svg" x="795" y="120" font-size="22"></text><text id="i2svg" x="795" y="390" font-size="22"></text>
+<text id="n1svg" x="105" y="435" font-size="20"></text><text id="n2svg" x="870" y="435" font-size="20"></text>
+<g id="loadGraphic"></g>
+<path id="flux" d="M410 235 H690" stroke="#315f8a" stroke-width="5" fill="none" stroke-dasharray="12 10" marker-end="url(#arrowBlue)" opacity=".7"/>
+<text x="550" y="225" text-anchor="middle" font-size="18" fill="#315f8a">ändernder magnetischer Fluss Φ</text>
+</svg>
+<div class="small" style="margin-top:8px">Die Animation zeigt symbolisch den zeitlich veränderlichen magnetischen Fluss. Sie stellt keine einzelnen „Magnetfeldteilchen“ dar.</div>
+</section>
+
+<section class="card" style="margin-top:16px">
+<h2>3. Messwerte</h2>
+<div class="metrics">
+<div><div class="metric">U₁ <b id="U1"></b></div><div class="metric">I₁ <b id="I1"></b></div><div class="metric">P₁ <b id="P1"></b></div></div>
+<div><div class="metric">U₂ <b id="U2"></b></div><div class="metric">I₂ <b id="I2"></b></div><div class="metric">P₂ <b id="P2"></b></div></div>
+</div>
+<div class="metric">Wirkungsgrad η <b id="eta"></b></div>
+<div class="formula">Spannung: U₂ / U₁ = N₂ / N₁ &nbsp;&nbsp; · &nbsp;&nbsp; ideal: P₁ = P₂</div>
+<div id="note" class="note" style="margin-top:14px"></div>
+</section>
+
+<section class="card" style="margin-top:16px">
+<h2>4. Untersuchungsaufträge</h2>
+<div class="task"><strong>A – Spannungstransformation</strong> Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂. Formuliere die beobachtete Abhängigkeit von U₂ und prüfe sie mit dem Transformatorgesetz.</div>
+<div class="task"><strong>B – Stromtransformation</strong> Schalte den Transformator auf „belastet“. Verändere N₂. Wie verändert sich I₂? Begründe den Zusammenhang mit der Leistungsübertragung im Idealmodell.</div>
+<div class="task"><strong>C – Leerlauf und Belastung</strong> Vergleiche denselben Transformator unbelastet und belastet. Welche Größen ändern sich? Welche bleiben im Modell annähernd gleich?</div>
+<div class="task"><strong>D – Last</strong> Verringere R<sub>Last</sub>. Was passiert mit I₂? Was passiert im Realmodell mit U₂? Erkläre den Unterschied zum Idealmodell.</div>
+<div class="task"><strong>E – Modellkritik</strong> Welche Annahmen des Idealmodells werden durch das Realmodell aufgegeben? Was bildet diese Simulation ausdrücklich nicht ab?</div>
+<button id="reset" class="secondary">Zurücksetzen</button>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+let loaded=false, model="real";
+const svgNS="http://www.w3.org/2000/svg";
+["u1","n1","n2","r"].forEach(id=>$(id).addEventListener("input",update));
+$("off").onclick=()=>{loaded=false;update()};$("on").onclick=()=>{loaded=true;update()};
+$("ideal").onclick=()=>{model="ideal";update()};$("real").onclick=()=>{model="real";update()};
+$("reset").onclick=()=>{u1.value=12;n1.value=200;n2.value=400;r.value=20;loaded=false;model="real";update()};
+
+function values(){
+ const U1=+u1.value,N1=+n1.value,N2=+n2.value,R=+r.value;
+ const U20=U1*N2/N1;
+ // Simple equivalent secondary-side model. rInt is an explicit didactic parameter.
+ const rInt=0.08, efficiency=.94;
+ let U2=U20,I2=0,P2=0,P1=0,I1=0,eta=null;
+ if(loaded){
+   if(model==="ideal"){U2=U20;I2=U2/R;P2=U2*I2;P1=P2;I1=P1/U1;eta=100}
+   else {U2=U20*R/(R+rInt);I2=U2/R;P2=U2*I2;P1=P2/efficiency;I1=P1/U1;eta=efficiency*100}
+ }
+ return {U1,N1,N2,R,U20,U2,I2,P2,P1,I1,eta};
+}
+function update(){
+ const v=values();
+ $("u1v").textContent=v.U1.toFixed(1)+" V";$("n1v").textContent=v.N1;$("n2v").textContent=v.N2;$("rv").textContent=v.R+" Ω";
+ ["U1","U2"].forEach(k=>$(k).textContent=v[k].toFixed(2)+" V");
+ ["I1","I2"].forEach(k=>$(k).textContent=v[k].toFixed(3)+" A");
+ ["P1","P2"].forEach(k=>$(k).textContent=v[k].toFixed(2)+" W");
+ $("eta").textContent=v.eta===null?"—":v.eta.toFixed(1)+" %";
+ $("off").classList.toggle("active",!loaded);$("on").classList.toggle("active",loaded);
+ $("ideal").classList.toggle("active",model==="ideal");$("real").classList.toggle("active",model==="real");
+ $("modelText").textContent=model==="ideal"
+ ?"Idealmodell: keine Verluste, keine Innenwiderstände. Unter Last gilt P₁ = P₂.":"Vereinfachtes Realmodell: Die Sekundärseite besitzt einen kleinen äquivalenten Innenwiderstand; zusätzlich wird bei Belastung ein fester Übertragungsverlust von 6 % angenommen. Das ist bewusst kein vollständiges technisches Transformatorenmodell.";
+ $("note").textContent=!loaded
+ ?"Unbelastet: I₂ = 0. Die Sekundärspannung folgt in beiden Modellen dem Übersetzungsverhältnis. Im Realmodell werden hier bewusst keine Leerlaufverluste dargestellt."
+ :model==="ideal"
+ ?"Belastet, Idealmodell: I₂ = U₂/R. Wird R kleiner, steigt I₂. Die Leistung wird ohne Verluste übertragen: P₁ = P₂."
+ :"Belastet, Realmodell: Wird R kleiner, steigt I₂. Dadurch fällt am äquivalenten Innenwiderstand mehr Spannung ab, sodass U₂ sinkt. Zusätzlich geht ein Teil der Leistung im Modell verloren.";
+ draw(v);
+}
+function el(tag,attrs,parent){
+ const e=document.createElementNS(svgNS,tag);for(const [k,val] of Object.entries(attrs))e.setAttribute(k,val);parent.appendChild(e);return e;
+}
+function coil(group,x,top,color){
+ group.innerHTML="";
+ for(let i=0;i<9;i++){
+   const y=top+i*32;
+   el("path",{d:"M "+x+" "+y+" q 18 16 36 0 q 18 -16 36 0",fill:"none",stroke:color,"stroke-width":"5","stroke-linecap":"round"},group);
+ }
+}
+function draw(v){
+ coil($("primaryCoil"),265,105,"#b44949");coil($("secondaryCoil"),735,105,"#315f8a");
+ $("u1svg").textContent="U₁ = "+v.U1.toFixed(1)+" V";$("i1svg").textContent="I₁ = "+v.I1.toFixed(3)+" A";
+ $("u2svg").textContent="U₂ = "+v.U2.toFixed(1)+" V";$("i2svg").textContent="I₂ = "+v.I2.toFixed(3)+" A";
+ $("n1svg").textContent="N₁ = "+v.N1;$("n2svg").textContent="N₂ = "+v.N2;
+ const g=$("loadGraphic");g.innerHTML="";
+ if(loaded){
+   el("line",{x1:800,y1:250,x2:870,y2:250,stroke:"#333","stroke-width":"4"},g);
+   el("rect",{x:870,y:225,width:90,height:50,fill:"#fff",stroke:"#333","stroke-width":"3",rx:"5"},g);
+   el("line",{x1:960,y1:250,x2:1015,y2:250,stroke:"#333","stroke-width":"4"},g);
+   el("text",{x:915,y:215,"text-anchor":"middle","font-size":"18"},g).textContent="R = "+v.R+" Ω";
+ }else{
+   el("line",{x1:800,y1:250,x2:880,y2:250,stroke:"#333","stroke-width":"4"},g);
+   el("line",{x1:1010,y1:250,x2:1060,y2:250,stroke:"#333","stroke-width":"4"},g);
+   el("text",{x:930,y:290,"text-anchor":"middle","font-size":"18"},g).textContent="Stromkreis offen";
+ }
+ const flux=$("flux");flux.setAttribute("stroke-dashoffset",String(-((Date.now()/25)%22)));
+ requestAnimationFrame(drawFlux);
+}
+function drawFlux(){const f=$("flux");f.setAttribute("stroke-dashoffset",String(-((Date.now()/25)%22)));requestAnimationFrame(drawFlux)}
+update();drawFlux();
+</script>
+</body>
+</html>
