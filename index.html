@@ -4,504 +4,310 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Transformator – virtuelle Untersuchung</title>
-<style>:root {
-  color-scheme: light dark;
-  --bg: #f4f6f8;
-  --card: #ffffff;
-  --ink: #18202a;
-  --muted: #64707d;
-  --line: #d7dce2;
-  --blue: #315f8a;
-  --red: #b44949;
-  --green: #36735a;
-  --control-bg: #fafbfc;
-  --soft-bg: #f0f3f5;
-  --task-bg: #f4f8fb;
-  --note-bg: #fff7e4;
+<style>
+:root {
+  --bg:#f4f6f8;
+  --card:#fff;
+  --ink:#18202a;
+  --muted:#64707d;
+  --line:#d7dce2;
+  --blue:#315f8a;
+  --red:#b44949;
+  --green:#36735a
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #15191b;
-    --card: #191e20;
-    --ink: #f1eee8;
-    --muted: #b8b4ac;
-    --line: #3a4144;
-    --blue: #82b8e6;
-    --red: #e18b8b;
-    --green: #7fc5a3;
-    --control-bg: #1d2325;
-    --soft-bg: #22282a;
-    --task-bg: #1d272c;
-    --note-bg: #332700;
-  }
-}
-
 * {
-  box-sizing: border-box;
+  box-sizing:border-box
 }
-
-html {
-  min-width: 0;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
-}
-
 body {
-  min-width: 0;
-  margin: 0;
-  overflow-x: hidden;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  line-height: 1.45;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif
 }
-
 main {
-  width: min(1200px, 100%);
-  margin: 0 auto;
-  padding: clamp(12px, 3vw, 24px);
+  max-width:1200px;
+  margin:auto;
+  padding:24px
 }
-
-h1,
-h2,
-h3 {
-  overflow-wrap: anywhere;
-}
-
-h1 {
-  margin: 0;
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  line-height: 1.12;
-}
-
-h2 {
-  margin-top: 0;
-  font-size: clamp(1.45rem, 3vw, 2rem);
-  line-height: 1.18;
-}
-
-h3 {
-  margin-bottom: 0.4rem;
-  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-}
-
 .sub {
-  color: var(--muted);
-  margin: 0.35rem 0 1rem;
+  color:var(--muted);
+  margin:.25rem 0 1rem
 }
-
-.topActions,
-.actions,
-.switch,
-.tabs {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.topActions {
-  margin-bottom: 4px;
-}
-
 .card {
-  min-width: 0;
-  margin-top: 16px;
-  padding: clamp(14px, 2.5vw, 18px);
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px;
+  margin-top:16px
 }
-
+h1 {
+  margin:0
+}
+h2 {
+  margin-top:0
+}
+h3 {
+  margin-bottom:.4rem
+}
 .controls {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(14px, 3vw, 18px);
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px
 }
-
-.controlGrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.controlBlock {
-  min-width: 0;
-  padding: 10px 12px;
-  background: var(--control-bg);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-}
-
-.controlTitle {
-  margin-bottom: 7px;
-  font-weight: 700;
-}
-
-.controlBlock .switch button {
-  min-height: 40px;
-  flex: 1 1 auto;
-}
-
 label {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(80px, 1fr) 76px;
-  gap: 10px;
-  align-items: center;
-  margin: 12px 0;
+  display:grid;
+  grid-template-columns:185px 1fr 82px;
+  gap:10px;
+  align-items:center;
+  margin:12px 0
 }
-
-.labelName {
-  min-width: 0;
+input[type=range] {
+  width:100%
 }
-
-input[type="range"] {
-  width: 100%;
-  min-width: 0;
-  accent-color: var(--blue);
-}
-
 .value {
-  min-width: 0;
-  font-weight: 700;
-  text-align: right;
+  font-weight:700;
+  text-align:right
 }
-
 button {
-  min-height: 40px;
-  border: 0;
-  border-radius: 9px;
-  padding: 9px 13px;
-  background: #263d53;
-  color: #fff;
-  cursor: pointer;
-  font: inherit;
+  border:0;
+  border-radius:9px;
+  padding:9px 13px;
+  background:#263d53;
+  color:#fff;
+  cursor:pointer
 }
-
 button.secondary {
-  background: var(--soft-bg);
-  color: var(--ink);
-  outline: none;
+  background:#e8edf1;
+  color:var(--ink)
 }
-
 button.active {
-  background: #263d53;
-  color: #fff;
-  outline: 3px solid color-mix(in srgb, var(--blue) 55%, transparent);
+  outline:3px solid #b9c9d7
 }
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-  outline: 3px solid var(--blue);
-  outline-offset: 2px;
+.switch,.tabs,.actions {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap
 }
-
+.controlGrid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-bottom:16px
+}
+.controlBlock {
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fafbfc
+}
+.controlTitle {
+  font-weight:700;
+  margin-bottom:7px
+}
 .infoLine {
-  min-height: 2.7em;
-  margin-top: 8px;
-  padding: 9px 10px;
-  border-left: 4px solid #b87900;
-  background: var(--note-bg);
-  line-height: 1.35;
+  margin-top:8px;
+  padding:9px 10px;
+  border-left:4px solid #b87900;
+  background:#fff7e4;
+  line-height:1.35
 }
-
+.controlBlock .switch button {
+  min-height:40px
+}
+button.secondary {
+  background:#e8edf1;
+  color:var(--ink);
+  outline:none
+}
+button.active {
+  background:#263d53;
+  color:#fff;
+  outline:3px solid #b9c9d7
+}
+.labelName {
+  display:block;
+  min-width:0
+}
 .derivedHint {
-  margin-top: 10px;
-  padding: 9px 10px;
-  border-radius: 9px;
-  background: var(--soft-bg);
-  color: var(--muted);
-  font-size: 0.9rem;
+  margin-top:10px;
+  padding:9px 10px;
+  background:#f0f3f5;
+  border-radius:9px;
+  color:var(--muted);
+  font-size:.9rem
 }
-
 .modelBadge {
-  font-size: 16px;
-  font-weight: 700;
-  fill: var(--ink);
+  font-size:16px;
+  font-weight:700;
+  fill:#18202a
 }
-
 .modelDetail {
-  font-size: 17px;
-  fill: var(--muted);
+  font-size:17px;
+  fill:#59636f
 }
-
 .metrics {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px
 }
-
 .metric {
-  min-width: 0;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--line);
+  padding:8px 0;
+  border-bottom:1px solid #edf0f3
 }
-
 .metric b {
-  float: right;
+  float:right
 }
-
 .formula {
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 9px;
-  background: var(--soft-bg);
-  text-align: center;
-  font-family: Georgia, serif;
-  font-size: 1.12rem;
-  overflow-wrap: anywhere;
+  font-family:Georgia,serif;
+  background:#f0f3f5;
+  border-radius:9px;
+  padding:12px;
+  text-align:center;
+  font-size:1.12rem;
+  margin-top:14px
 }
-
 .note {
-  padding: 11px 12px;
-  border-left: 4px solid #b87900;
-  background: var(--note-bg);
+  padding:11px 12px;
+  border-left:4px solid #b87900;
+  background:#fff7e4
 }
-
 .small {
-  color: var(--muted);
-  font-size: 0.9rem;
+  font-size:.9rem;
+  color:var(--muted)
 }
-
 #transformer {
-  color: var(--ink);
+  width:100%;
+  height:auto;
+  display:block;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff
 }
-
-#transformer text {
-  fill: var(--ink);
-}
-
-#transformer #fluxGroup text:first-child {
-  fill: var(--blue);
-}
-
-#transformer #fluxGroup text:not(:first-child) {
-  fill: var(--muted);
-}
-
-#transformer .modelBadge {
-  fill: var(--ink);
-}
-
-#transformer .modelDetail {
-  fill: var(--muted);
-}
-
-#transformer > rect:first-of-type {
-  fill: var(--soft-bg);
-  stroke: var(--muted);
-}
-
-#transformer > rect:nth-of-type(2) {
-  fill: var(--card);
-  stroke: var(--muted);
-}
-
-#transformer {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--card);
-}
-
-.causal {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
-  gap: 8px;
-  align-items: center;
-  margin: 12px 0;
-}
-
-.cause {
-  min-width: 0;
-  padding: 10px;
-  background: var(--task-bg);
-  border: 1px solid var(--line);
-  border-radius: 9px;
-  text-align: center;
-  font-weight: 600;
-  overflow-wrap: anywhere;
-}
-
-.arrow {
-  color: var(--muted);
-  font-size: 1.3rem;
-  text-align: center;
-}
-
 .task {
-  margin: 8px 0;
-  padding: 10px 12px;
-  border-left: 4px solid var(--blue);
-  background: var(--task-bg);
+  padding:10px 12px;
+  border-left:4px solid var(--blue);
+  background:#f4f8fb;
+  margin:8px 0
 }
-
 .task strong {
-  display: block;
-  margin-bottom: 3px;
+  display:block;
+  margin-bottom:3px
 }
-
 .tablewrap {
-  max-width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow:auto
 }
-
 table {
-  width: 100%;
-  min-width: 980px;
-  border-collapse: collapse;
-  font-size: 0.9rem;
+  width:100%;
+  border-collapse:collapse;
+  font-size:.9rem
 }
-
-th,
-td {
-  padding: 7px 8px;
-  border-bottom: 1px solid var(--line);
-  text-align: right;
-  white-space: nowrap;
+th,td {
+  padding:7px 8px;
+  border-bottom:1px solid var(--line);
+  text-align:right;
+  white-space:nowrap
 }
-
-th:first-child,
-td:first-child {
-  text-align: center;
+th:first-child,td:first-child {
+  text-align:center
 }
-
 th {
-  background: var(--soft-bg);
+  background:#f0f3f5
 }
-
 .badge {
-  display: inline-block;
-  border-radius: 999px;
-  padding: 3px 8px;
-  background: var(--soft-bg);
-  font-size: 0.82rem;
+  display:inline-block;
+  border-radius:999px;
+  padding:3px 8px;
+  background:#e8edf1;
+  font-size:.82rem
 }
-
+.causal {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  align-items:center;
+  margin:12px 0
+}
+.cause {
+  padding:10px;
+  text-align:center;
+  background:#f4f8fb;
+  border:1px solid var(--line);
+  border-radius:9px;
+  font-weight:600
+}
+.arrow {
+  text-align:center;
+  color:var(--muted);
+  font-size:1.3rem
+}
 footer {
-  margin: 18px 0;
-  text-align: right;
+  margin:18px 0;
+  text-align:right
 }
-
 .link {
-  color: var(--blue);
-  text-decoration: none;
-  font-weight: 600;
+  color:#315f8a;
+  text-decoration:none;
+  font-weight:600
 }
-
-@media (max-width: 1000px) {
-  .controlGrid {
-    grid-template-columns: 1fr;
-  }
-
+@media(max-width:900px) {
   .controls {
-    grid-template-columns: 1fr;
+    grid-template-columns:1fr
   }
 }
-
-@media (max-width: 760px) {
+\n@media(max-width:800px) {
   main {
-    padding: 12px;
+    padding:14px
   }
-
-  .card {
-    margin-top: 12px;
-    border-radius: 12px;
+  .metrics,.causal {
+    grid-template-columns:1fr
   }
-
-  .causal {
-    grid-template-columns: 1fr;
-  }
-
   .arrow {
-    transform: rotate(90deg);
+    display:none
   }
-
-  .metrics {
-    grid-template-columns: 1fr;
-    gap: 4px;
+}
+\n@media(max-width:500px) {
+  main {
+    padding:10px
   }
-
+  .card {
+    padding:14px
+  }
   label {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns:1fr 68px;
+    gap:7px;
+    margin:14px 0
   }
-
-  label input[type="range"] {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    width: 100%;
+  label input[type=range] {
+    grid-column:1 / -1;
+    grid-row:2;
+    width:100%
   }
-
   label .value {
-    grid-column: 2;
-    grid-row: 1;
+    grid-column:2;
+    grid-row:1
   }
-
-  .controlBlock .switch {
-    flex-direction: column;
-  }
-
-  .controlBlock .switch button {
-    width: 100%;
-  }
-
-  .topActions > * {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  main {
-    padding: 9px;
-  }
-
-  .card {
-    padding: 13px;
-  }
-
-  .sub {
-    font-size: 0.95rem;
-  }
-
   .formula {
-    font-size: 1rem;
+    font-size:1rem;
+    overflow-wrap:anywhere
   }
-
-  .actions button,
-  .actions .link {
-    width: 100%;
-    text-align: center;
+  .cause {
+    padding:9px
   }
-
+  .task {
+    padding:9px
+  }
+  .actions button,.actions .link {
+    max-width:100%;
+    overflow-wrap:anywhere
+  }
   #transformer {
-    margin-top: 4px;
+    margin-top:4px
+  }
+  .small {
+    line-height:1.35
   }
 }
-
-@media (orientation: landscape) and (max-height: 600px) {
-  main {
-    padding-block: 10px;
-  }
-
-  .card {
-    margin-top: 10px;
-  }
-
-  .causal {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
-  }
-
-  .arrow {
-    transform: none;
-  }
-}
-</style>
+  </style>
 </head>
 <body>
 <main>
@@ -545,7 +351,7 @@ footer {
 <div class="derivedHint"><b>Messgrößen:</b> U₂, I₁, I₂, P₁, P₂ und η werden aus den Einstellungen berechnet. Sie sind deshalb nicht direkt als Regler einstellbar.</div>
 </section>
 
-<!-- 2. Visualisierung der Ursache-Wirkungs-Kette -->
+<!-- 2. Visualisierung der Ursache-Wirkungs-Kette. -->
     <section class="card">
       <h2>2. Was passiert im Transformator?</h2>
 <div class="causal">
@@ -617,7 +423,7 @@ footer {
 </main>
 
 <script>
-// Shortcut, damit der Code unten lesbarer bleibt
+// Kleine Abkürzung, damit der Shit unten lesbarer bleibt
 const $ = id => document.getElementById(id);
 let loaded=false, model="real", source="ac", phase=0, rows=[];
 const svgNS="http://www.w3.org/2000/svg";
@@ -676,8 +482,8 @@ $("clear").onclick=()=>
   rows=[];
   renderRows()
 }
-//  Physikalisches Modell 
-// Hier passiert die "Physik". Der Rest ist größtenteils UI/UX Shit
+// Physikalisches Modell
+// Hier passiert die "Physik". Der Rest ist UI/UX
 function values()
 {
   const U1=+$("u1").value,N1=+$("n1").value,N2=+$("n2").value,R=+$("r").value;
@@ -700,7 +506,7 @@ function values()
     }
     else
     {
-      // Didaktischer Ersatzwiderstand
+      // Ersatzwiderstand
       const rInt = 0.08;
       I2=U20/(R+rInt);
       U2=I2*R;
@@ -716,7 +522,7 @@ function values()
     U1,N1,N2,R,U20,U2,I2,P2,P1,I1,eta,loaded,model,source
   }
 }
-//  Oberfläche aktualisieren 
+// Oberfläche aktualisieren
 function update()
 {
   const v=values();
@@ -765,7 +571,7 @@ N1/N2 stehen als Zahlen daneben.      function coil(group, x, top, color)
     el("path",{d:"M "+x+" "+y+" q 18 18 36 0 q 18 -18 36 0",fill:"none",stroke:color,"stroke-width":"5","stroke-linecap":"round"},group)
   }
 }
-//  Transformatorzeichnung 
+// Transformatorzeichnung
 function draw(v)
 {
   coil($("primaryCoil"),265,105,"#b44949");
@@ -809,12 +615,13 @@ function draw(v)
   $("flux1").setAttribute("opacity",source==="ac"?"0.8":"0");
   $("flux2").setAttribute("opacity",source==="ac"?"0.45":"0");
 }
-//  Messreihe 
+// Messreihe
 function renderRows()
 {
   $("rows").innerHTML=rows.map((v,i)=>"<tr><td>"+(i+1)+"</td><td>"+(v.source==="ac"?"AC":"DC")+"</td><td>"+(v.model==="ideal"?"ideal":"real")+"</td><td>"+(v.loaded?"belastet":"unbelastet")+"</td><td>"+v.U1.toFixed(1)+"</td><td>"+v.N1+"</td><td>"+v.N2+"</td><td>"+(v.loaded?v.R:"—")+"</td><td>"+v.U2.toFixed(2)+"</td><td>"+v.I1.toFixed(3)+"</td><td>"+v.I2.toFixed(3)+"</td><td>"+v.P1.toFixed(2)+"</td><td>"+v.P2.toFixed(2)+"</td><td>"+(v.eta===null?"—":v.eta.toFixed(1))+"</td></tr>").join("");
 }
-// Animation Nur die Darstellung des Flusses bewegt sich.
+// Animation
+// Nur die Darstellung des Flusses bewegt sich.
 function animate(t)
 {
   phase=t/1000*2*Math.PI*1.2;
