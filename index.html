@@ -113,7 +113,7 @@ footer{margin:18px 0;text-align:right}.link{color:#315f8a;text-decoration:none;f
 <div><div class="metric">U₂ <b id="U2"></b></div><div class="metric">I₂ <b id="I2"></b></div><div class="metric">P₂ <b id="P2"></b></div></div>
 </div>
 <div class="metric">Wirkungsgrad η <b id="eta"></b></div>
-<div class="formula">U₂ / U₁ = N₂ / N₁ &nbsp;&nbsp; · &nbsp;&nbsp; ideal: P₁ = P₂ &nbsp;&nbsp; · &nbsp;&nbsp; daraus: I₂ / I₁ = N₁ / N₂</div>
+<div id="formula" class="formula">Bei Wechselspannung: U₂ / U₁ = N₂ / N₁ &nbsp;&nbsp; · &nbsp;&nbsp; ideal: P₁ = P₂ &nbsp;&nbsp; · &nbsp;&nbsp; daraus: I₂ / I₁ = N₁ / N₂</div>
 <div id="note" class="note" style="margin-top:14px"></div>
 </section>
 
@@ -175,6 +175,9 @@ function update(){
  ["I1","I2"].forEach(k=>$(k).textContent=v[k].toFixed(3)+" A");
  ["P1","P2"].forEach(k=>$(k).textContent=v[k].toFixed(2)+" W");
  $("eta").textContent=v.eta===null?"—":v.eta.toFixed(1)+" %";
+ $("formula").textContent=source==="ac"
+ ?"Bei Wechselspannung: U₂ / U₁ = N₂ / N₁ · ideal: P₁ = P₂ · daraus: I₂ / I₁ = N₁ / N₂"
+ :"Bei eingeschwungener Gleichspannung: keine dauerhafte Induktion → U₂ = 0 und I₂ = 0.";
  $("off").classList.toggle("active",!loaded);$("off").classList.toggle("secondary",loaded);
  $("on").classList.toggle("active",loaded);$("on").classList.toggle("secondary",!loaded);
  $("r").disabled=!loaded;
