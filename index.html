@@ -504,10 +504,6 @@ footer {
 </style>
 </head>
 <body>
-  <!--
-    Die Datei ist absichtlich eine kleine Werkstat und keine Softwarebibliothek.
-    Wenn du etwas ändern willst: zuerst nach der Überschrift oder ID suchen.
-  -->
 <main>
 <!-- Titel -->
     <h1>Transformator – virtuelle Untersuchung</h1>
@@ -549,7 +545,7 @@ footer {
 <div class="derivedHint"><b>Messgrößen:</b> U₂, I₁, I₂, P₁, P₂ und η werden aus den Einstellungen berechnet. Sie sind deshalb nicht direkt als Regler einstellbar.</div>
 </section>
 
-<!-- 2. Visualisierung der Ursache-Wirkungs-Kette. -->
+<!-- 2. Visualisierung der Ursache-Wirkungs-Kette -->
     <section class="card">
       <h2>2. Was passiert im Transformator?</h2>
 <div class="causal">
@@ -621,7 +617,7 @@ footer {
 </main>
 
 <script>
-// Kleine Abkürzung, damit der Code unten lesbarer bleibt.
+// Shortcut, damit der Code unten lesbarer bleibt
 const $ = id => document.getElementById(id);
 let loaded=false, model="real", source="ac", phase=0, rows=[];
 const svgNS="http://www.w3.org/2000/svg";
@@ -680,7 +676,8 @@ $("clear").onclick=()=>
   rows=[];
   renderRows()
 }
-// Hier passiert die eigentliche Magic. Der Rest ist größtenteils UI
+//  Physikalisches Modell 
+// Hier passiert die "Physik". Der Rest ist größtenteils UI/UX Shit
 function values()
 {
   const U1=+$("u1").value,N1=+$("n1").value,N2=+$("n2").value,R=+$("r").value;
@@ -703,7 +700,7 @@ function values()
     }
     else
     {
-      // Didaktischer Ersatzwiderstand – kein Messwert eines echten Trafos.
+      // Didaktischer Ersatzwiderstand
       const rInt = 0.08;
       I2=U20/(R+rInt);
       U2=I2*R;
@@ -719,7 +716,7 @@ function values()
     U1,N1,N2,R,U20,U2,I2,P2,P1,I1,eta,loaded,model,source
   }
 }
-// Oberfläche aktualisieren
+//  Oberfläche aktualisieren 
 function update()
 {
   const v=values();
@@ -758,7 +755,7 @@ function el(tag,attrs,parent)
   parent.appendChild(e);
   return e
 }
-// Die Spulen sind schematisch
+// Die Spulen sind schematisch;
 N1/N2 stehen als Zahlen daneben.      function coil(group, x, top, color)
 {
   group.innerHTML="";
@@ -768,7 +765,7 @@ N1/N2 stehen als Zahlen daneben.      function coil(group, x, top, color)
     el("path",{d:"M "+x+" "+y+" q 18 18 36 0 q 18 -18 36 0",fill:"none",stroke:color,"stroke-width":"5","stroke-linecap":"round"},group)
   }
 }
-// Transformatorzeichnung 
+//  Transformatorzeichnung 
 function draw(v)
 {
   coil($("primaryCoil"),265,105,"#b44949");
@@ -812,12 +809,12 @@ function draw(v)
   $("flux1").setAttribute("opacity",source==="ac"?"0.8":"0");
   $("flux2").setAttribute("opacity",source==="ac"?"0.45":"0");
 }
-// Messreihe 
+//  Messreihe 
 function renderRows()
 {
   $("rows").innerHTML=rows.map((v,i)=>"<tr><td>"+(i+1)+"</td><td>"+(v.source==="ac"?"AC":"DC")+"</td><td>"+(v.model==="ideal"?"ideal":"real")+"</td><td>"+(v.loaded?"belastet":"unbelastet")+"</td><td>"+v.U1.toFixed(1)+"</td><td>"+v.N1+"</td><td>"+v.N2+"</td><td>"+(v.loaded?v.R:"—")+"</td><td>"+v.U2.toFixed(2)+"</td><td>"+v.I1.toFixed(3)+"</td><td>"+v.I2.toFixed(3)+"</td><td>"+v.P1.toFixed(2)+"</td><td>"+v.P2.toFixed(2)+"</td><td>"+(v.eta===null?"—":v.eta.toFixed(1))+"</td></tr>").join("");
 }
-// VisualisisierungNur die Darstellung des Flusses bewegt sich.
+// Animation Nur die Darstellung des Flusses bewegt sich.
 function animate(t)
 {
   phase=t/1000*2*Math.PI*1.2;
