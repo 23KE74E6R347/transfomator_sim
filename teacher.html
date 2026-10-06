@@ -1,121 +1,60 @@
 <!doctype html><html lang="de"><head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Transformator – Lehrkraftzugang</title><style>
-:root {
-  color-scheme: light dark;
-  --bg: #f4f6f8;
-  --card: #ffffff;
-  --ink: #18202a;
-  --muted: #59636f;
-  --line: #d7dce2;
-  --blue: #315f8a;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #15191b;
-    --card: #191e20;
-    --ink: #f1eee8;
-    --muted: #b8b4ac;
-    --line: #3a4144;
-    --blue: #82b8e6;
-  }
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  min-width: 0;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
-}
-
+    /* Loginseite */
 body {
-  min-width: 0;
-  margin: 0;
-  overflow-x: hidden;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin:0;
+  background:#f4f6f8;
+  color:#18202a;
+  font-family:system-ui,sans-serif
 }
-
 main {
-  width: min(520px, 100%);
-  margin: 10vh auto;
-  padding: clamp(12px, 4vw, 18px);
+  max-width:520px;
+  margin:10vh auto;
+  padding:18px
 }
-
 .card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: clamp(16px, 4vw, 22px);
+  background:#fff;
+  border:1px solid #d7dce2;
+  border-radius:14px;
+  padding:22px
 }
-
 h1 {
-  margin-top: 0;
-  line-height: 1.15;
-  overflow-wrap: anywhere;
+  margin-top:0
 }
-
 p {
-  line-height: 1.45;
-  color: var(--muted);
+  line-height:1.45;
+  color:#59636f
 }
-
 input {
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  padding: 12px;
-  margin: 8px 0 12px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: var(--card);
-  color: var(--ink);
-  font: inherit;
+  width:100%;
+  box-sizing:border-box;
+  padding:12px;
+  border:1px solid #b9c1c9;
+  border-radius:8px;
+  font-size:1rem;
+  margin:8px 0 12px
 }
-
 button {
-  min-height: 42px;
-  border: 0;
-  border-radius: 9px;
-  padding: 11px 15px;
-  background: #263d53;
-  color: #fff;
-  cursor: pointer;
-  font: inherit;
+  border:0;
+  border-radius:9px;
+  padding:11px 15px;
+  background:#263d53;
+  color:#fff;
+  cursor:pointer
 }
-
-button:focus-visible,
-input:focus-visible,
-a:focus-visible {
-  outline: 3px solid var(--blue);
-  outline-offset: 2px;
-}
-
 .error {
-  min-height: 1.4em;
-  margin-top: 10px;
-  color: #d66;
+  color:#a33;
+  margin-top:10px;
+  min-height:1.4em
 }
-
 .back {
-  display: inline-block;
-  margin-top: 14px;
-  color: var(--blue);
-}
-
-@media (max-width: 480px) {
-  main {
-    margin: 5vh auto;
-    padding: 10px;
-  }
+  display:inline-block;
+  margin-top:14px;
+  color:#315f8a
 }
   </style></head><body>
-  --><main><div class="card"><h1>Lehrkraftbereich</h1><p>Erwartungsbild und interne Hinweise zur Unterrichtsvorbereitung.</p><label for="pw">Passwort</label><input id="pw" type="password" autocomplete="off" autofocus><button id="unlock">Lehrkraftbereich öffnen</button><div id="error" class="error" role="alert"></div><a class="back" href="index.html">← Zur Simulation</a></div></main><script>
-// DATA enthält den verschlüsselten Lehrkraftinhalt (jup). Bitte hier nicht händisch ändern.
+    <main><div class="card"><h1>Lehrkraftbereich</h1><p>Erwartungsbild und interne Hinweise zur Unterrichtsvorbereitung.</p><label for="pw">Passwort</label><input id="pw" type="password" autocomplete="off" autofocus><button id="unlock">Lehrkraftbereich öffnen</button><div id="error" class="error" role="alert"></div><a class="back" href="index.html">← Zur Simulation</a></div></main><script>
+// DATA enthält den verschlüsselten Lehrkraftinhalt. Bitte hier nich händisch rumschreiben!
 const DATA =
 {
   "salt":"EKEEb7MMjhyskZF5WBixxQ==","iv":"83As5FM2Xl0ajnR6","ciphertext":"t3GFMxS4GKOdZRhT4uhM0JXBD+0VawYgPuEtRNZ2bB2xwPoY1CP5UMknZ+VKE2e6oSHROdRHkuQVr4gpNZLRTMBmDrUqwXiI9l+5V0p6CeGyd4k3EXSnp/Si5R/e62JrLutry1QhqpPpnw7yCNUWZL5POddkbgC9WolXlghXWjIWn61Ms9TJ/JYZjaXr2iwKu4QrV7667chzLHb5T+6oWET1R/gq7rrJvSLfJlSXHgfk+9BpXWXkZfKNZJnIWv5k2HQzsVDCvG+G5P00f3PjLKUw4bmx0KKb03RZbztzcvOnoziv4fAf2nUECztwaWwQWOZOojVgF6kMAHZu/RFr4slqY7F7+cr7XgerNJyLE86o7dO664SLHf4UenrweClww/DOcSITiCKvvoj7IbYv+hK1crejK2uktrQAxk1+Nb/Ur3tYwlDdVVScTOLqrHFOajQH6TXwJhThP2U9YuCtKzMZgpFcwIdGALh1Wwx0F9urOe21pnJC/J6lltJ1ZGdFkbSlEl+Lk6JtCJ5iL9mOGMZklH2CEzeLU7sHFoILTy/hCbwhvoH81adTfgp/mZoBy8QXRwH7cRQD6HEgaLt0cJcEDoqwulzxcsNa/YdHTp6oSqLdN23dmS0cDRETimALyQmaApnebwGGDIUXki3H3KJVxn6eLLjT9TS2Iakkchyeu126KUTcT4clwGh/Zzy4r/Wx6BxvQCO/DOQCVhfIUhVui/Tq1pbBjdo0Ek6Fsrqa5iKxKZZXTpNflY8KMdw7XnOBux+RrZTwD9q3VF7j2ETr11JEuBnwjqgiUA/dsNexjJsiNfgIpcTfeF9Qf7SHHg8SCgJXMrpddUOvTRUdtAvinyHivw+Z0rRWLpYpgKsAahPdY/tpEzjieE140zeyUGEQHIA9zyihFVU30LjLCqYwS3fH/49tEizYEvINKDKU8tvVq7Pr7nAajKFiKKAWf/MI08Ywmo2g15xXEh1QvST1Vxj5RcMbC9Keg4fT7TwVAG3JOEsUsYZWSonjgw8mVXY5t4SuIgHjZ8+ZaTkdfPCMGvfCCumT33ONjLPiposAp6LR+KtMv0kdh17A6Xtx31Bb8bTt0RMRne6MNskkn+yyuSpRf8JfLh+SZWJD4Jy8ifsO3BjB1LLmqnZnhWeWlK0JbfLYo/MhHcG/OWLQM3+rb7XbbujQGoFg5tT24i9iZlcRFwn0XAoBEgDzz5t/VILckW28cUScngs1KtXiBIEjR6UVijfq+mhCI34gsNPdokJfcgI6ZhfGtWqGXX03zKHHJfdbjC59nO/thHk2sqlzzIF6pfmhGKRi3BNwKcDxmLLZdOoICwYiIQQhpLPCNuierBJXZZRrwlscCaO6EBYWUjEimoDBO6+REa4ZputiiVRJIVgteqOJB/5pdIoUvFEPifRw/Ok0a3wOWdCVzOeLBNBIWS8BtAgk+QW8lCAd4DY8CEjJP1muJ41yA7jUCuhSpY06IOrsr3jv28JU1u8Vyt3Vi5qIe8BvpUeQnJLYGY3qCVxTPpvZDFmemXkwuiOC7TG+7VoUHOlLs2zll168tXza6A==","iterations":600000
@@ -126,7 +65,7 @@ function b64(s)
   for(let i=0;i<x.length;i++)a[i]=x.charCodeAt(i);
   return a
 }
-// Passwort -> Schlüssel -> entschlüsseln -> Inhalt anzeigen.
+// Passwort -> Schlüssel -> entschlüsseln -> Inhalt anzeigen
 async function openTeacher()
 {
   const pw=document.getElementById("pw").value,e=document.getElementById("error");
