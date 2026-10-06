@@ -254,7 +254,7 @@ footer {
     grid-template-columns:1fr
   }
 }
-\n@media(max-width:800px) {
+@media(max-width:800px) {
   main {
     padding:14px
   }
@@ -265,7 +265,7 @@ footer {
     display:none
   }
 }
-\n@media(max-width:500px) {
+@media(max-width:500px) {
   main {
     padding:10px
   }
@@ -517,8 +517,7 @@ function values()
       eta=P1>0?100*P2/P1:null;
     }
   }
-  return
-  {
+  return {
     U1,N1,N2,R,U20,U2,I2,P2,P1,I1,eta,loaded,model,source
   }
 }
@@ -562,7 +561,8 @@ function el(tag,attrs,parent)
   return e
 }
 // Die Spulen sind schematisch;
-N1/N2 stehen als Zahlen daneben.      function coil(group, x, top, color)
+// N1/N2 stehen als Zahlen daneben.
+function coil(group, x, top, color)
 {
   group.innerHTML="";
   for(let i=0;i<8;i++)
