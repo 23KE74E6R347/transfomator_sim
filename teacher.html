@@ -1,114 +1,47 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Transformator – Lehrkraft / Erwartungsbild</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Transformator – Lehrkraftzugang</title>
 <style>
-body{margin:0;background:#f4f6f8;color:#18202a;font-family:system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:1000px;margin:auto;padding:24px}.card{background:#fff;border:1px solid #d7dce2;border-radius:14px;padding:18px;margin:16px 0}h1,h2{margin-top:0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.box{padding:12px;background:#f4f8fb;border-left:4px solid #315f8a;margin:8px 0}.warn{background:#fff7e4;border-left-color:#b87900}.formula{font-family:Georgia,serif;background:#f0f3f5;padding:12px;text-align:center;border-radius:9px}.back{display:inline-block;padding:9px 13px;background:#263d53;color:white;text-decoration:none;border-radius:9px}table{border-collapse:collapse;width:100%}th,td{border-bottom:1px solid #d7dce2;padding:8px;text-align:left;vertical-align:top}th{background:#f0f3f5}@media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:14px}}
+body{margin:0;background:#f4f6f8;color:#18202a;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:520px;margin:10vh auto;padding:18px}.card{background:#fff;border:1px solid #d7dce2;border-radius:14px;padding:22px}
+h1{margin-top:0}p{line-height:1.45;color:#59636f}
+input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #b9c1c9;border-radius:8px;font-size:1rem;margin:8px 0 12px}
+button{border:0;border-radius:9px;padding:11px 15px;background:#263d53;color:#fff;cursor:pointer}
+.error{color:#a33;margin-top:10px;min-height:1.4em}.back{display:inline-block;margin-top:14px;color:#315f8a}
 </style>
 </head>
-<body><div class="wrap">
+<body>
+<main><div class="card">
+<h1>Lehrkraftbereich</h1>
+<p>Dieser Bereich enthält das Erwartungsbild und interne Hinweise zur Unterrichtsvorbereitung.</p>
+<label for="pw">Passwort</label>
+<input id="pw" type="password" autocomplete="off" autofocus>
+<button id="unlock">Lehrkraftbereich öffnen</button>
+<div id="error" class="error" role="alert"></div>
 <a class="back" href="index.html">← Zur Simulation</a>
-<h1>Transformator – Lehrkraft / Erwartungsbild</h1>
-<p>Diese Seite gehört zur virtuellen Untersuchung. Sie beschreibt das fachliche Erwartungsbild für die Aufgaben A–F und die Grenzen des verwendeten Modells.</p>
-
-<section class="card">
-<h2>Fachliches Kernmodell</h2>
-<div class="formula">U₂ / U₁ = N₂ / N₁</div>
-<p>Für den idealen Transformator gilt zusätzlich <b>P₁ = P₂</b>. Daraus folgt bei gleicher Leistung:</p>
-<div class="formula">I₂ / I₁ = N₁ / N₂</div>
-<p>Der Transformator benötigt eine zeitliche Änderung des magnetischen Flusses. In dieser Simulation wird deshalb zwischen Wechsel- und Gleichspannung unterschieden.</p>
-</section>
-
-<section class="card">
-<h2>Erwartungsbild zu den Untersuchungsaufträgen</h2>
-<table>
-<tr><th>Auftrag</th><th>Erwartete Beobachtung</th><th>Erwartete Erklärung / Qualitätskriterium</th></tr>
-<tr><td>A – Spannung</td><td>Bei konstantem U₁ und N₁ steigt U₂ proportional mit N₂.</td><td>Die SuS formulieren das Spannungsübersetzungsverhältnis U₂/U₁ = N₂/N₁ und können es an Messwerten prüfen.</td></tr>
-<tr><td>B – Strom</td><td>Bei Belastung fließt I₂. Bei festem R und U₁ steigt mit N₂ auch U₂ und damit I₂. Gleichzeitig sinkt der Primärstrom I₁ im Verhältnis dazu.</td><td>Im Idealmodell gilt P₁ = P₂. Daraus folgt I₂/I₁ = N₁/N₂. Für ein festes Last-R ist außerdem I₂ = U₂/R; deshalb darf die Stromtransformation nicht isoliert von der gewählten Last betrachtet werden.</td></tr>
-<tr><td>C – Leerlauf/Last</td><td>Unbelastet: U₂ vorhanden, I₂ = 0. Belastet: I₂ > 0 und Leistung wird übertragen.</td><td>Leerlauf bedeutet hier: sekundärer Stromkreis offen. Die Simulation zeigt bewusst keine Leerlaufverluste.</td></tr>
-<tr><td>D – Last</td><td>Bei kleinerem R steigt I₂. Im Realmodell sinkt U₂ wegen des äquivalenten Innenwiderstands.</td><td>Die SuS unterscheiden Idealmodell (kein Spannungsabfall durch Innenwiderstand) und Realmodell (Spannungsabfall unter Last).</td></tr>
-<tr><td>E – AC/DC</td><td>Bei Wechselspannung wird dauerhaft U₂ angezeigt; bei Gleichspannung im eingeschwungenen Zustand U₂ = 0.</td><td>Erklärung über die zeitliche Änderung des magnetischen Flusses bzw. Induktion. Der Einschalttransient ist nicht Gegenstand der Simulation.</td></tr>
-<tr><td>F – Modellkritik</td><td>Idealmodell ist verlustfrei und ohne Innenwiderstände. Realmodell ist nur teilweise realistisch.</td><td>Akzeptabel sind z. B. Hinweise auf Wicklungswiderstände, Kernverluste, Streufluss/Streuinduktivität und weitere reale Effekte als nicht separat modellierte Größen.</td></tr>
-</table>
-</section>
-
-<section class="card">
-<h2>Konkrete Erwartungswerte für die Simulation</h2>
-<p>Beispiele für die schnelle Plausibilitätskontrolle.</p>
-<table>
-<tr><th>Versuch</th><th>Einstellung</th><th>Erwartungswert</th><th>Deutung</th></tr>
-<tr><td>A1</td><td>AC, ideal, unbelastet; U₁ = 12 V, N₁ = 200, N₂ = 400</td><td>U₂ = 24 V; I₂ = 0 A</td><td>Verdopplung der Sekundärspannung bei Verdopplung der Windungszahl.</td></tr>
-<tr><td>A2</td><td>AC, ideal, unbelastet; U₁ = 12 V, N₁ = 200, N₂ = 100</td><td>U₂ = 6 V; I₂ = 0 A</td><td>Halbe Windungszahl → halbe Sekundärspannung.</td></tr>
-<tr><td>B</td><td>AC, ideal, belastet; U₁ = 12 V, N₁ = 200, N₂ = 400, R = 20 Ω</td><td>U₂ = 24 V; I₂ = 1,20 A; P₂ = 28,80 W; I₁ = 2,40 A</td><td>P₁ = P₂.</td></tr>
-<tr><td>D</td><td>AC, Realmodell; U₁ = 12 V, N₁ = 200, N₂ = 400, R = 20 Ω</td><td>U₂ ≈ 23,90 V; I₂ ≈ 1,195 A; P₂ ≈ 28,57 W; η ≈ 99,6 %</td><td>Der äquivalente Innenwiderstand verursacht einen kleinen Spannungs- und Leistungsverlust.</td></tr>
-<tr><td>E</td><td>DC, gleiche Einstellung</td><td>U₂ = 0 V; I₂ = 0 A</td><td>Im eingeschwungenen Zustand keine dauerhafte Induktion.</td></tr>
-</table>
-</section>
-
-<section class="card">
-<h2>Typische Schülerantworten und Bewertung</h2>
-<table>
-<tr><th>Aufgabe</th><th>Typische Antwort</th><th>Bewertung</th></tr>
-<tr><td>A</td><td>„Wenn N₂ größer wird, wird U₂ größer.“</td><td>Beobachtung korrekt. Für volle fachliche Qualität zusätzlich: proportionaler Zusammenhang und Bezug auf U₂/U₁ = N₂/N₁.</td></tr>
-<tr><td>B</td><td>„Mehr Windungen machen mehr Strom.“</td><td>Zu pauschal. Last und Leistungsbilanz müssen berücksichtigt werden.</td></tr>
-<tr><td>C</td><td>„Im Leerlauf ist Spannung da, aber kein Strom.“</td><td>Fachlich zentral und korrekt.</td></tr>
-<tr><td>D</td><td>„Wenn R kleiner wird, wird I₂ größer und die Spannung sinkt.“</td><td>Vollständig, wenn der Spannungseinbruch mit dem äquivalenten Innenwiderstand begründet wird.</td></tr>
-<tr><td>E</td><td>„Mit Gleichspannung funktioniert der Transformator nicht.“</td><td>Im Modell für den eingeschwungenen Zustand korrekt; präziser ist die Erklärung über die fehlende dauerhafte Flussänderung.</td></tr>
-<tr><td>F</td><td>„Der reale Transformator hat Verluste.“</td><td>Richtung stimmt, aber für Modellkritik zu unspezifisch. Konkrete Effekte nennen.</td></tr>
-</table>
-</section>
-
-<section class="card">
-<h2>Kompaktes Bewertungsraster</h2>
-<table>
-<tr><th>Kriterium</th><th>Erreicht, wenn …</th></tr>
-<tr><td>Vorhersage</td><td>eine überprüfbare Aussage vor der Parameteränderung formuliert wird.</td></tr>
-<tr><td>Kontrollierte Untersuchung</td><td>gezielt eine unabhängige Größe verändert wird, während relevante andere Größen konstant bleiben.</td></tr>
-<tr><td>Messung</td><td>mehrere passende Messwerte aufgenommen und verglichen werden.</td></tr>
-<tr><td>Zusammenhang</td><td>die beobachtete Abhängigkeit sprachlich und/oder mathematisch korrekt beschrieben wird.</td></tr>
-<tr><td>Erklärung</td><td>die Beobachtung mit Transformatorgesetz, Leistungsbilanz bzw. Induktion begründet wird.</td></tr>
-<tr><td>Modellkritik</td><td>Idealmodell, vereinfachtes Realmodell und reale Transformatoren unterschieden werden.</td></tr>
-</table>
-</section>
-
-<section class="card">
-<h2>Modellgrenzen</h2>
-<div class="grid">
-<div class="box"><b>Idealmodell</b><br>Keine Verluste, keine Innenwiderstände; P₁ = P₂ bei Belastung.</div>
-<div class="box"><b>Vereinfachtes Realmodell</b><br>Nur ein äquivalenter sekundärer Innenwiderstand wird explizit modelliert. Die Verlustleistung ist I₂²·r<sub>int</sub>.</div>
-<div class="box warn"><b>Nicht modelliert</b><br>Kernverluste, Streuinduktivität, magnetische Sättigung, Frequenzabhängigkeit und ein detailliertes Wicklungsmodell.</div>
-<div class="box warn"><b>DC</b><br>Die Simulation setzt im eingeschwungenen Zustand U₂ = 0. Ein kurzer Einschaltvorgang wird nicht numerisch simuliert.</div>
-</div>
-</section>
-
-<section class="card">
-<h2>Didaktischer Prüfpunkt</h2>
-<p>Die Simulation sollte nicht als bloße Animation eingesetzt werden. Der Erkenntnisweg ist:</p>
-<p><b>Vorhersage → gezielte Parameteränderung → Messung → Beschreibung → Erklärung durch Modell/Gesetz → Modellkritik.</b></p>
-<p>Für eine belastbare Auswertung sollten die SuS Messreihen mit nur einer veränderten unabhängigen Größe aufnehmen. Besonders geeignet sind N₂ bei konstantem U₁ und N₁ sowie R bei konstantem U₁, N₁ und N₂.</p>
-</section>
-
-<section class="card">
-<h2>Typische Fehlvorstellungen</h2>
-<ul>
-<li>„Der Eisenkern transportiert Spannung von der Primär- zur Sekundärseite.“</li>
-<li>„Ein Transformator funktioniert mit Gleichspannung dauerhaft genauso wie mit Wechselspannung.“</li>
-<li>„Mehr Windungen bedeuten automatisch mehr Spannung und mehr Strom.“</li>
-<li>„Bei Belastung ändert sich nur der Strom, die Sekundärspannung bleibt immer exakt gleich.“</li>
-<li>„Der ideale Transformator erzeugt Leistung.“</li>
-</ul>
-<p>Die Simulation ist so aufgebaut, dass diese Aussagen gezielt überprüfbar bzw. diskutierbar werden.</p>
-</section>
-
-<section class="card">
-<h2>Technische Validierung der Simulation</h2>
-<ul>
-<li>Spannung: U₂ = U₁·N₂/N₁ im AC-Betrieb.</li>
-<li>Ideal belastet: I₂ = U₂/R, P₂ = U₂·I₂, P₁ = P₂.</li>
-<li>Real belastet: I₂ = U₂₀/(R + r<sub>int</sub>), U₂ = I₂R, P₁ = P₂ + I₂²r<sub>int</sub>.</li>
-<li>Unbelastet: I₂ = P₂ = P₁ = I₁ = 0; U₂ folgt dem Übersetzungsverhältnis.</li>
-<li>DC eingeschwungen: U₂ = I₂ = P₂ = 0.</li>
-</ul>
-</section>
-</div></body></html>
+</div></main>
+<script>
+const DATA={"salt":"zlws+wY6gSWmfPsza+gwrw==","iv":"RmmCho8fIpa1I5vf","ciphertext":"XhrSRhHVfoRi4UurX+E3cUcQtXvV4H5nQ2fLrUvPd/6JXcgijYXaIVG1dcrmAaMlcfcgbi5gKLY5bi+bucf7zNPq4iWCEex0TnEOZVlgi56tdCfCAoV9mgVEGXGTpluTRbu5dqay2RcejbHe1sKTW47Lf6jvnr129g4QVEYjHPHmWqhotDeJyrUdnEjskoMLHk4gKpoKbPKtSBcnl3YzeeitUMTpUdnwZGyHQ7yoDrqg2jk9UNbGISPg/EudafxNW289F4SRaGE0bX3","iterations":600000,"compression":"gzip"};
+function b64(s){const bin=atob(s);const a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);return a}
+async function openTeacher(){
+ const pw=document.getElementById("pw").value; const err=document.getElementById("error");
+ err.textContent="";
+ if(!pw){err.textContent="Bitte Passwort eingeben.";return}
+ try{
+   const keyMaterial=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
+   const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(DATA.salt),iterations:DATA.iterations,hash:"SHA-256"},keyMaterial,{name:"AES-GCM",length:256},false,["decrypt"]);
+   const decrypted=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(DATA.iv)},key,b64(DATA.ciphertext));
+   const stream=new Blob([decrypted]).stream().pipeThrough(new DecompressionStream("gzip"));
+   const html=await new Response(stream).text();
+   document.open();document.write(html);document.close();
+ }catch(e){err.textContent="Passwort falsch oder Inhalt konnte nicht entschlüsselt werden."}
+}
+document.getElementById("unlock").addEventListener("click",openTeacher);
+document.getElementById("pw").addEventListener("keydown",e=>{if(e.key==="Enter")openTeacher()});
+</script>
+</body>
+</html>
