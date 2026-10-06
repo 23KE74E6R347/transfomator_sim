@@ -268,7 +268,40 @@ input:focus-visible {
 }
 
 #transformer {
-  display: block;
+  color: var(--ink);
+}
+
+#transformer text {
+  fill: var(--ink);
+}
+
+#transformer #fluxGroup text:first-child {
+  fill: var(--blue);
+}
+
+#transformer #fluxGroup text:not(:first-child) {
+  fill: var(--muted);
+}
+
+#transformer .modelBadge {
+  fill: var(--ink);
+}
+
+#transformer .modelDetail {
+  fill: var(--muted);
+}
+
+#transformer > rect:first-of-type {
+  fill: var(--soft-bg);
+  stroke: var(--muted);
+}
+
+#transformer > rect:nth-of-type(2) {
+  fill: var(--card);
+  stroke: var(--muted);
+}
+
+#transformer {
   width: 100%;
   max-width: 100%;
   height: auto;
