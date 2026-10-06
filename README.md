@@ -1,170 +1,158 @@
 # Transformator – virtuelle Untersuchung
 
-Interaktive HTML/JavaScript-Simulation für den Physikunterricht am Beruflichen Gymnasium.
+Kleine, eigenständige HTML/JavaScript-Simulation für Lila.
 
-## Zweck
+Das Projekt ist nicht als allgemeines Softwareprojekt gedacht, sondern als konkrete Unterrichtshilfe für Lilas Transformator-Thema. Deshalb ist der Code absichtlich ohne Framework, ohne Build-System und ohne externe Bibliotheken gehalten: Datei öffnen, ändern, speichern, fertig. ^^
 
-Die Simulation ersetzt bzw. ergänzt einen nicht ausreichend funktionierenden Realversuch. Sie ermöglicht eine kontrollierte Untersuchung von Abhängigkeiten eines idealen und eines bewusst vereinfachten realen Transformators.
+## Worum es geht
 
-Der didaktische Arbeitsweg lautet:
+Die Simulation ersetzt bzw. ergänzt den misslungenen Realversuch. Sie soll nicht einfach einen hübschen Transformator anzeigen, sondern eine virtuelle Untersuchung ermöglichen:
 
-**Vorhersage → Parameter gezielt verändern → beobachten → Messwerte aufnehmen → Zusammenhang erklären → Modellgrenzen reflektieren**
+**Vorhersagen → einstellen → beobachten → Messwert aufnehmen → Zusammenhang erklären → Modellgrenzen reflektieren**
 
-Die Simulation soll damit nicht nur eine Animation sein, sondern eine virtuelle experimentelle Situation schaffen.
-
-## Funktionen
+Untersucht werden:
 
 - Wechselspannung / Gleichspannung
 - Primärspannung U₁
 - Primärwindungszahl N₁
 - Sekundärwindungszahl N₂
-- Leerlauf / Belastung
+- unbelasteter / belasteter Transformator
 - Lastwiderstand R
-- Idealmodell
-- vereinfachtes Realmodell
-- Anzeige von U₁, U₂, I₁, I₂, P₁, P₂ und Wirkungsgrad η
-- animierte Darstellung des zeitlich wechselnden magnetischen Flusses
+- Idealmodell / vereinfachtes Realmodell
+- U₁, U₂, I₁, I₂, P₁, P₂ und η
 - virtuelle Messreihe
-- Untersuchungsaufträge
-- separate Lehrkraftseite mit Erwartungsbild und Bewertungsraster
+- Untersuchungsaufträge A–F
+- separater Lehrkraftbereich
+
+## Dateien
+
+### `index.html`
+
+Die komplette Schüler-/Simulationsseite.
+
+- HTML = Inhalt und Struktur
+- CSS im `<style>)-Block = Aussehen
+- JavaScript im `<script>)-Block = Interaktion und Modell
+
+Die Datei ist absichtlich monolithisch. Lila muss also nicht erst irgendein Framework verstehen.
+
+### `teacher.html`
+
+Loginseite für den Lehrkraftbereich.
+
+Der eigentliche Lehrkraftinhalt liegt verschlüsselt im `DATA)-Objekt.
+
+Wichtig: Das ist bei einem öffentlichen GitHub-Pages-Projekt kein echter serverseitiger Geheimschutz. Der Browser bekommt den verschlüsselten Inhalt und den Code zur Entschlüsselung. Außerdem bleiben alte Git-Commits grundsätzlich in der Repository-Historie.
+
+### `README.md`
+
+Diese Erklärung. Also ungefähr die Gebrauchsanweisung für das Ding, falls Marv irgendwann vergessen hat, was er hier eigentlich gebaut hat. 😭
+
+## Wie der Code kommentiert ist
+
+Die Kommentare sind absichtlich eher so geschrieben, wie Marv technische Dinge direkt an Lila erklären würde: kurz, konkret, ein bisschen locker und mit gelegentlichem „warum ist das hier so?“.
+
+Nicht:
+
+> `// Initialisiert den Zustand der Anwendung.`
+
+Sondern eher:
+
+> `// Hier passiert die eigentliche Physik. Der Rest ist größtenteils Oberfläche.`
+
+Die Idee dahinter: Lila soll Änderungen selbst vornehmen können, ohne dass der Code wie eine fremde Softwarebibliothek wirkt.
+
+Ein paar harmlose Tippfehler in Kommentaren sind absichtlich eingebaut. Das sind keine Syntax- oder Logikfehler und ändern nichts an der Funktion. 😅
+
+## Wo Lila zuerst suchen sollte
+
+- **Startwerte der Regler:** im HTML-Abschnitt bei `value=`
+- **Physikalisches Modell:** `function values()`
+- **Anzeige aktualisieren:** `function update()`
+- **Transformatorzeichnung:** `function draw()`
+- **Messreihe:** `function renderRows()`
+- **Animation:** `function animate()`
+- **Lehrkraft-Login:** `function openTeacher()`
+
+Wenn ein Button anders reagieren soll, zuerst bei den `.onclick`-Zeilen schauen.
 
 ## Physikalisches Modell
 
 ### Idealmodell
 
-Für Wechselspannung gilt:
+Für Wechselspannung:
 
 `U₂ / U₁ = N₂ / N₁`
 
-Unter Belastung gilt im idealen Modell:
+Unter Belastung:
 
 `P₁ = P₂`
 
-Daraus folgt:
+Daraus:
 
 `I₂ / I₁ = N₁ / N₂`
 
-Im Leerlauf ist die Sekundärseite offen. Daher wird I₂ = 0 gesetzt, während U₂ weiterhin durch das Übersetzungsverhältnis bestimmt wird.
+Im Leerlauf ist die Sekundärseite offen. Deshalb wird `I₂ = 0` gesetzt, während `U₂` weiterhin über das Übersetzungsverhältnis bestimmt wird.
 
 ### Vereinfachtes Realmodell
 
-Das Realmodell verwendet einen kleinen äquivalenten Sekundär-Innenwiderstand:
+Das Realmodell besitzt einen kleinen äquivalenten Sekundär-Innenwiderstand:
 
 `r_int = 0,08 Ω`
 
-Unter Last gilt im Modell:
+Unter Last:
 
 `I₂ = U₂₀ / (R + r_int)`
 
 `U₂ = I₂ · R`
 
-Die Verlustleistung des äquivalenten Innenwiderstands ist:
-
 `P_V = I₂² · r_int`
-
-und:
 
 `P₁ = P₂ + P_V`
 
-Das Modell bildet ausdrücklich keinen vollständigen realen Transformator ab. Insbesondere werden Kernverluste, Streuinduktivität, magnetische Sättigung, Frequenzabhängigkeiten und ein detailliertes Wicklungsmodell nicht separat simuliert.
+Das ist ausdrücklich kein vollständiges Modell eines realen Transformators. Kernverluste, Streuinduktivität, magnetische Sättigung, Frequenzabhängigkeiten und ein detailliertes Wicklungsmodell werden nicht separat simuliert.
 
 ### Gleichspannung
 
-Bei Gleichspannung wird im eingeschwungenen Zustand U₂ = 0 gesetzt. Ein möglicher kurzer Einschalttransient wird nicht simuliert.
-
-## Messung
-
-Mit **„Messwert aufnehmen“** wird der aktuelle Zustand als Messpunkt gespeichert. Gespeichert werden unter anderem:
-
-- Versorgung: AC/DC
-- Modell: ideal/real
-- Lastzustand
-- U₁
-- N₁
-- N₂
-- R
-- U₂
-- I₂
-- P₂
-- η
-
-Die Messwerte bleiben erhalten, wenn anschließend die Einstellungen verändert werden.
-
-Für sinnvolle Messreihen sollte möglichst jeweils nur eine unabhängige Größe verändert werden.
-
-## Lehrkraftseite
-
-Die Lehrkraftfassung liegt unter `teacher.html`.
-
-Sie enthält:
-
-- fachliches Kernmodell
-- Erwartungsbild für die Untersuchungsaufträge
-- konkrete Erwartungswerte
-- typische Schülerantworten
-- Bewertungshinweise
-- Modellgrenzen
-- typische Fehlvorstellungen
-- technisches Validierungsmodell
-
-### Zugriffsschutz
-
-Die aktuelle `teacher.html` verwendet einen **Client-seitigen Passwort-Gate mit AES-GCM-Verschlüsselung**:
-
-- Lehrkraftinhalt liegt in der aktuellen Datei nicht im Klartext.
-- Schlüsselableitung: PBKDF2 mit SHA-256 und 600.000 Iterationen.
-- Verschlüsselung: AES-256-GCM.
-- Salt und Initialisierungsvektor sind zufällig.
-- Das Passwort wird nicht im Repository gespeichert.
-- Die Seite ist zusätzlich mit `noindex,nofollow,noarchive` gekennzeichnet.
-
-**Wichtige Sicherheitsgrenze:** Das ist bei einem öffentlichen GitHub-Pages-Repository kein vollwertiger serverseitiger Zugriffsschutz. Der Browser erhält den verschlüsselten Inhalt und führt die Entschlüsselung lokal aus. Außerdem enthalten frühere öffentliche Git-Commits die Lehrkraftseite noch im Klartext. Deshalb darf das Repository weiterhin nicht als Ort für hochvertrauliche Informationen betrachtet werden.
-
-Für echten Zugriffsschutz sind weiterhin ein privates GitHub-Pages-Setup mit geeigneter GitHub-Enterprise-Konfiguration oder ein Authentifizierungs-Proxy wie Cloudflare Access die bessere Lösung.
-
-Das aktuelle Passwort wird absichtlich **nicht** dokumentiert und muss separat an die berechtigte Lehrkraft übermittelt werden.
-
-## Nutzung
-
-Die öffentliche Simulation kann über GitHub Pages aufgerufen werden:
-
-`https://23ke74e6r347.github.io/transfomator_sim/`
-
-Die Lehrkraftseite liegt unter:
-
-`https://23ke74e6r347.github.io/transfomator_sim/teacher.html`
+Bei Gleichspannung wird im eingeschwungenen Zustand `U₂ = 0` gesetzt. Ein kurzer Einschalttransient wird nicht simuliert.
 
 ## Entwicklung
 
-- `index.html` – Schüler-/Simulationsseite
-- `teacher.html` – Lehrkraft-/Erwartungsbild
-- `README.md` – Projektdokumentation
+Keine externen JavaScript-Bibliotheken, kein Framework, kein Build-Schritt.
 
-Es werden keine externen JavaScript-Bibliotheken benötigt.
+Für Änderungen:
 
-## Qualitäts- und Modellgrenzen
+1. Datei öffnen.
+2. Änderung machen.
+3. Im Browser testen.
+4. Auf GitHub committen.
 
-Die Simulation ist ein didaktisches Modell und kein technisches Simulationsprogramm für reale Transformatoren.
+Bei Änderungen an der Physik bitte nicht nur den angezeigten Wert ändern: Das Modell in `values()`, die Hinweise und die Lehrkraftfassung müssen zusammenpassen.
 
-Vor dem Einsatz im Unterricht sollte insbesondere geprüft werden:
+## Zugriff
 
-- Passung zur konkreten Unterrichtssequenz
-- vorhandenes Vorwissen der Lerngruppe
-- gewünschte Lernziele
-- Modellannahmen
-- konkrete Aufgabenstellung
-- Funktionsfähigkeit auf den tatsächlich verwendeten Geräten
-- Browser-/Displaydarstellung
-- Rückbindung an den Realversuch
+GitHub Pages:
 
-Die Lehrkraft bleibt für die endgültige fachliche und didaktische Verwendung verantwortlich.
+`https://23ke74e6r347.github.io/transfomator_sim/`
 
-## Lizenz / Nutzung
+Lehrkraftbereich:
 
-Für dieses Repository ist derzeit keine separate Open-Source-Lizenz festgelegt. Ohne LICENSE-Datei sollte der Code nicht automatisch als frei zur Weiterverwendung lizenziert betrachtet werden.
+`https://23ke74e6r347.github.io/transfomator_sim/teacher.html`
+
+## Qualitätscheck vor dem Unterricht
+
+- Passt die Simulation zur konkreten Unterrichtssequenz?
+- Sind Vorwissen und verwendete Begriffe klar?
+- Ist sichtbar, was idealisiert wird?
+- Wird „belastet“ so eingeführt, wie es im Unterricht gebraucht wird?
+- Passen Untersuchungsaufträge und Erwartungsbild zusammen?
+- Funktioniert die Darstellung auf den tatsächlich verwendeten Geräten?
+- Kann die Simulation sinnvoll auf den Realversuch zurückbezogen werden?
+
+Die Simulation soll den Realversuch nicht ersetzen, weil Simulationen „besser“ wären, sondern weil die kontrollierte Variation der relevanten Größen mit dem vorhandenen Aufbau nicht zuverlässig gelingt.
 
 ## Status
 
-**Prototyp / Unterrichtsentwicklung**
+**Unterrichtsentwicklung / Lila**
 
-Der Schwerpunkt liegt auf fachlicher und didaktischer Validierung, nicht auf einer vollständigen technischen Modellierung realer Transformatoren.
+Schwerpunkt: fachliche und didaktische Verwendbarkeit, nicht vollständige technische Modellierung realer Transformatoren.
