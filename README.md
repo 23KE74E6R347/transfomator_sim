@@ -1,6 +1,6 @@
 # Transformator – virtuelle Untersuchung
 
-Kleine, eigenständige HTML/JavaScript-Simulation für Lilas
+HTML/JavaScript-Simulation für Lilas
 
 Das Projekt ist als konkrete Unterrichtshilfe für Lilas Transformator-Thema gedacht. Deshalb ist der Code ohne Framework, ohne Build-System und ohne externe Bibliotheken gehalten: Datei öffnen, ändern, speichern, done
 
@@ -39,16 +39,6 @@ Das ist bei einem öffentlichen GitHub-Pages-Projekt kein echter serverseitiger 
 ### `README.md`
 
 Diese Erklärung. Also ungefähr die Gebrauchsanweisung für das Ding, falls Marv irgendwann vergessen hat, was er hier eigentlich gebaut hat
-
-## Wo Lila zuerst suchen sollte
-
-- **Startwerte der Regler:** im HTML-Abschnitt bei `value=`
-- **Physikalisches Modell:** `function values()`
-- **Anzeige aktualisieren:** `function update()`
-- **Transformatorzeichnung:** `function draw()`
-- **Messreihe:** `function renderRows()`
-- **Animation:** `function animate()`
-- **Lehrkraft-Login:** `function openTeacher()`
 
 ## Zugriff
 
