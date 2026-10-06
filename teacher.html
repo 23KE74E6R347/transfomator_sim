@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Transformator – Lehrkraft / Erwartungsbild</title>
+<style>
+body{margin:0;background:#f4f6f8;color:#18202a;font-family:system-ui,-apple-system,Segoe UI,sans-serif}.wrap{max-width:1000px;margin:auto;padding:24px}.card{background:#fff;border:1px solid #d7dce2;border-radius:14px;padding:18px;margin:16px 0}h1,h2{margin-top:0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.box{padding:12px;background:#f4f8fb;border-left:4px solid #315f8a;margin:8px 0}.warn{background:#fff7e4;border-left-color:#b87900}.formula{font-family:Georgia,serif;background:#f0f3f5;padding:12px;text-align:center;border-radius:9px}.back{display:inline-block;padding:9px 13px;background:#263d53;color:white;text-decoration:none;border-radius:9px}table{border-collapse:collapse;width:100%}th,td{border-bottom:1px solid #d7dce2;padding:8px;text-align:left;vertical-align:top}th{background:#f0f3f5}@media(max-width:760px){.grid{grid-template-columns:1fr}.wrap{padding:14px}}
+</style>
+</head>
+<body><div class="wrap">
+<a class="back" href="index.html">← Zur Simulation</a>
+<h1>Transformator – Lehrkraft / Erwartungsbild</h1>
+<p>Diese Seite gehört zur virtuellen Untersuchung. Sie beschreibt das fachliche Erwartungsbild für die Aufgaben A–F und die Grenzen des verwendeten Modells.</p>
+
+<section class="card">
+<h2>Fachliches Kernmodell</h2>
+<div class="formula">U₂ / U₁ = N₂ / N₁</div>
+<p>Für den idealen Transformator gilt zusätzlich <b>P₁ = P₂</b>. Daraus folgt bei gleicher Leistung:</p>
+<div class="formula">I₂ / I₁ = N₁ / N₂</div>
+<p>Der Transformator benötigt eine zeitliche Änderung des magnetischen Flusses. In dieser Simulation wird deshalb zwischen Wechsel- und Gleichspannung unterschieden.</p>
+</section>
+
+<section class="card">
+<h2>Erwartungsbild zu den Untersuchungsaufträgen</h2>
+<table>
+<tr><th>Auftrag</th><th>Erwartete Beobachtung</th><th>Erwartete Erklärung / Qualitätskriterium</th></tr>
+<tr><td>A – Spannung</td><td>Bei konstantem U₁ und N₁ steigt U₂ proportional mit N₂.</td><td>Die SuS formulieren das Spannungsübersetzungsverhältnis U₂/U₁ = N₂/N₁ und können es an Messwerten prüfen.</td></tr>
+<tr><td>B – Strom</td><td>Bei Belastung fließt I₂. Bei größerem N₂ sinkt im Idealmodell der sekundärseitige Strom bei gleicher U₁ und Last nicht einfach unabhängig von U₂; entscheidend ist die Leistungsbilanz.</td><td>Im Idealmodell wird P₁ = P₂ erkannt und daraus I₂/I₁ = N₁/N₂ hergeleitet. Die Aussage „mehr Spannung und gleichzeitig mehr Strom“ wird als falsche Verallgemeinerung vermieden.</td></tr>
+<tr><td>C – Leerlauf/Last</td><td>Unbelastet: U₂ vorhanden, I₂ = 0. Belastet: I₂ > 0 und Leistung wird übertragen.</td><td>Leerlauf bedeutet hier: sekundärer Stromkreis offen. Die Simulation zeigt bewusst keine Leerlaufverluste.</td></tr>
+<tr><td>D – Last</td><td>Bei kleinerem R steigt I₂. Im Realmodell sinkt U₂ wegen des äquivalenten Innenwiderstands.</td><td>Die SuS unterscheiden Idealmodell (kein Spannungsabfall durch Innenwiderstand) und Realmodell (Spannungsabfall unter Last).</td></tr>
+<tr><td>E – AC/DC</td><td>Bei Wechselspannung wird dauerhaft U₂ angezeigt; bei Gleichspannung im eingeschwungenen Zustand U₂ = 0.</td><td>Erklärung über die zeitliche Änderung des magnetischen Flusses bzw. Induktion. Der Einschalttransient ist nicht Gegenstand der Simulation.</td></tr>
+<tr><td>F – Modellkritik</td><td>Idealmodell ist verlustfrei und ohne Innenwiderstände. Realmodell ist nur teilweise realistisch.</td><td>Akzeptabel sind z. B. Hinweise auf Wicklungswiderstände, Kernverluste, Streufluss/Streuinduktivität und weitere reale Effekte als nicht separat modellierte Größen.</td></tr>
+</table>
+</section>
+
+<section class="card">
+<h2>Modellgrenzen</h2>
+<div class="grid">
+<div class="box"><b>Idealmodell</b><br>Keine Verluste, keine Innenwiderstände; P₁ = P₂ bei Belastung.</div>
+<div class="box"><b>Vereinfachtes Realmodell</b><br>Nur ein äquivalenter sekundärer Innenwiderstand wird explizit modelliert. Die Verlustleistung ist I₂²·r<sub>int</sub>.</div>
+<div class="box warn"><b>Nicht modelliert</b><br>Kernverluste, Streuinduktivität, magnetische Sättigung, Frequenzabhängigkeit und ein detailliertes Wicklungsmodell.</div>
+<div class="box warn"><b>DC</b><br>Die Simulation setzt im eingeschwungenen Zustand U₂ = 0. Ein kurzer Einschaltvorgang wird nicht numerisch simuliert.</div>
+</div>
+</section>
+
+<section class="card">
+<h2>Didaktischer Prüfpunkt</h2>
+<p>Die Simulation sollte nicht als bloße Animation eingesetzt werden. Der Erkenntnisweg ist:</p>
+<p><b>Vorhersage → gezielte Parameteränderung → Messung → Beschreibung → Erklärung durch Modell/Gesetz → Modellkritik.</b></p>
+<p>Für eine belastbare Auswertung sollten die SuS Messreihen mit nur einer veränderten unabhängigen Größe aufnehmen. Besonders geeignet sind N₂ bei konstantem U₁ und N₁ sowie R bei konstantem U₁, N₁ und N₂.</p>
+</section>
+
+<section class="card">
+<h2>Typische Fehlvorstellungen</h2>
+<ul>
+<li>„Der Eisenkern transportiert Spannung von der Primär- zur Sekundärseite.“</li>
+<li>„Ein Transformator funktioniert mit Gleichspannung dauerhaft genauso wie mit Wechselspannung.“</li>
+<li>„Mehr Windungen bedeuten automatisch mehr Spannung und mehr Strom.“</li>
+<li>„Bei Belastung ändert sich nur der Strom, die Sekundärspannung bleibt immer exakt gleich.“</li>
+<li>„Der ideale Transformator erzeugt Leistung.“</li>
+</ul>
+<p>Die Simulation ist so aufgebaut, dass diese Aussagen gezielt überprüfbar bzw. diskutierbar werden.</p>
+</section>
+
+<section class="card">
+<h2>Technische Validierung der Simulation</h2>
+<ul>
+<li>Spannung: U₂ = U₁·N₂/N₁ im AC-Betrieb.</li>
+<li>Ideal belastet: I₂ = U₂/R, P₂ = U₂·I₂, P₁ = P₂.</li>
+<li>Real belastet: I₂ = U₂₀/(R + r<sub>int</sub>), U₂ = I₂R, P₁ = P₂ + I₂²r<sub>int</sub>.</li>
+<li>Unbelastet: I₂ = P₂ = P₁ = I₁ = 0; U₂ folgt dem Übersetzungsverhältnis.</li>
+<li>DC eingeschwungen: U₂ = I₂ = P₂ = 0.</li>
+</ul>
+</section>
+</div></body></html>
