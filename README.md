@@ -109,17 +109,20 @@ Sie enthält:
 
 ### Zugriffsschutz
 
-**Wichtig:** `teacher.html` ist aktuell nicht passwortgeschützt.
+Die aktuelle `teacher.html` verwendet einen **Client-seitigen Passwort-Gate mit AES-GCM-Verschlüsselung**:
 
-Ein Passwort ausschließlich mit JavaScript auf einer GitHub-Pages-Seite wäre kein echter Zugriffsschutz. Das Passwort und der geschützte Inhalt würden an den Browser ausgeliefert und könnten aus dem Quelltext bzw. den geladenen Dateien ausgelesen werden.
+- Lehrkraftinhalt liegt in der aktuellen Datei nicht im Klartext.
+- Schlüsselableitung: PBKDF2 mit SHA-256 und 600.000 Iterationen.
+- Verschlüsselung: AES-256-GCM.
+- Salt und Initialisierungsvektor sind zufällig.
+- Das Passwort wird nicht im Repository gespeichert.
+- Die Seite ist zusätzlich mit `noindex,nofollow,noarchive` gekennzeichnet.
 
-Für einen echten Schutz gibt es sinnvollere Optionen:
+**Wichtige Sicherheitsgrenze:** Das ist bei einem öffentlichen GitHub-Pages-Repository kein vollwertiger serverseitiger Zugriffsschutz. Der Browser erhält den verschlüsselten Inhalt und führt die Entschlüsselung lokal aus. Außerdem enthalten frühere öffentliche Git-Commits die Lehrkraftseite noch im Klartext. Deshalb darf das Repository weiterhin nicht als Ort für hochvertrauliche Informationen betrachtet werden.
 
-1. GitHub Enterprise Cloud mit privater GitHub-Pages-Seite.
-2. Ein Authentifizierungs-Proxy vor der Website, z. B. Cloudflare Access.
-3. Ein reiner JavaScript-Passwortschutz nur als kosmetische Hürde; für vertrauliche Lehrkraftmaterialien nicht empfohlen.
+Für echten Zugriffsschutz sind weiterhin ein privates GitHub-Pages-Setup mit geeigneter GitHub-Enterprise-Konfiguration oder ein Authentifizierungs-Proxy wie Cloudflare Access die bessere Lösung.
 
-Solange kein echter Zugriffsschutz eingerichtet ist, sollte die Lehrkraftseite nicht als vertrauliche Ressource betrachtet werden.
+Das aktuelle Passwort wird absichtlich **nicht** dokumentiert und muss separat an die berechtigte Lehrkraft übermittelt werden.
 
 ## Nutzung
 
