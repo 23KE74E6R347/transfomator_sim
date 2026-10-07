@@ -154,7 +154,7 @@
       .modelLabel,
       .modelBadge,
       .modelDetail {
-        fill: #18202a;
+        fill: #3f454c;
       }
       .modelBadge {
         font-size: 16px;
@@ -162,13 +162,6 @@
       }
       .modelDetail {
         font-size: 17px;
-      }
-      @media (prefers-color-scheme: dark) {
-        .modelLabel,
-        .modelBadge,
-        .modelDetail {
-          fill: #ffffff;
-        }
       }
       .metrics {
         display: grid;
@@ -995,20 +988,6 @@
         }
       }
       // Transformer
-      function updateSvgTextTheme() {
-        const dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        document.querySelectorAll(".modelLabel, .modelBadge, .modelDetail").forEach((node) => {
-          node.style.fill = dark ? "#ffffff" : "#3f454c";
-        });
-      }
-
-      const colorSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-      if (colorSchemeQuery.addEventListener) {
-        colorSchemeQuery.addEventListener("change", updateSvgTextTheme);
-      } else if (colorSchemeQuery.addListener) {
-        colorSchemeQuery.addListener(updateSvgTextTheme);
-      }
-
       function draw(v) {
         coil($("primaryCoil"), 265, 105, "#b44949");
         coil($("secondaryCoil"), 735, 105, "#315f8a");
@@ -1178,7 +1157,6 @@
         }
         $("flux1").setAttribute("opacity", source === "ac" ? "0.8" : "0");
         $("flux2").setAttribute("opacity", source === "ac" ? "0.45" : "0");
-        updateSvgTextTheme();
       }
       // Measurements Table
       function renderRows() {
