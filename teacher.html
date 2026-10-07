@@ -192,32 +192,73 @@
           // document.write() das Dokument ersetzen, bevor der Editor sauber aufgebaut ist.
           const parsed = new DOMParser().parseFromString(html, "text/html");
 
-          document.body.innerHTML = parsed.body.innerHTML;
-          document.title = parsed.title || document.title;
+function editorLoad(){
+  try{
+    const saved=JSON.parse(localStorage.getItem("transformatorTasks")||"null");
+    return saved ? {...DEFAULT_TASKS_EDITOR,...saved} : DEFAULT_TASKS_EDITOR;
+  }catch{return DEFAULT_TASKS_EDITOR}
+}
+function editorEsc(text){
+  return String(text??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function buildEditor(){
+  const tasks=editorLoad();
+  const fields={
+    A:[["title","Überschrift"],["prediction","Vorhersage"],["investigation","Untersuchung"],["explain","Erkläre"]],
+    B:[["title","Überschrift"],["prediction","Vorhersage"],["investigation","Untersuchung"],["explain","Erkläre"]],
+    C:[["title","Überschrift"],["investigation","Untersuchung"],["observe","Beobachte"],["explain","Erkläre"]],
+    D:[["title","Überschrift"],["prediction","Vorhersage"],["investigation","Untersuchung"],["explain","Erkläre"]],
+    E:[["title","Überschrift"],["investigation","Untersuchung"],["explain","Erkläre"]],
+    F:[["title","Überschrift"],["body","Aufgabe"]]
+  };
+  let out="";
+  for(const key of ["A","B","C","D","E","F"]){
+    out+="<div class=\"taskEditor\"><h3>"+key+"</h3>";
+    fields[key].forEach(([field,label])=>{
+      const value=editorEsc(tasks[key][field]||"");
+      out+="<label>"+label+(field==="title"?"<input":"<textarea")+" data-task=\""+key+"\" data-field=\""+field+"\""+(field==="title"?" value=\""+value+"\">":">"+value+"</textarea>")+"</label>";
+    });
+    out+="</div>";
+  }
+  document.getElementById("taskEditor").innerHTML=out;
+}
+function editorSave(){
+  const tasks=editorLoad();
+  document.querySelectorAll("#taskEditor [data-task]").forEach(el=>tasks[el.dataset.task][el.dataset.field]=el.value);
+  localStorage.setItem("transformatorTasks",JSON.stringify(tasks));
+  document.getElementById("editorStatus").textContent="Gespeichert. Öffne die Simulation neu, um die Aufgaben zu sehen.";
+}
+function editorReset(){
+  localStorage.removeItem("transformatorTasks");
+  buildEditor();
+  document.getElementById("editorStatus").textContent="Die Standardtexte sind wiederhergestellt.";
+}
+buildEditor();
+document.getElementById("saveTasks").onclick=editorSave;
+document.getElementById("resetTasks").onclick=editorReset;
+<\/script>`;
+          // Die entschlüsselte Seite ist ein vollständiges HTML-Dokument.
+          // Deshalb ersetzen wir das aktuelle Dokument komplett, statt nur den Body
+          // zu übernehmen. So bleiben auch das ursprüngliche <head>, CSS und Layout
+          // des Erwartungsbilds erhalten.
+          const parsed = new DOMParser().parseFromString(html, "text/html");
+          document.documentElement.replaceWith(parsed.documentElement);
 
           const editorStyle = document.createElement("style");
           editorStyle.textContent = `
-            .taskEditorCard {
-              margin-top: 16px;
-            }
-
+            .taskEditorCard { margin-top: 16px; }
             .taskEditor {
               margin-top: 14px;
               padding-top: 14px;
               border-top: 1px solid #d7dce2;
             }
-
-            .taskEditor h3 {
-              margin: 0 0 10px;
-            }
-
+            .taskEditor h3 { margin: 0 0 10px; }
             .taskEditor label {
               display: block;
               margin: 10px 0;
               color: #18202a;
               font-weight: 600;
             }
-
             .taskEditor input,
             .taskEditor textarea {
               width: 100%;
@@ -230,31 +271,25 @@
               color: #18202a;
               font: inherit;
             }
-
             .taskEditor textarea {
               min-height: 80px;
               resize: vertical;
               line-height: 1.4;
             }
-
             .editorActions {
               display: flex;
               gap: 8px;
               flex-wrap: wrap;
               margin-top: 14px;
             }
-
             .editorStatus {
               min-height: 1.4em;
               margin-top: 9px;
               color: #36735a;
               font-size: 0.9rem;
             }
-
             @media (max-width: 500px) {
-              .editorActions button {
-                width: 100%;
-              }
+              .editorActions button { width: 100%; }
             }
           `;
           document.head.appendChild(editorStyle);
@@ -284,59 +319,55 @@
             A: {
               title: "A – Spannungstransformation",
               prediction: "Was passiert mit U₂, wenn du N₂ vergrößerst?",
-              investigation:
-                "Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂ und nimm mehrere Messwerte auf.",
+              investigation: "Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂ und nimm mehrere Messwerte auf.",
               explain: "Welche Beziehung zwischen U₂ und N₂ erkennst du?",
             },
             B: {
               title: "B – Stromtransformation",
-              prediction:
-                "Wie verändert sich der Strom, wenn du das Windungsverhältnis änderst?",
-              investigation:
-                "Schalte auf „belastet“ und vergleiche mindestens zwei Windungsverhältnisse.",
+              prediction: "Wie verändert sich der Strom, wenn du das Windungsverhältnis änderst?",
+              investigation: "Schalte auf „belastet“ und vergleiche mindestens zwei Windungsverhältnisse.",
               explain: "Nutze die Leistungsübertragung im Idealmodell.",
             },
             C: {
               title: "C – Leerlauf und Belastung",
-              investigation:
-                "Vergleiche denselben Transformator zuerst „unbelastet“, dann „belastet“.",
-              observe:
-                "Welche Größen ändern sich? Welche bleiben im Idealmodell gleich?",
+              investigation: "Vergleiche denselben Transformator zuerst „unbelastet“, dann „belastet“.",
+              observe: "Welche Größen ändern sich? Welche bleiben im Idealmodell gleich?",
               explain: "Was bedeutet „belastet“ physikalisch?",
             },
             D: {
               title: "D – Last",
               prediction: "Was passiert mit I₂, wenn R₍Last₎ kleiner wird?",
-              investigation:
-                "Halte U₁, N₁ und N₂ fest und verringere R₍Last₎.",
+              investigation: "Halte U₁, N₁ und N₂ fest und verringere R₍Last₎.",
               explain: "Warum sinkt im Realmodell gleichzeitig U₂?",
             },
             E: {
               title: "E – Wechselspannung und Gleichspannung",
-              investigation:
-                "Vergleiche „Wechselspannung“ und „Gleichspannung“ bei gleicher Einstellung.",
-              explain:
-                "Warum benötigt der Transformator eine zeitliche Änderung des magnetischen Flusses?",
+              investigation: "Vergleiche „Wechselspannung“ und „Gleichspannung“ bei gleicher Einstellung.",
+              explain: "Warum benötigt der Transformator eine zeitliche Änderung des magnetischen Flusses?",
             },
             F: {
               title: "F – Modellkritik",
-              body:
-                "Benenne mindestens zwei Annahmen des Idealmodells und zwei Dinge, die das vereinfachte Realmodell ebenfalls nicht abbildet.",
+              body: "Benenne mindestens zwei Annahmen des Idealmodells und zwei Dinge, die das vereinfachte Realmodell ebenfalls nicht abbildet.",
             },
+          };
+
+          const editorFields = {
+            A: [["title", "Überschrift"], ["prediction", "Vorhersage"], ["investigation", "Untersuchung"], ["explain", "Erkläre"]],
+            B: [["title", "Überschrift"], ["prediction", "Vorhersage"], ["investigation", "Untersuchung"], ["explain", "Erkläre"]],
+            C: [["title", "Überschrift"], ["investigation", "Untersuchung"], ["observe", "Beobachte"], ["explain", "Erkläre"]],
+            D: [["title", "Überschrift"], ["prediction", "Vorhersage"], ["investigation", "Untersuchung"], ["explain", "Erkläre"]],
+            E: [["title", "Überschrift"], ["investigation", "Untersuchung"], ["explain", "Erkläre"]],
+            F: [["title", "Überschrift"], ["body", "Aufgabe"]],
           };
 
           function loadEditorTasks() {
             try {
-              const saved = JSON.parse(
-                localStorage.getItem("transformatorTasks") || "null",
-              );
+              const saved = JSON.parse(localStorage.getItem("transformatorTasks") || "null");
               const tasks = structuredClone(DEFAULT_TASKS_EDITOR);
 
               if (saved) {
                 for (const key of Object.keys(tasks)) {
-                  if (saved[key]) {
-                    tasks[key] = { ...tasks[key], ...saved[key] };
-                  }
+                  if (saved[key]) tasks[key] = { ...tasks[key], ...saved[key] };
                 }
               }
 
@@ -345,42 +376,6 @@
               return structuredClone(DEFAULT_TASKS_EDITOR);
             }
           }
-
-          const fields = {
-            A: [
-              ["title", "Überschrift"],
-              ["prediction", "Vorhersage"],
-              ["investigation", "Untersuchung"],
-              ["explain", "Erkläre"],
-            ],
-            B: [
-              ["title", "Überschrift"],
-              ["prediction", "Vorhersage"],
-              ["investigation", "Untersuchung"],
-              ["explain", "Erkläre"],
-            ],
-            C: [
-              ["title", "Überschrift"],
-              ["investigation", "Untersuchung"],
-              ["observe", "Beobachte"],
-              ["explain", "Erkläre"],
-            ],
-            D: [
-              ["title", "Überschrift"],
-              ["prediction", "Vorhersage"],
-              ["investigation", "Untersuchung"],
-              ["explain", "Erkläre"],
-            ],
-            E: [
-              ["title", "Überschrift"],
-              ["investigation", "Untersuchung"],
-              ["explain", "Erkläre"],
-            ],
-            F: [
-              ["title", "Überschrift"],
-              ["body", "Aufgabe"],
-            ],
-          };
 
           function buildEditor() {
             const tasks = loadEditorTasks();
@@ -395,7 +390,7 @@
               heading.textContent = key;
               block.appendChild(heading);
 
-              for (const [field, labelText] of fields[key]) {
+              for (const [field, labelText] of editorFields[key]) {
                 const label = document.createElement("label");
                 label.textContent = labelText;
 
@@ -419,11 +414,9 @@
           document.getElementById("saveTasks").onclick = () => {
             const tasks = loadEditorTasks();
 
-            document
-              .querySelectorAll("#taskEditor [data-task]")
-              .forEach((control) => {
-                tasks[control.dataset.task][control.dataset.field] = control.value;
-              });
+            document.querySelectorAll("#taskEditor [data-task]").forEach((control) => {
+              tasks[control.dataset.task][control.dataset.field] = control.value;
+            });
 
             localStorage.setItem("transformatorTasks", JSON.stringify(tasks));
             document.getElementById("editorStatus").textContent =
