@@ -1,6 +1,6 @@
 # Transformator Simulator
 
-HTML/CSS/JScript Sim für Lilas 👩🏻‍🏫
+HTML/CSS/JScript Sim für L1L4 👩🏻‍🏫
 
 Das Projekt ist als Unterrichtshilfe gedacht. Ohne Framework, ohne Build-System und ohne externe Libaries. Öffnen, ändern, speichern, done 👍
 
