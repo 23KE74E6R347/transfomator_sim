@@ -411,12 +411,12 @@ footer {
 <!-- 5. Didaktischer Kern: erst vorhersagen, dann ausprobieren. -->
     <section class="card">
       <h2>5. Untersuchungsaufträge</h2>
-<div class="task"><strong>A – Spannungstransformation</strong><br><b>Vorhersage:</b> Was passiert mit U₂, wenn du N₂ vergrößerst?<br><b>Untersuchung:</b> Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂ und nimm mehrere Messwerte auf.<br><b>Erkläre:</b> Welche Beziehung zwischen U₂ und N₂ erkennst du?</div>
-<div class="task"><strong>B – Stromtransformation</strong><br><b>Vorhersage:</b> Wie verändert sich der Strom, wenn du das Windungsverhältnis änderst?<br><b>Untersuchung:</b> Schalte auf „belastet“ und vergleiche mindestens zwei Windungsverhältnisse.<br><b>Erkläre:</b> Nutze die Leistungsübertragung im Idealmodell.</div>
-<div class="task"><strong>C – Leerlauf und Belastung</strong><br><b>Untersuchung:</b> Vergleiche denselben Transformator zuerst „unbelastet“, dann „belastet“.<br><b>Beobachte:</b> Welche Größen ändern sich? Welche bleiben im Idealmodell gleich?<br><b>Erkläre:</b> Was bedeutet „belastet“ physikalisch?</div>
-<div class="task"><strong>D – Last</strong><br><b>Vorhersage:</b> Was passiert mit I₂, wenn R<sub>Last</sub> kleiner wird?<br><b>Untersuchung:</b> Halte U₁, N₁ und N₂ fest und verringere R<sub>Last</sub>.<br><b>Erkläre:</b> Warum sinkt im Realmodell gleichzeitig U₂?</div>
-<div class="task"><strong>E – Wechselspannung und Gleichspannung</strong><br><b>Untersuchung:</b> Vergleiche „Wechselspannung“ und „Gleichspannung“ bei gleicher Einstellung.<br><b>Erkläre:</b> Warum benötigt der Transformator eine zeitliche Änderung des magnetischen Flusses?</div>
-<div class="task"><strong>F – Modellkritik</strong> Benenne mindestens zwei Annahmen des Idealmodells und zwei Dinge, die das vereinfachte Realmodell ebenfalls nicht abbildet.</div>
+<div id="taskA" class="task"></div>
+<div id="taskB" class="task"></div>
+<div id="taskC" class="task"></div>
+<div id="taskD" class="task"></div>
+<div id="taskE" class="task"></div>
+<div id="taskF" class="task"></div>
 </section>
 
 <footer><span class="badge">Modell: AC/DC · Ideal/vereinfachtes Realmodell · Leerlauf/Last</span></footer>
@@ -425,6 +425,76 @@ footer {
 <script>
 // Kleine Abkürzung, damit der Shit unten lesbarer bleibt
 const $ = id => document.getElementById(id);
+// Arbeitsaufgaben: Standardtext oder Lilas eigene Fassung aus localStorage.
+const DEFAULT_TASKS = {
+  A: {
+    title: "A – Spannungstransformation",
+    prediction: "Was passiert mit U₂, wenn du N₂ vergrößerst?",
+    investigation: "Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂ und nimm mehrere Messwerte auf.",
+    explain: "Welche Beziehung zwischen U₂ und N₂ erkennst du?"
+  },
+  B: {
+    title: "B – Stromtransformation",
+    prediction: "Wie verändert sich der Strom, wenn du das Windungsverhältnis änderst?",
+    investigation: "Schalte auf „belastet“ und vergleiche mindestens zwei Windungsverhältnisse.",
+    explain: "Nutze die Leistungsübertragung im Idealmodell."
+  },
+  C: {
+    title: "C – Leerlauf und Belastung",
+    investigation: "Vergleiche denselben Transformator zuerst „unbelastet“, dann „belastet“.",
+    observe: "Welche Größen ändern sich? Welche bleiben im Idealmodell gleich?",
+    explain: "Was bedeutet „belastet“ physikalisch?"
+  },
+  D: {
+    title: "D – Last",
+    prediction: "Was passiert mit I₂, wenn R₍Last₎ kleiner wird?",
+    investigation: "Halte U₁, N₁ und N₂ fest und verringere R₍Last₎.",
+    explain: "Warum sinkt im Realmodell gleichzeitig U₂?"
+  },
+  E: {
+    title: "E – Wechselspannung und Gleichspannung",
+    investigation: "Vergleiche „Wechselspannung“ und „Gleichspannung“ bei gleicher Einstellung.",
+    explain: "Warum benötigt der Transformator eine zeitliche Änderung des magnetischen Flusses?"
+  },
+  F: {
+    title: "F – Modellkritik",
+    body: "Benenne mindestens zwei Annahmen des Idealmodells und zwei Dinge, die das vereinfachte Realmodell ebenfalls nicht abbildet."
+  }
+};
+
+function loadTasks() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("transformatorTasks") || "null");
+    return saved ? {...DEFAULT_TASKS, ...saved} : DEFAULT_TASKS;
+  } catch {
+    return DEFAULT_TASKS;
+  }
+}
+
+function escapeHtml(text) {
+  return String(text ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+
+function renderTask(id, task) {
+  const target = $(id);
+  if (!target) return;
+  let html = "<strong>" + escapeHtml(task.title) + "</strong>";
+  if (task.prediction) html += "<br><b>Vorhersage:</b> " + escapeHtml(task.prediction);
+  if (task.investigation) html += "<br><b>Untersuchung:</b> " + escapeHtml(task.investigation);
+  if (task.observe) html += "<br><b>Beobachte:</b> " + escapeHtml(task.observe);
+  if (task.explain) html += "<br><b>Erkläre:</b> " + escapeHtml(task.explain);
+  if (task.body) html += " " + escapeHtml(task.body);
+  target.innerHTML = html;
+}
+
+function renderTasks() {
+  const tasks = loadTasks();
+  Object.entries(tasks).forEach(([key, task]) => renderTask("task" + key, task));
+}
+
+
 let loaded=false, model="real", source="ac", phase=0, rows=[];
 const svgNS="http://www.w3.org/2000/svg";
 ["u1","n1","n2","r"].forEach(id=>$(id).addEventListener("input",update));
@@ -639,6 +709,7 @@ function animate(t)
   requestAnimationFrame(animate);
 }
 renderRows();
+renderTasks();
 update();
 requestAnimationFrame(animate);
     </script>
