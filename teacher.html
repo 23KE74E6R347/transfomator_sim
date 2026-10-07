@@ -262,6 +262,14 @@ document.getElementById("resetTasks").onclick=editorReset;
           // document.write() kann nach dem initialen Laden das Dokument ersetzen.
           // Deshalb übernehmen wir die entschlüsselte Seite direkt in den vorhandenen Body.
           const parsed = new DOMParser().parseFromString(html, "text/html");
+
+          // Die entschlüsselte Seite bringt ihr eigenes CSS im <head> mit.
+          // Beim Einsetzen nur des <body> würden diese Styles verloren gehen.
+          // Deshalb übernehmen wir Stylesheets und <style>-Blöcke separat.
+          parsed.head.querySelectorAll('style, link[rel="stylesheet"]').forEach((node) => {
+            document.head.appendChild(node.cloneNode(true));
+          });
+
           document.body.innerHTML = parsed.body.innerHTML;
 
           const editorStyle = document.createElement("style");
