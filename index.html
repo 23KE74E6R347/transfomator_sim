@@ -29,11 +29,18 @@
           -apple-system,
           Segoe UI,
           sans-serif;
+        overflow-x: hidden;
       }
       main {
+        width: 100%;
         max-width: 1200px;
         margin: auto;
         padding: 24px;
+        min-width: 0;
+      }
+      .card {
+        max-width: 100%;
+        min-width: 0;
       }
       .sub {
         color: var(--muted);
@@ -268,9 +275,14 @@
         main {
           padding: 14px;
         }
+        .controlGrid,
         .metrics,
         .causal {
           grid-template-columns: 1fr;
+        }
+        .controlBlock {
+          width: 100%;
+          min-width: 0;
         }
         .arrow {
           display: none;
@@ -281,7 +293,11 @@
           padding: 10px;
         }
         .card {
+          width: 100%;
           padding: 14px;
+        }
+        .controlBlock {
+          padding: 10px;
         }
         label {
           grid-template-columns: 1fr 68px;
