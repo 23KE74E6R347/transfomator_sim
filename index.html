@@ -1,717 +1,1179 @@
+<!-- Landing Page -->
+<!-- https://23ke74e6r347.github.io/transfomator_sim/index.html -->
 <!doctype html>
 <html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Transformator – virtuelle Untersuchung</title>
-<style>
-:root {
-  --bg:#f4f6f8;
-  --card:#fff;
-  --ink:#18202a;
-  --muted:#64707d;
-  --line:#d7dce2;
-  --blue:#315f8a;
-  --red:#b44949;
-  --green:#36735a
-}
-* {
-  box-sizing:border-box
-}
-body {
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:system-ui,-apple-system,Segoe UI,sans-serif
-}
-main {
-  max-width:1200px;
-  margin:auto;
-  padding:24px
-}
-.sub {
-  color:var(--muted);
-  margin:.25rem 0 1rem
-}
-.card {
-  background:var(--card);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:18px;
-  margin-top:16px
-}
-h1 {
-  margin:0
-}
-h2 {
-  margin-top:0
-}
-h3 {
-  margin-bottom:.4rem
-}
-.controls {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:18px
-}
-label {
-  display:grid;
-  grid-template-columns:185px 1fr 82px;
-  gap:10px;
-  align-items:center;
-  margin:12px 0
-}
-input[type=range] {
-  width:100%
-}
-.value {
-  font-weight:700;
-  text-align:right
-}
-button {
-  border:0;
-  border-radius:9px;
-  padding:9px 13px;
-  background:#263d53;
-  color:#fff;
-  cursor:pointer
-}
-button.secondary {
-  background:#e8edf1;
-  color:var(--ink)
-}
-button.active {
-  outline:3px solid #b9c9d7
-}
-.switch,.tabs,.actions {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap
-}
-.controlGrid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-bottom:16px
-}
-.controlBlock {
-  padding:10px 12px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:#fafbfc
-}
-.controlTitle {
-  font-weight:700;
-  margin-bottom:7px
-}
-.infoLine {
-  margin-top:8px;
-  padding:9px 10px;
-  border-left:4px solid #b87900;
-  background:#fff7e4;
-  line-height:1.35
-}
-.controlBlock .switch button {
-  min-height:40px
-}
-button.secondary {
-  background:#e8edf1;
-  color:var(--ink);
-  outline:none
-}
-button.active {
-  background:#263d53;
-  color:#fff;
-  outline:3px solid #b9c9d7
-}
-.labelName {
-  display:block;
-  min-width:0
-}
-.derivedHint {
-  margin-top:10px;
-  padding:9px 10px;
-  background:#f0f3f5;
-  border-radius:9px;
-  color:var(--muted);
-  font-size:.9rem
-}
-.modelBadge {
-  font-size:16px;
-  font-weight:700;
-  fill:#18202a
-}
-.modelDetail {
-  font-size:17px;
-  fill:#59636f
-}
-.metrics {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px
-}
-.metric {
-  padding:8px 0;
-  border-bottom:1px solid #edf0f3
-}
-.metric b {
-  float:right
-}
-.formula {
-  font-family:Georgia,serif;
-  background:#f0f3f5;
-  border-radius:9px;
-  padding:12px;
-  text-align:center;
-  font-size:1.12rem;
-  margin-top:14px
-}
-.note {
-  padding:11px 12px;
-  border-left:4px solid #b87900;
-  background:#fff7e4
-}
-.small {
-  font-size:.9rem;
-  color:var(--muted)
-}
-#transformer {
-  width:100%;
-  height:auto;
-  display:block;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:#fff
-}
-.task {
-  padding:10px 12px;
-  border-left:4px solid var(--blue);
-  background:#f4f8fb;
-  margin:8px 0
-}
-.task strong {
-  display:block;
-  margin-bottom:3px
-}
-.tablewrap {
-  overflow:auto
-}
-table {
-  width:100%;
-  border-collapse:collapse;
-  font-size:.9rem
-}
-th,td {
-  padding:7px 8px;
-  border-bottom:1px solid var(--line);
-  text-align:right;
-  white-space:nowrap
-}
-th:first-child,td:first-child {
-  text-align:center
-}
-th {
-  background:#f0f3f5
-}
-.badge {
-  display:inline-block;
-  border-radius:999px;
-  padding:3px 8px;
-  background:#e8edf1;
-  font-size:.82rem
-}
-.causal {
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:8px;
-  align-items:center;
-  margin:12px 0
-}
-.cause {
-  padding:10px;
-  text-align:center;
-  background:#f4f8fb;
-  border:1px solid var(--line);
-  border-radius:9px;
-  font-weight:600
-}
-.arrow {
-  text-align:center;
-  color:var(--muted);
-  font-size:1.3rem
-}
-footer {
-  margin:18px 0;
-  text-align:right
-}
-.link {
-  color:#315f8a;
-  text-decoration:none;
-  font-weight:600
-}
-@media(max-width:900px) {
-  .controls {
-    grid-template-columns:1fr
-  }
-}
-@media(max-width:800px) {
-  main {
-    padding:14px
-  }
-  .metrics,.causal {
-    grid-template-columns:1fr
-  }
-  .arrow {
-    display:none
-  }
-}
-@media(max-width:500px) {
-  main {
-    padding:10px
-  }
-  .card {
-    padding:14px
-  }
-  label {
-    grid-template-columns:1fr 68px;
-    gap:7px;
-    margin:14px 0
-  }
-  label input[type=range] {
-    grid-column:1 / -1;
-    grid-row:2;
-    width:100%
-  }
-  label .value {
-    grid-column:2;
-    grid-row:1
-  }
-  .formula {
-    font-size:1rem;
-    overflow-wrap:anywhere
-  }
-  .cause {
-    padding:9px
-  }
-  .task {
-    padding:9px
-  }
-  .actions button,.actions .link {
-    max-width:100%;
-    overflow-wrap:anywhere
-  }
-  #transformer {
-    margin-top:4px
-  }
-  .small {
-    line-height:1.35
-  }
-}
-  </style>
-</head>
-<body>
-<main>
-<!-- Titel -->
-    <h1>Transformator – virtuelle Untersuchung</h1>
-<div class="sub">Arbeitsweg: <b>Vorhersagen</b> → <b>einstellen</b> → <b>beobachten</b> → <b>Messwert aufnehmen</b> → <b>erklären</b></div>
-<div class="topActions"><button id="reset" class="secondary">Zurücksetzen</button><a class="link" href="teacher.html">Lehrkraft / Erwartungsbild →</a></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Transformator Simulation</title>
+    <style>
+      :root {
+        --bg: #f4f6f8;
+        --card: #fff;
+        --ink: #18202a;
+        --muted: #64707d;
+        --line: #d7dce2;
+        --blue: #315f8a;
+        --red: #b44949;
+        --green: #36735a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          sans-serif;
+      }
+      main {
+        max-width: 1200px;
+        margin: auto;
+        padding: 24px;
+      }
+      .sub {
+        color: var(--muted);
+        margin: 0.25rem 0 1rem;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 18px;
+        margin-top: 16px;
+      }
+      h1 {
+        margin: 0;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      h3 {
+        margin-bottom: 0.4rem;
+      }
+      .controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+      }
+      label {
+        display: grid;
+        grid-template-columns: 185px 1fr 82px;
+        gap: 10px;
+        align-items: center;
+        margin: 12px 0;
+      }
+      input[type="range"] {
+        width: 100%;
+      }
+      .value {
+        font-weight: 700;
+        text-align: right;
+      }
+      button {
+        border: 0;
+        border-radius: 9px;
+        padding: 9px 13px;
+        background: #263d53;
+        color: #fff;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #e8edf1;
+        color: var(--ink);
+      }
+      button.active {
+        outline: 3px solid #b9c9d7;
+      }
+      .switch,
+      .tabs,
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .controlGrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .controlBlock {
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fafbfc;
+      }
+      .controlTitle {
+        font-weight: 700;
+        margin-bottom: 7px;
+      }
+      .infoLine {
+        margin-top: 8px;
+        padding: 9px 10px;
+        border-left: 4px solid #b87900;
+        background: #fff7e4;
+        line-height: 1.35;
+      }
+      .controlBlock .switch button {
+        min-height: 40px;
+      }
+      button.secondary {
+        background: #e8edf1;
+        color: var(--ink);
+        outline: none;
+      }
+      button.active {
+        background: #263d53;
+        color: #fff;
+        outline: 3px solid #b9c9d7;
+      }
+      .labelName {
+        display: block;
+        min-width: 0;
+      }
+      .derivedHint {
+        margin-top: 10px;
+        padding: 9px 10px;
+        background: #f0f3f5;
+        border-radius: 9px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .modelBadge {
+        font-size: 16px;
+        font-weight: 700;
+        fill: #18202a;
+      }
+      .modelDetail {
+        font-size: 17px;
+        fill: #59636f;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .metric {
+        padding: 8px 0;
+        border-bottom: 1px solid #edf0f3;
+      }
+      .metric b {
+        float: right;
+      }
+      .formula {
+        font-family: Georgia, serif;
+        background: #f0f3f5;
+        border-radius: 9px;
+        padding: 12px;
+        text-align: center;
+        font-size: 1.12rem;
+        margin-top: 14px;
+      }
+      .note {
+        padding: 11px 12px;
+        border-left: 4px solid #b87900;
+        background: #fff7e4;
+      }
+      .small {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      #transformer {
+        width: 100%;
+        height: auto;
+        display: block;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+      }
+      .task {
+        padding: 10px 12px;
+        border-left: 4px solid var(--blue);
+        background: #f4f8fb;
+        margin: 8px 0;
+      }
+      .task strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+      .tablewrap {
+        overflow: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      th,
+      td {
+        padding: 7px 8px;
+        border-bottom: 1px solid var(--line);
+        text-align: right;
+        white-space: nowrap;
+      }
+      th:first-child,
+      td:first-child {
+        text-align: center;
+      }
+      th {
+        background: #f0f3f5;
+      }
+      .badge {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 3px 8px;
+        background: #e8edf1;
+        font-size: 0.82rem;
+      }
+      .causal {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        align-items: center;
+        margin: 12px 0;
+      }
+      .cause {
+        padding: 10px;
+        text-align: center;
+        background: #f4f8fb;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        font-weight: 600;
+      }
+      .arrow {
+        text-align: center;
+        color: var(--muted);
+        font-size: 1.3rem;
+      }
+      footer {
+        margin: 18px 0;
+        text-align: right;
+      }
+      .link {
+        color: #315f8a;
+        text-decoration: none;
+        font-weight: 600;
+      }
+      @media (max-width: 900px) {
+        .controls {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 800px) {
+        main {
+          padding: 14px;
+        }
+        .metrics,
+        .causal {
+          grid-template-columns: 1fr;
+        }
+        .arrow {
+          display: none;
+        }
+      }
+      @media (max-width: 500px) {
+        main {
+          padding: 10px;
+        }
+        .card {
+          padding: 14px;
+        }
+        label {
+          grid-template-columns: 1fr 68px;
+          gap: 7px;
+          margin: 14px 0;
+        }
+        label input[type="range"] {
+          grid-column: 1 / -1;
+          grid-row: 2;
+          width: 100%;
+        }
+        label .value {
+          grid-column: 2;
+          grid-row: 1;
+        }
+        .formula {
+          font-size: 1rem;
+          overflow-wrap: anywhere;
+        }
+        .cause {
+          padding: 9px;
+        }
+        .task {
+          padding: 9px;
+        }
+        .actions button,
+        .actions .link {
+          max-width: 100%;
+          overflow-wrap: anywhere;
+        }
+        #transformer {
+          margin-top: 4px;
+        }
+        .small {
+          line-height: 1.35;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- Title -->
+      <h1>Transformator – virtuelle Untersuchung</h1>
+      <div class="sub">
+        Arbeitsweg: <b>Annahme treffen</b> → <b>Modell einstellen</b> →
+        <b>Modell beobachten</b> → <b>Messwerte aufnehmen</b> →
+        <b>Verhalten erklären</b>
+      </div>
+      <div class="topActions">
+        <button id="reset" class="secondary">Zurücksetzen</button
+        ><a class="link" href="teacher.html">Lehrkraft / Erwartungsbild →</a>
+      </div>
 
-<!-- 1. Regler: unabhängige Größen einstellen. -->
-    <section class="card">
-      <h2>1. Einstellen – was möchtest du untersuchen?</h2><p class="small">Ändere möglichst <b>nur eine Größe</b> und beobachte anschließend, welche Messgröße sich verändert.</p>
-<div class="controlGrid">
-<div class="controlBlock">
-<div class="controlTitle">Sekundärkreis:</div>
-<div class="switch"><button id="off" class="active">unbelastet</button><button id="on" class="secondary">belastet</button></div>
-<div id="loadHint" class="infoLine"></div>
-</div>
-<div class="controlBlock">
-<div class="controlTitle">Versorgung:</div>
-<div class="switch"><button id="ac" class="active">Wechselspannung</button><button id="dc" class="secondary">Gleichspannung</button></div>
-<div id="sourceNote" class="infoLine"></div>
-</div>
-<div class="controlBlock">
-<div class="controlTitle">Modell:</div>
-<div class="switch"><button id="ideal" class="secondary">Idealmodell</button><button id="real" class="active">Vereinfachtes Realmodell</button></div>
-<div id="modelText" class="infoLine"></div>
-</div>
-</div>
-<div class="controls">
-<div>
-<h3>Primärseite</h3>
-<label><span class="labelName">U₁ (Effektivwert)</span><input id="u1" type="range" min="1" max="24" step=".5" value="12"><span class="value" id="u1v"></span></label>
-<label><span class="labelName">N₁ (Windungen)</span><input id="n1" type="range" min="50" max="1000" step="50" value="200"><span class="value" id="n1v"></span></label>
-</div>
-<div>
-<h3>Sekundärseite</h3>
-<label><span class="labelName">N₂ (Windungen)</span><input id="n2" type="range" min="50" max="1000" step="50" value="400"><span class="value" id="n2v"></span></label>
-<label><span class="labelName">R<sub>Last</sub></span><input id="r" type="range" min="1" max="100" step="1" value="20"><span class="value" id="rv"></span></label>
-</div>
-</div>
-<div class="derivedHint"><b>Messgrößen:</b> U₂, I₁, I₂, P₁, P₂ und η werden aus den Einstellungen berechnet. Sie sind deshalb nicht direkt als Regler einstellbar.</div>
-</section>
+      <!-- 1. Setup -->
+      <section class="card">
+        <h2>1. Einstellungen</h2>
+        <p class="small">
+          Ändere möglichst <b>nur eine Größe</b> und beobachte anschließend,
+          welche Messgröße sich verändert.
+        </p>
+        <div class="controlGrid">
+          <div class="controlBlock">
+            <div class="controlTitle">Sekundärkreis:</div>
+            <div class="switch">
+              <button id="off" class="active">unbelastet</button
+              ><button id="on" class="secondary">belastet</button>
+            </div>
+            <div id="loadHint" class="infoLine"></div>
+          </div>
+          <div class="controlBlock">
+            <div class="controlTitle">Versorgung:</div>
+            <div class="switch">
+              <button id="ac" class="active">Wechselspannung</button
+              ><button id="dc" class="secondary">Gleichspannung</button>
+            </div>
+            <div id="sourceNote" class="infoLine"></div>
+          </div>
+          <div class="controlBlock">
+            <div class="controlTitle">Modell:</div>
+            <div class="switch">
+              <button id="ideal" class="secondary">Idealmodell</button
+              ><button id="real" class="active">
+                Vereinfachtes Realmodell
+              </button>
+            </div>
+            <div id="modelText" class="infoLine"></div>
+          </div>
+        </div>
+        <div class="controls">
+          <div>
+            <h3>Primärseite</h3>
+            <label
+              ><span class="labelName">U₁ (Effektivwert)</span
+              ><input
+                id="u1"
+                type="range"
+                min="1"
+                max="24"
+                step=".5"
+                value="12" /><span class="value" id="u1v"></span
+            ></label>
+            <label
+              ><span class="labelName">N₁ (Windungen)</span
+              ><input
+                id="n1"
+                type="range"
+                min="50"
+                max="1000"
+                step="50"
+                value="200" /><span class="value" id="n1v"></span
+            ></label>
+          </div>
+          <div>
+            <h3>Sekundärseite</h3>
+            <label
+              ><span class="labelName">N₂ (Windungen)</span
+              ><input
+                id="n2"
+                type="range"
+                min="50"
+                max="1000"
+                step="50"
+                value="400" /><span class="value" id="n2v"></span
+            ></label>
+            <label
+              ><span class="labelName">R<sub>Last</sub></span
+              ><input
+                id="r"
+                type="range"
+                min="1"
+                max="100"
+                step="1"
+                value="20" /><span class="value" id="rv"></span
+            ></label>
+          </div>
+        </div>
+        <div class="derivedHint">
+          <b>Messgrößen:</b> U₂, I₁, I₂, P₁, P₂ und η werden aus den
+          Einstellungen berechnet. Sie sind deshalb nicht direkt als Regler
+          einstellbar.
+        </div>
+      </section>
 
-<!-- 2. Visualisierung der Ursache-Wirkungs-Kette. -->
-    <section class="card">
-      <h2>2. Was passiert im Transformator?</h2>
-<div class="causal">
-<div class="cause">U₁ als Wechselspannung</div><div class="arrow">→</div>
-<div class="cause">veränderlicher magnetischer Fluss Φ</div><div class="arrow">→</div>
-<div class="cause">Induktion in der Sekundärspule</div>
-</div>
-<svg id="transformer" viewBox="0 0 1100 470" role="img" aria-label="Schematische Darstellung eines Transformators">
-<defs>
-<marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#315f8a"/></marker>
-</defs>
-<rect x="375" y="80" width="350" height="310" rx="8" fill="#cfd4da" stroke="#59636f" stroke-width="3"/>
-<rect x="405" y="110" width="290" height="250" fill="white" stroke="#59636f" stroke-width="3"/>
-<text x="550" y="58" text-anchor="middle" font-size="27" font-weight="700">Eisenkern</text>
-<g id="primaryCoil"></g><g id="secondaryCoil"></g>
-<text x="165" y="65" text-anchor="middle" font-size="28" font-weight="700">Primärseite</text>
-<text x="935" y="65" text-anchor="middle" font-size="28" font-weight="700">Sekundärseite</text>
-<text id="u1svg" x="65" y="120" font-size="22"></text><text id="i1svg" x="65" y="390" font-size="22"></text>
-<text id="u2svg" x="1035" y="120" text-anchor="end" font-size="22"></text><text id="i2svg" x="1035" y="390" text-anchor="end" font-size="22"></text>
-<text id="n1svg" x="65" y="435" font-size="20"></text><text id="n2svg" x="1035" y="435" text-anchor="end" font-size="20"></text>
-<text id="modelBadge" x="550" y="415" text-anchor="middle" class="modelBadge"></text>
-<text id="modelDetail" x="550" y="442" text-anchor="middle" class="modelDetail"></text>
-<g id="loadGraphic"></g>
-<g id="fluxGroup">
-<text x="550" y="150" text-anchor="middle" font-size="20" font-weight="700" fill="#315f8a">magnetischer Fluss Φ(t)</text>
-<text x="550" y="177" text-anchor="middle" font-size="14" fill="#59636f">Richtung und Stärke</text>
-<text x="550" y="197" text-anchor="middle" font-size="14" fill="#59636f">ändern sich bei Wechselspannung</text>
-<line id="flux1" x1="445" y1="245" x2="655" y2="245" stroke="#315f8a" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowBlue)" opacity=".8"/>
-<line id="flux2" x1="655" y1="285" x2="445" y2="285" stroke="#315f8a" stroke-width="6" stroke-linecap="round" marker-end="url(#arrowBlue)" opacity=".45"/>
-</g>
-</svg>
-<div class="small" style="margin-top:8px">Die beiden Pfeile zeigen denselben magnetischen Fluss zu zwei Zeitpunkten. Sie symbolisieren den Fluss, keine „Magnetfeldteilchen“.</div>
-</section>
+      <!-- 2. Visualization Cause and Effect Model -->
+      <section class="card">
+        <h2>2. Was passiert im Transformator?</h2>
+        <div class="causal">
+          <div class="cause">U₁ als Wechselspannung</div>
+          <div class="arrow">→</div>
+          <div class="cause">veränderlicher magnetischer Fluss Φ</div>
+          <div class="arrow">→</div>
+          <div class="cause">Induktion in der Sekundärspule</div>
+        </div>
+        <svg
+          id="transformer"
+          viewBox="0 0 1100 470"
+          role="img"
+          aria-label="Schematische Darstellung eines Transformators"
+        >
+          <defs>
+            <marker
+              id="arrowBlue"
+              viewBox="0 0 10 10"
+              refX="8"
+              refY="5"
+              markerWidth="7"
+              markerHeight="7"
+              orient="auto-start-reverse"
+            >
+              <path d="M0 0 L10 5 L0 10 z" fill="#315f8a" />
+            </marker>
+          </defs>
+          <rect
+            x="375"
+            y="80"
+            width="350"
+            height="310"
+            rx="8"
+            fill="#cfd4da"
+            stroke="#59636f"
+            stroke-width="3"
+          />
+          <rect
+            x="405"
+            y="110"
+            width="290"
+            height="250"
+            fill="white"
+            stroke="#59636f"
+            stroke-width="3"
+          />
+          <text
+            x="550"
+            y="58"
+            text-anchor="middle"
+            font-size="27"
+            font-weight="700"
+          >
+            Eisenkern
+          </text>
+          <g id="primaryCoil"></g>
+          <g id="secondaryCoil"></g>
+          <text
+            x="165"
+            y="65"
+            text-anchor="middle"
+            font-size="28"
+            font-weight="700"
+          >
+            Primärseite
+          </text>
+          <text
+            x="935"
+            y="65"
+            text-anchor="middle"
+            font-size="28"
+            font-weight="700"
+          >
+            Sekundärseite
+          </text>
+          <text id="u1svg" x="65" y="120" font-size="22"></text>
+          <text id="i1svg" x="65" y="390" font-size="22"></text>
+          <text
+            id="u2svg"
+            x="1035"
+            y="120"
+            text-anchor="end"
+            font-size="22"
+          ></text>
+          <text
+            id="i2svg"
+            x="1035"
+            y="390"
+            text-anchor="end"
+            font-size="22"
+          ></text>
+          <text id="n1svg" x="65" y="435" font-size="20"></text>
+          <text
+            id="n2svg"
+            x="1035"
+            y="435"
+            text-anchor="end"
+            font-size="20"
+          ></text>
+          <text
+            id="modelBadge"
+            x="550"
+            y="415"
+            text-anchor="middle"
+            class="modelBadge"
+          ></text>
+          <text
+            id="modelDetail"
+            x="550"
+            y="442"
+            text-anchor="middle"
+            class="modelDetail"
+          ></text>
+          <g id="loadGraphic"></g>
+          <g id="fluxGroup">
+            <text
+              x="550"
+              y="150"
+              text-anchor="middle"
+              font-size="20"
+              font-weight="700"
+              fill="#315f8a"
+            >
+              magnetischer Fluss Φ(t)
+            </text>
+            <text
+              x="550"
+              y="177"
+              text-anchor="middle"
+              font-size="14"
+              fill="#59636f"
+            >
+              Richtung und Stärke
+            </text>
+            <text
+              x="550"
+              y="197"
+              text-anchor="middle"
+              font-size="14"
+              fill="#59636f"
+            >
+              ändern sich bei Wechselspannung
+            </text>
+            <line
+              id="flux1"
+              x1="445"
+              y1="245"
+              x2="655"
+              y2="245"
+              stroke="#315f8a"
+              stroke-width="6"
+              stroke-linecap="round"
+              marker-end="url(#arrowBlue)"
+              opacity=".8"
+            />
+            <line
+              id="flux2"
+              x1="655"
+              y1="285"
+              x2="445"
+              y2="285"
+              stroke="#315f8a"
+              stroke-width="6"
+              stroke-linecap="round"
+              marker-end="url(#arrowBlue)"
+              opacity=".45"
+            />
+          </g>
+        </svg>
+        <div class="small" style="margin-top: 8px">
+          Die beiden Pfeile zeigen denselben magnetischen Fluss zu zwei
+          Zeitpunkten. Sie symbolisieren den Fluss, keine „Magnetfeldteilchen“.
+        </div>
+      </section>
 
-<!-- 3. Alles hier wird aus dem Modell berechnet. -->
-    <section class="card">
-      <h2>3. Messwerte</h2><p class="small">Diese Größen sind <b>abhängige Messgrößen</b>. Sie ändern sich, wenn du U₁, N₁, N₂, R, die Versorgung, die Belastung oder das Modell änderst.</p>
-<div class="metrics">
-<div><div class="metric">U₁ <b id="U1"></b></div><div class="metric">I₁ <b id="I1"></b></div><div class="metric">P₁ <b id="P1"></b></div></div>
-<div><div class="metric">U₂ <b id="U2"></b></div><div class="metric">I₂ <b id="I2"></b></div><div class="metric">P₂ <b id="P2"></b></div></div>
-</div>
-<div class="metric">Wirkungsgrad η <b id="eta"></b></div>
-<div id="formula" class="formula">Bei Wechselspannung: U₂ / U₁ = N₂ / N₁ &nbsp;&nbsp; · &nbsp;&nbsp; ideal: P₁ = P₂ &nbsp;&nbsp; · &nbsp;&nbsp; daraus: I₂ / I₁ = N₁ / N₂</div>
-<div id="note" class="note" style="margin-top:14px"></div>
-</section>
+      <!-- 3. Visualization Measurements from Model -->
+      <section class="card">
+        <h2>3. Messwerte</h2>
+        <p class="small">
+          Diese Größen sind <b>abhängige Messgrößen</b>. Sie ändern sich, wenn
+          du U₁, N₁, N₂, R, die Versorgung, die Belastung oder das Modell
+          änderst.
+        </p>
+        <div class="metrics">
+          <div>
+            <div class="metric">U₁ <b id="U1"></b></div>
+            <div class="metric">I₁ <b id="I1"></b></div>
+            <div class="metric">P₁ <b id="P1"></b></div>
+          </div>
+          <div>
+            <div class="metric">U₂ <b id="U2"></b></div>
+            <div class="metric">I₂ <b id="I2"></b></div>
+            <div class="metric">P₂ <b id="P2"></b></div>
+          </div>
+        </div>
+        <div class="metric">Wirkungsgrad η <b id="eta"></b></div>
+        <div id="formula" class="formula">
+          Bei Wechselspannung: U₂ / U₁ = N₂ / N₁ &nbsp;&nbsp; · &nbsp;&nbsp;
+          ideal: P₁ = P₂ &nbsp;&nbsp; · &nbsp;&nbsp; daraus: I₂ / I₁ = N₁ / N₂
+        </div>
+        <div id="note" class="note" style="margin-top: 14px"></div>
+      </section>
 
-<!-- 4. Virtuelle Messpunkte sammeln. -->
-    <section class="card">
-      <h2>4. Messreihe</h2>
-<p class="small">Nimm gezielt Messwerte auf. Ändere möglichst immer nur <b>eine</b> unabhängige Größe.</p>
-<div class="actions"><button id="measure">Messwert aufnehmen</button><button id="clear" class="secondary">Tabelle löschen</button></div>
-<div class="tablewrap" style="margin-top:12px">
-<table><thead><tr><th>#</th><th>Versorgung</th><th>Modell</th><th>Sekundärkreis</th><th>U₁ / V</th><th>N₁</th><th>N₂</th><th>R<sub>Last</sub> / Ω</th><th>U₂ / V</th><th>I₁ / A</th><th>I₂ / A</th><th>P₁ / W</th><th>P₂ / W</th><th>η / %</th></tr></thead><tbody id="rows"></tbody></table>
-</div>
-</section>
+      <!-- 4. Measurement Table -->
+      <section class="card">
+        <h2>4. Messreihe</h2>
+        <p class="small">
+          Nimm gezielt Messwerte auf. Ändere möglichst immer nur
+          <b>eine</b> unabhängige Größe.
+        </p>
+        <div class="actions">
+          <button id="measure">Messwert aufnehmen</button
+          ><button id="clear" class="secondary">Tabelle löschen</button>
+        </div>
+        <div class="tablewrap" style="margin-top: 12px">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Versorgung</th>
+                <th>Modell</th>
+                <th>Sekundärkreis</th>
+                <th>U₁ / V</th>
+                <th>N₁</th>
+                <th>N₂</th>
+                <th>R<sub>Last</sub> / Ω</th>
+                <th>U₂ / V</th>
+                <th>I₁ / A</th>
+                <th>I₂ / A</th>
+                <th>P₁ / W</th>
+                <th>P₂ / W</th>
+                <th>η / %</th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
 
-<!-- 5. Didaktischer Kern: erst vorhersagen, dann ausprobieren. -->
-    <section class="card">
-      <h2>5. Untersuchungsaufträge</h2>
-<div id="taskA" class="task"></div>
-<div id="taskB" class="task"></div>
-<div id="taskC" class="task"></div>
-<div id="taskD" class="task"></div>
-<div id="taskE" class="task"></div>
-<div id="taskF" class="task"></div>
-</section>
+      <!-- 5. Tasks -->
+      <section class="card">
+        <h2>5. Untersuchungsaufträge</h2>
+        <div id="taskA" class="task"></div>
+        <div id="taskB" class="task"></div>
+        <div id="taskC" class="task"></div>
+        <div id="taskD" class="task"></div>
+        <div id="taskE" class="task"></div>
+        <div id="taskF" class="task"></div>
+      </section>
 
-<footer><span class="badge">Modell: AC/DC · Ideal/vereinfachtes Realmodell · Leerlauf/Last</span></footer>
-</main>
+      <footer><span class="badge">BY 23KE 4 L1L4</span></footer>
+    </main>
 
-<script>
-// Kleine Abkürzung, damit der Shit unten lesbarer bleibt
-const $ = id => document.getElementById(id);
-// Arbeitsaufgaben: Standardtext oder Lilas eigene Fassung aus localStorage.
-const DEFAULT_TASKS = {
-  A: {
-    title: "A – Spannungstransformation",
-    prediction: "Was passiert mit U₂, wenn du N₂ vergrößerst?",
-    investigation: "Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂ und nimm mehrere Messwerte auf.",
-    explain: "Welche Beziehung zwischen U₂ und N₂ erkennst du?"
-  },
-  B: {
-    title: "B – Stromtransformation",
-    prediction: "Wie verändert sich der Strom, wenn du das Windungsverhältnis änderst?",
-    investigation: "Schalte auf „belastet“ und vergleiche mindestens zwei Windungsverhältnisse.",
-    explain: "Nutze die Leistungsübertragung im Idealmodell."
-  },
-  C: {
-    title: "C – Leerlauf und Belastung",
-    investigation: "Vergleiche denselben Transformator zuerst „unbelastet“, dann „belastet“.",
-    observe: "Welche Größen ändern sich? Welche bleiben im Idealmodell gleich?",
-    explain: "Was bedeutet „belastet“ physikalisch?"
-  },
-  D: {
-    title: "D – Last",
-    prediction: "Was passiert mit I₂, wenn R₍Last₎ kleiner wird?",
-    investigation: "Halte U₁, N₁ und N₂ fest und verringere R₍Last₎.",
-    explain: "Warum sinkt im Realmodell gleichzeitig U₂?"
-  },
-  E: {
-    title: "E – Wechselspannung und Gleichspannung",
-    investigation: "Vergleiche „Wechselspannung“ und „Gleichspannung“ bei gleicher Einstellung.",
-    explain: "Warum benötigt der Transformator eine zeitliche Änderung des magnetischen Flusses?"
-  },
-  F: {
-    title: "F – Modellkritik",
-    body: "Benenne mindestens zwei Annahmen des Idealmodells und zwei Dinge, die das vereinfachte Realmodell ebenfalls nicht abbildet."
-  }
-};
+    <script>
+      // Shortcut to keep the shit below readable
+      const $ = (id) => document.getElementById(id);
+      // Default tasks or loaded tasks from local storage
+      // Persists as long as the page is open
+      const DEFAULT_TASKS = {
+        A: {
+          title: "A – Spannungstransformation",
+          prediction: "Was passiert mit U₂, wenn du N₂ vergrößerst?",
+          investigation:
+            "Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂ und nimm mehrere Messwerte auf.",
+          explain: "Welche Beziehung zwischen U₂ und N₂ erkennst du?",
+        },
+        B: {
+          title: "B – Stromtransformation",
+          prediction:
+            "Wie verändert sich der Strom, wenn du das Windungsverhältnis änderst?",
+          investigation:
+            "Schalte auf „belastet“ und vergleiche mindestens zwei Windungsverhältnisse.",
+          explain: "Nutze die Leistungsübertragung im Idealmodell.",
+        },
+        C: {
+          title: "C – Leerlauf und Belastung",
+          investigation:
+            "Vergleiche denselben Transformator zuerst „unbelastet“, dann „belastet“.",
+          observe:
+            "Welche Größen ändern sich? Welche bleiben im Idealmodell gleich?",
+          explain: "Was bedeutet „belastet“ physikalisch?",
+        },
+        D: {
+          title: "D – Last",
+          prediction: "Was passiert mit I₂, wenn R₍Last₎ kleiner wird?",
+          investigation: "Halte U₁, N₁ und N₂ fest und verringere R₍Last₎.",
+          explain: "Warum sinkt im Realmodell gleichzeitig U₂?",
+        },
+        E: {
+          title: "E – Wechselspannung und Gleichspannung",
+          investigation:
+            "Vergleiche „Wechselspannung“ und „Gleichspannung“ bei gleicher Einstellung.",
+          explain:
+            "Warum benötigt der Transformator eine zeitliche Änderung des magnetischen Flusses?",
+        },
+        F: {
+          title: "F – Modellkritik",
+          body: "Benenne mindestens zwei Annahmen des Idealmodells und zwei Dinge, die das vereinfachte Realmodell ebenfalls nicht abbildet.",
+        },
+      };
 
-function loadTasks() {
-  try {
-    const saved = JSON.parse(localStorage.getItem("transformatorTasks") || "null");
-    return saved ? {...DEFAULT_TASKS, ...saved} : DEFAULT_TASKS;
-  } catch {
-    return DEFAULT_TASKS;
-  }
-}
+      function loadTasks() {
+        try {
+          const saved = JSON.parse(
+            localStorage.getItem("transformatorTasks") || "null",
+          );
+          return saved ? { ...DEFAULT_TASKS, ...saved } : DEFAULT_TASKS;
+        } catch {
+          return DEFAULT_TASKS;
+        }
+      }
 
-function escapeHtml(text) {
-  return String(text ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[c]));
-}
+      function escapeHtml(text) {
+        return String(text ?? "").replace(
+          /[&<>"']/g,
+          (c) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#039;",
+            })[c],
+        );
+      }
 
-function renderTask(id, task) {
-  const target = $(id);
-  if (!target) return;
-  let html = "<strong>" + escapeHtml(task.title) + "</strong>";
-  if (task.prediction) html += "<br><b>Vorhersage:</b> " + escapeHtml(task.prediction);
-  if (task.investigation) html += "<br><b>Untersuchung:</b> " + escapeHtml(task.investigation);
-  if (task.observe) html += "<br><b>Beobachte:</b> " + escapeHtml(task.observe);
-  if (task.explain) html += "<br><b>Erkläre:</b> " + escapeHtml(task.explain);
-  if (task.body) html += " " + escapeHtml(task.body);
-  target.innerHTML = html;
-}
+      function renderTask(id, task) {
+        const target = $(id);
+        if (!target) return;
+        let html = "<strong>" + escapeHtml(task.title) + "</strong>";
+        if (task.prediction)
+          html += "<br><b>Vorhersage:</b> " + escapeHtml(task.prediction);
+        if (task.investigation)
+          html += "<br><b>Untersuchung:</b> " + escapeHtml(task.investigation);
+        if (task.observe)
+          html += "<br><b>Beobachte:</b> " + escapeHtml(task.observe);
+        if (task.explain)
+          html += "<br><b>Erkläre:</b> " + escapeHtml(task.explain);
+        if (task.body) html += " " + escapeHtml(task.body);
+        target.innerHTML = html;
+      }
 
-function renderTasks() {
-  const tasks = loadTasks();
-  Object.entries(tasks).forEach(([key, task]) => renderTask("task" + key, task));
-}
+      function renderTasks() {
+        const tasks = loadTasks();
+        Object.entries(tasks).forEach(([key, task]) =>
+          renderTask("task" + key, task),
+        );
+      }
 
-
-let loaded=false, model="real", source="ac", phase=0, rows=[];
-const svgNS="http://www.w3.org/2000/svg";
-["u1","n1","n2","r"].forEach(id=>$(id).addEventListener("input",update));
-$("off").onclick=()=>
-{
-  loaded=false;
-  update()
-}
-$("on").onclick=()=>
-{
-  loaded=true;
-  update()
-}
-$("ideal").onclick=()=>
-{
-  model="ideal";
-  update()
-}
-$("real").onclick=()=>
-{
-  model="real";
-  update()
-}
-$("ac").onclick=()=>
-{
-  source="ac";
-  update()
-}
-$("dc").onclick=()=>
-{
-  source="dc";
-  update()
-}
-$("reset").onclick=()=>
-{
-  $("u1").value=12;
-  $("n1").value=200;
-  $("n2").value=400;
-  $("r").value=20;
-  loaded=false;
-  model="real";
-  source="ac";
-  rows=[];
-  renderRows();
-  update()
-}
-$("measure").onclick=()=>
-{
-  const v=values();
-  rows.push(v);
-  renderRows()
-}
-$("clear").onclick=()=>
-{
-  rows=[];
-  renderRows()
-}
-// Physikalisches Modell
-// Hier passiert die "Physik". Der Rest ist UI/UX
-function values()
-{
-  const U1=+$("u1").value,N1=+$("n1").value,N2=+$("n2").value,R=+$("r").value;
-  const U20=U1*N2/N1;
-  let U2=U20,I2=0,P2=0,P1=0,I1=0,eta=null;
-  if(source==="dc")
-  {
-    U2=0
-  }
-  else if(loaded)
-  {
-    if(model==="ideal")
-    {
-      U2=U20;
-      I2=U2/R;
-      P2=U2*I2;
-      P1=P2;
-      I1=P1/U1;
-      eta=100
-    }
-    else
-    {
-      // Ersatzwiderstand
-      const rInt = 0.08;
-      I2=U20/(R+rInt);
-      U2=I2*R;
-      P2=U2*I2;
-      const copperLoss=I2*I2*rInt;
-      P1=P2+copperLoss;
-      I1=P1/U1;
-      eta=P1>0?100*P2/P1:null;
-    }
-  }
-  return {
-    U1,N1,N2,R,U20,U2,I2,P2,P1,I1,eta,loaded,model,source
-  }
-}
-// Oberfläche aktualisieren
-function update()
-{
-  const v=values();
-  $("u1v").textContent=v.U1.toFixed(1)+" V";
-  $("n1v").textContent=v.N1;
-  $("n2v").textContent=v.N2;
-  $("rv").textContent=v.R+" Ω";
-  ["U1","U2"].forEach(k=>$(k).textContent=v[k].toFixed(2)+" V");
-  ["I1","I2"].forEach(k=>$(k).textContent=v[k].toFixed(3)+" A");
-  ["P1","P2"].forEach(k=>$(k).textContent=v[k].toFixed(2)+" W");
-  $("eta").textContent=v.eta===null?"—":v.eta.toFixed(1)+" %";
-  $("formula").textContent=source==="ac" ?"Bei Wechselspannung: U₂ / U₁ = N₂ / N₁ · ideal: P₁ = P₂ · daraus: I₂ / I₁ = N₁ / N₂" :"Bei eingeschwungener Gleichspannung: keine dauerhafte Induktion → U₂ = 0 und I₂ = 0.";
-  $("off").classList.toggle("active",!loaded);
-  $("off").classList.toggle("secondary",loaded);
-  $("on").classList.toggle("active",loaded);
-  $("on").classList.toggle("secondary",!loaded);
-  $("r").disabled=!loaded;
-  $("loadHint").textContent=loaded?"Lastwiderstand aktiv: Er beeinflusst I₂ und im Realmodell auch U₂.":"Unbelastet: Es fließt kein Sekundärstrom; R₍Last₎ ist nicht wirksam.";
-  $("ideal").classList.toggle("active",model==="ideal");
-  $("ideal").classList.toggle("secondary",model!=="ideal");
-  $("real").classList.toggle("active",model==="real");
-  $("real").classList.toggle("secondary",model!=="real");
-  $("ac").classList.toggle("active",source==="ac");
-  $("ac").classList.toggle("secondary",source!=="ac");
-  $("dc").classList.toggle("active",source==="dc");
-  $("dc").classList.toggle("secondary",source!=="dc");
-  $("modelText").textContent=model==="ideal" ?"Idealmodell: keine Verluste und keine Innenwiderstände. Unter Last gilt P₁ = P₂." :"Vereinfachtes Realmodell: Die Sekundärseite besitzt einen kleinen äquivalenten Innenwiderstand. Kernverluste, Streuinduktivität und weitere reale Effekte werden nicht separat modelliert.";
-  $("sourceNote").textContent=source==="ac" ?"Wechselspannung: Die Primärspannung wird als Effektivwert angegeben. Der magnetische Fluss ändert sich zeitlich; dadurch kann in der Sekundärspule dauerhaft eine Spannung induziert werden." :"Gleichspannung: Im eingeschwungenen Zustand wird hier U₂ = 0 gesetzt. Beim Einschalten kann kurzzeitig ein Induktionsvorgang auftreten; dieser Einschaltvorgang wird in dieser Simulation nicht modelliert.";
-  $("note").textContent=source==="dc" ?"Gleichspannung: Im eingeschwungenen Zustand keine dauerhafte Induktion. Deshalb zeigt die Simulation U₂ = 0 und keinen Sekundärstrom." :!loaded ?"Unbelastet: I₂ = 0. Die Sekundärspannung folgt dem Übersetzungsverhältnis. Im Realmodell werden hier bewusst keine Leerlaufverluste dargestellt." :model==="ideal" ?"Belastet, Idealmodell: Wird R kleiner, steigt I₂. Die Leistung wird verlustfrei übertragen: P₁ = P₂." :"Belastet, Realmodell: Wird R kleiner, steigt I₂. Am äquivalenten Innenwiderstand fällt dadurch mehr Spannung ab; U₂ sinkt. Die Differenz zwischen P₁ und P₂ ist hier die modellierte Kupferverlustleistung.";
-  draw(v);
-}
-function el(tag,attrs,parent)
-{
-  const e=document.createElementNS(svgNS,tag);
-  for(const[k,val]of Object.entries(attrs))e.setAttribute(k,val);
-  parent.appendChild(e);
-  return e
-}
-// Die Spulen sind schematisch;
-// N1/N2 stehen als Zahlen daneben.
-function coil(group, x, top, color)
-{
-  group.innerHTML="";
-  for(let i=0;i<8;i++)
-  {
-    const y=top+i*36;
-    el("path",{d:"M "+x+" "+y+" q 18 18 36 0 q 18 -18 36 0",fill:"none",stroke:color,"stroke-width":"5","stroke-linecap":"round"},group)
-  }
-}
-// Transformatorzeichnung
-function draw(v)
-{
-  coil($("primaryCoil"),265,105,"#b44949");
-  coil($("secondaryCoil"),735,105,"#315f8a");
-  $("u1svg").textContent="U₁ = "+v.U1.toFixed(1)+" V";
-  $("i1svg").textContent="I₁ = "+v.I1.toFixed(3)+" A";
-  $("u2svg").textContent="U₂ = "+v.U2.toFixed(1)+" V";
-  $("i2svg").textContent="I₂ = "+v.I2.toFixed(3)+" A";
-  $("n1svg").textContent="N₁ = "+v.N1+" Wdg.";
-  $("n2svg").textContent="N₂ = "+v.N2+" Wdg.";
-  $("modelBadge").textContent=model==="ideal"?"Idealmodell: verlustfrei":"Vereinfachtes Realmodell: rᵢ = 0,08 Ω";
-  $("modelDetail").textContent=source==="ac"?"Wechselspannung · magnetischer Fluss ändert sich":"Gleichspannung · eingeschwungener Zustand: keine dauerhafte Induktion";
-  const g=$("loadGraphic");
-  g.innerHTML="";
-  if(loaded)
-  {
-    let x=800;
-    el("line",{x1:x,y1:250,x2:x+45,y2:250,stroke:"#333","stroke-width":"4"},g);
-    x+=45;
-    if(model==="real")
-    {
-      el("rect",{x:x,y:225,width:72,height:50,fill:"#fff7e4",stroke:"#b87900","stroke-width":"3",rx:"5"},g);
-      el("text",{x:x+36,y:216,"text-anchor":"middle","font-size":"16"},g).textContent="rᵢ = 0,08 Ω";
-      x+=72;
-      el("line",{x1:x,y1:250,x2:x+25,y2:250,stroke:"#333","stroke-width":"4"},g);
-      x+=25;
-    }
-    el("rect",{x:x,y:225,width:90,height:50,fill:"#fff",stroke:"#333","stroke-width":"3",rx:"5"},g);
-    el("line",{x1:x+90,y1:250,x2:1015,y2:250,stroke:"#333","stroke-width":"4"},g);
-    el("text",{x:x+45,y:215,"text-anchor":"middle","font-size":"18"},g).textContent="R = "+v.R+" Ω";
-  }
-  else
-  {
-    el("line",{x1:800,y1:250,x2:900,y2:250,stroke:"#333","stroke-width":"4"},g);
-    el("line",{x1:990,y1:250,x2:1060,y2:250,stroke:"#333","stroke-width":"4"},g);
-    el("line",{x1:900,y1:250,x2:942,y2:222,stroke:"#333","stroke-width":"4","stroke-linecap":"round"},g);
-    el("circle",{cx:900,cy:250,r:5,fill:"#333"},g);
-    el("circle",{cx:990,cy:250,r:5,fill:"#333"},g);
-    el("text",{x:945,y:292,"text-anchor":"middle","font-size":"18"},g).textContent="Stromkreis offen";
-  }
-  $("flux1").setAttribute("opacity",source==="ac"?"0.8":"0");
-  $("flux2").setAttribute("opacity",source==="ac"?"0.45":"0");
-}
-// Messreihe
-function renderRows()
-{
-  $("rows").innerHTML=rows.map((v,i)=>"<tr><td>"+(i+1)+"</td><td>"+(v.source==="ac"?"AC":"DC")+"</td><td>"+(v.model==="ideal"?"ideal":"real")+"</td><td>"+(v.loaded?"belastet":"unbelastet")+"</td><td>"+v.U1.toFixed(1)+"</td><td>"+v.N1+"</td><td>"+v.N2+"</td><td>"+(v.loaded?v.R:"—")+"</td><td>"+v.U2.toFixed(2)+"</td><td>"+v.I1.toFixed(3)+"</td><td>"+v.I2.toFixed(3)+"</td><td>"+v.P1.toFixed(2)+"</td><td>"+v.P2.toFixed(2)+"</td><td>"+(v.eta===null?"—":v.eta.toFixed(1))+"</td></tr>").join("");
-}
-// Animation
-// Nur die Darstellung des Flusses bewegt sich.
-function animate(t)
-{
-  phase=t/1000*2*Math.PI*1.2;
-  const s=Math.sin(phase);
-  if(source==="ac")
-  {
-    $("flux1").setAttribute("x1",s>=0?420:680);
-    $("flux1").setAttribute("x2",s>=0?680:420);
-    $("flux2").setAttribute("x1",s>=0?680:420);
-    $("flux2").setAttribute("x2",s>=0?420:680);
-  }
-  const op=Math.abs(s);
-  $("flux1").setAttribute("opacity",source==="ac"?(0.25+0.65*op):"0");
-  $("flux2").setAttribute("opacity",source==="ac"?(0.12+0.45*op):"0");
-  requestAnimationFrame(animate);
-}
-renderRows();
-renderTasks();
-update();
-requestAnimationFrame(animate);
+      let loaded = false,
+        model = "real",
+        source = "ac",
+        phase = 0,
+        rows = [];
+      const svgNS = "http://www.w3.org/2000/svg";
+      ["u1", "n1", "n2", "r"].forEach((id) =>
+        $(id).addEventListener("input", update),
+      );
+      $("off").onclick = () => {
+        loaded = false;
+        update();
+      };
+      $("on").onclick = () => {
+        loaded = true;
+        update();
+      };
+      $("ideal").onclick = () => {
+        model = "ideal";
+        update();
+      };
+      $("real").onclick = () => {
+        model = "real";
+        update();
+      };
+      $("ac").onclick = () => {
+        source = "ac";
+        update();
+      };
+      $("dc").onclick = () => {
+        source = "dc";
+        update();
+      };
+      $("reset").onclick = () => {
+        $("u1").value = 12;
+        $("n1").value = 200;
+        $("n2").value = 400;
+        $("r").value = 20;
+        loaded = false;
+        model = "real";
+        source = "ac";
+        rows = [];
+        renderRows();
+        update();
+      };
+      $("measure").onclick = () => {
+        const v = values();
+        rows.push(v);
+        renderRows();
+      };
+      $("clear").onclick = () => {
+        rows = [];
+        renderRows();
+      };
+      // Physical Model
+      // Where the magic happens (0_0)
+      function values() {
+        const U1 = +$("u1").value,
+          N1 = +$("n1").value,
+          N2 = +$("n2").value,
+          R = +$("r").value;
+        const U20 = (U1 * N2) / N1;
+        let U2 = U20,
+          I2 = 0,
+          P2 = 0,
+          P1 = 0,
+          I1 = 0,
+          eta = null;
+        if (source === "dc") {
+          U2 = 0;
+        } else if (loaded) {
+          if (model === "ideal") {
+            U2 = U20;
+            I2 = U2 / R;
+            P2 = U2 * I2;
+            P1 = P2;
+            I1 = P1 / U1;
+            eta = 100;
+          } else {
+            // Resistor
+            const defaultVal = 0.08;
+            I2 = U20 / (R + defaultVal);
+            U2 = I2 * R;
+            P2 = U2 * I2;
+            const copperLoss = I2 * I2 * defaultVal;
+            P1 = P2 + copperLoss;
+            I1 = P1 / U1;
+            eta = P1 > 0 ? (100 * P2) / P1 : null;
+          }
+        }
+        return {
+          U1,
+          N1,
+          N2,
+          R,
+          U20,
+          U2,
+          I2,
+          P2,
+          P1,
+          I1,
+          eta,
+          loaded,
+          model,
+          source,
+        };
+      }
+      // Update View
+      function update() {
+        const v = values();
+        $("u1v").textContent = v.U1.toFixed(1) + " V";
+        $("n1v").textContent = v.N1;
+        $("n2v").textContent = v.N2;
+        $("rv").textContent = v.R + " Ω";
+        ["U1", "U2"].forEach(
+          (k) => ($(k).textContent = v[k].toFixed(2) + " V"),
+        );
+        ["I1", "I2"].forEach(
+          (k) => ($(k).textContent = v[k].toFixed(3) + " A"),
+        );
+        ["P1", "P2"].forEach(
+          (k) => ($(k).textContent = v[k].toFixed(2) + " W"),
+        );
+        $("eta").textContent = v.eta === null ? "—" : v.eta.toFixed(1) + " %";
+        $("formula").textContent =
+          source === "ac"
+            ? "Bei Wechselspannung: U₂ / U₁ = N₂ / N₁ · ideal: P₁ = P₂ · daraus: I₂ / I₁ = N₁ / N₂"
+            : "Bei eingeschwungener Gleichspannung: keine dauerhafte Induktion → U₂ = 0 und I₂ = 0.";
+        $("off").classList.toggle("active", !loaded);
+        $("off").classList.toggle("secondary", loaded);
+        $("on").classList.toggle("active", loaded);
+        $("on").classList.toggle("secondary", !loaded);
+        $("r").disabled = !loaded;
+        $("loadHint").textContent = loaded
+          ? "Lastwiderstand aktiv: Er beeinflusst I₂ und im Realmodell auch U₂."
+          : "Unbelastet: Es fließt kein Sekundärstrom; R₍Last₎ ist nicht wirksam.";
+        $("ideal").classList.toggle("active", model === "ideal");
+        $("ideal").classList.toggle("secondary", model !== "ideal");
+        $("real").classList.toggle("active", model === "real");
+        $("real").classList.toggle("secondary", model !== "real");
+        $("ac").classList.toggle("active", source === "ac");
+        $("ac").classList.toggle("secondary", source !== "ac");
+        $("dc").classList.toggle("active", source === "dc");
+        $("dc").classList.toggle("secondary", source !== "dc");
+        $("modelText").textContent =
+          model === "ideal"
+            ? "Idealmodell: keine Verluste und keine Innenwiderstände. Unter Last gilt P₁ = P₂."
+            : "Vereinfachtes Realmodell: Die Sekundärseite besitzt einen kleinen äquivalenten Innenwiderstand. Kernverluste, Streuinduktivität und weitere reale Effekte werden nicht separat modelliert.";
+        $("sourceNote").textContent =
+          source === "ac"
+            ? "Wechselspannung: Die Primärspannung wird als Effektivwert angegeben. Der magnetische Fluss ändert sich zeitlich; dadurch kann in der Sekundärspule dauerhaft eine Spannung induziert werden."
+            : "Gleichspannung: Im eingeschwungenen Zustand wird hier U₂ = 0 gesetzt. Beim Einschalten kann kurzzeitig ein Induktionsvorgang auftreten; dieser Einschaltvorgang wird in dieser Simulation nicht modelliert.";
+        $("note").textContent =
+          source === "dc"
+            ? "Gleichspannung: Im eingeschwungenen Zustand keine dauerhafte Induktion. Deshalb zeigt die Simulation U₂ = 0 und keinen Sekundärstrom."
+            : !loaded
+              ? "Unbelastet: I₂ = 0. Die Sekundärspannung folgt dem Übersetzungsverhältnis. Im Realmodell werden hier bewusst keine Leerlaufverluste dargestellt."
+              : model === "ideal"
+                ? "Belastet, Idealmodell: Wird R kleiner, steigt I₂. Die Leistung wird verlustfrei übertragen: P₁ = P₂."
+                : "Belastet, Realmodell: Wird R kleiner, steigt I₂. Am äquivalenten Innenwiderstand fällt dadurch mehr Spannung ab; U₂ sinkt. Die Differenz zwischen P₁ und P₂ ist hier die modellierte Kupferverlustleistung.";
+        draw(v);
+      }
+      function el(tag, attrs, parent) {
+        const e = document.createElementNS(svgNS, tag);
+        for (const [k, val] of Object.entries(attrs)) e.setAttribute(k, val);
+        parent.appendChild(e);
+        return e;
+      }
+      // Coil Scematic
+      function coil(group, x, top, color) {
+        group.innerHTML = "";
+        for (let i = 0; i < 8; i++) {
+          const y = top + i * 36;
+          el(
+            "path",
+            {
+              d: "M " + x + " " + y + " q 18 18 36 0 q 18 -18 36 0",
+              fill: "none",
+              stroke: color,
+              "stroke-width": "5",
+              "stroke-linecap": "round",
+            },
+            group,
+          );
+        }
+      }
+      // Transformer
+      function draw(v) {
+        coil($("primaryCoil"), 265, 105, "#b44949");
+        coil($("secondaryCoil"), 735, 105, "#315f8a");
+        $("u1svg").textContent = "U₁ = " + v.U1.toFixed(1) + " V";
+        $("i1svg").textContent = "I₁ = " + v.I1.toFixed(3) + " A";
+        $("u2svg").textContent = "U₂ = " + v.U2.toFixed(1) + " V";
+        $("i2svg").textContent = "I₂ = " + v.I2.toFixed(3) + " A";
+        $("n1svg").textContent = "N₁ = " + v.N1 + " Wdg.";
+        $("n2svg").textContent = "N₂ = " + v.N2 + " Wdg.";
+        $("modelBadge").textContent =
+          model === "ideal"
+            ? "Idealmodell: verlustfrei"
+            : "Vereinfachtes Realmodell: rᵢ = 0,08 Ω";
+        $("modelDetail").textContent =
+          source === "ac"
+            ? "Wechselspannung · magnetischer Fluss ändert sich"
+            : "Gleichspannung · eingeschwungener Zustand: keine dauerhafte Induktion";
+        const g = $("loadGraphic");
+        g.innerHTML = "";
+        if (loaded) {
+          let x = 800;
+          el(
+            "line",
+            {
+              x1: x,
+              y1: 250,
+              x2: x + 45,
+              y2: 250,
+              stroke: "#333",
+              "stroke-width": "4",
+            },
+            g,
+          );
+          x += 45;
+          if (model === "real") {
+            el(
+              "rect",
+              {
+                x: x,
+                y: 225,
+                width: 72,
+                height: 50,
+                fill: "#fff7e4",
+                stroke: "#b87900",
+                "stroke-width": "3",
+                rx: "5",
+              },
+              g,
+            );
+            el(
+              "text",
+              { x: x + 36, y: 216, "text-anchor": "middle", "font-size": "16" },
+              g,
+            ).textContent = "rᵢ = 0,08 Ω";
+            x += 72;
+            el(
+              "line",
+              {
+                x1: x,
+                y1: 250,
+                x2: x + 25,
+                y2: 250,
+                stroke: "#333",
+                "stroke-width": "4",
+              },
+              g,
+            );
+            x += 25;
+          }
+          el(
+            "rect",
+            {
+              x: x,
+              y: 225,
+              width: 90,
+              height: 50,
+              fill: "#fff",
+              stroke: "#333",
+              "stroke-width": "3",
+              rx: "5",
+            },
+            g,
+          );
+          el(
+            "line",
+            {
+              x1: x + 90,
+              y1: 250,
+              x2: 1015,
+              y2: 250,
+              stroke: "#333",
+              "stroke-width": "4",
+            },
+            g,
+          );
+          el(
+            "text",
+            { x: x + 45, y: 215, "text-anchor": "middle", "font-size": "18" },
+            g,
+          ).textContent = "R = " + v.R + " Ω";
+        } else {
+          el(
+            "line",
+            {
+              x1: 800,
+              y1: 250,
+              x2: 900,
+              y2: 250,
+              stroke: "#333",
+              "stroke-width": "4",
+            },
+            g,
+          );
+          el(
+            "line",
+            {
+              x1: 990,
+              y1: 250,
+              x2: 1060,
+              y2: 250,
+              stroke: "#333",
+              "stroke-width": "4",
+            },
+            g,
+          );
+          el(
+            "line",
+            {
+              x1: 900,
+              y1: 250,
+              x2: 942,
+              y2: 222,
+              stroke: "#333",
+              "stroke-width": "4",
+              "stroke-linecap": "round",
+            },
+            g,
+          );
+          el("circle", { cx: 900, cy: 250, r: 5, fill: "#333" }, g);
+          el("circle", { cx: 990, cy: 250, r: 5, fill: "#333" }, g);
+          el(
+            "text",
+            { x: 945, y: 292, "text-anchor": "middle", "font-size": "18" },
+            g,
+          ).textContent = "Stromkreis offen";
+        }
+        $("flux1").setAttribute("opacity", source === "ac" ? "0.8" : "0");
+        $("flux2").setAttribute("opacity", source === "ac" ? "0.45" : "0");
+      }
+      // Measurements Table
+      function renderRows() {
+        $("rows").innerHTML = rows
+          .map(
+            (v, i) =>
+              "<tr><td>" +
+              (i + 1) +
+              "</td><td>" +
+              (v.source === "ac" ? "AC" : "DC") +
+              "</td><td>" +
+              (v.model === "ideal" ? "ideal" : "real") +
+              "</td><td>" +
+              (v.loaded ? "belastet" : "unbelastet") +
+              "</td><td>" +
+              v.U1.toFixed(1) +
+              "</td><td>" +
+              v.N1 +
+              "</td><td>" +
+              v.N2 +
+              "</td><td>" +
+              (v.loaded ? v.R : "—") +
+              "</td><td>" +
+              v.U2.toFixed(2) +
+              "</td><td>" +
+              v.I1.toFixed(3) +
+              "</td><td>" +
+              v.I2.toFixed(3) +
+              "</td><td>" +
+              v.P1.toFixed(2) +
+              "</td><td>" +
+              v.P2.toFixed(2) +
+              "</td><td>" +
+              (v.eta === null ? "—" : v.eta.toFixed(1)) +
+              "</td></tr>",
+          )
+          .join("");
+      }
+      // Flow Visualization
+      function animate(t) {
+        phase = (t / 1000) * 2 * Math.PI * 1.2;
+        const s = Math.sin(phase);
+        if (source === "ac") {
+          $("flux1").setAttribute("x1", s >= 0 ? 420 : 680);
+          $("flux1").setAttribute("x2", s >= 0 ? 680 : 420);
+          $("flux2").setAttribute("x1", s >= 0 ? 680 : 420);
+          $("flux2").setAttribute("x2", s >= 0 ? 420 : 680);
+        }
+        const op = Math.abs(s);
+        $("flux1").setAttribute(
+          "opacity",
+          source === "ac" ? 0.25 + 0.65 * op : "0",
+        );
+        $("flux2").setAttribute(
+          "opacity",
+          source === "ac" ? 0.12 + 0.45 * op : "0",
+        );
+        requestAnimationFrame(animate);
+      }
+      renderRows();
+      renderTasks();
+      update();
+      requestAnimationFrame(animate);
     </script>
-</body>
+  </body>
 </html>

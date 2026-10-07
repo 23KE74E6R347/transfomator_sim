@@ -1,146 +1,193 @@
-<!doctype html><html lang="de"><head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Transformator – Lehrkraftzugang</title><style>
-    /* Loginseite */
-body {
-  margin:0;
-  background:#f4f6f8;
-  color:#18202a;
-  font-family:system-ui,sans-serif
-}
-main {
-  max-width:520px;
-  margin:10vh auto;
-  padding:18px
-}
-.card {
-  background:#fff;
-  border:1px solid #d7dce2;
-  border-radius:14px;
-  padding:22px
-}
-h1 {
-  margin-top:0
-}
-p {
-  line-height:1.45;
-  color:#59636f
-}
-input {
-  width:100%;
-  box-sizing:border-box;
-  padding:12px;
-  border:1px solid #b9c1c9;
-  border-radius:8px;
-  font-size:1rem;
-  margin:8px 0 12px
-}
-button {
-  border:0;
-  border-radius:9px;
-  padding:11px 15px;
-  background:#263d53;
-  color:#fff;
-  cursor:pointer
-}
-.error {
-  color:#a33;
-  margin-top:10px;
-  min-height:1.4em
-}
-.back {
-  display:inline-block;
-  margin-top:14px;
-  color:#315f8a
-}
-.editor {
-  margin-top:16px;
-}
-.editor h2 {
-  margin-top:0;
-}
-.editor p.small {
-  color:#59636f;
-  font-size:.9rem;
-}
-.taskEditor {
-  margin-top:14px;
-  padding-top:14px;
-  border-top:1px solid #d7dce2;
-}
-.taskEditor h3 {
-  margin:0 0 10px;
-}
-.taskEditor label {
-  display:block;
-  margin:10px 0;
-  color:#18202a;
-  font-weight:600;
-}
-.taskEditor input,
-.taskEditor textarea {
-  width:100%;
-  box-sizing:border-box;
-  padding:10px;
-  margin-top:5px;
-  border:1px solid #b9c1c9;
-  border-radius:8px;
-  background:#fff;
-  color:#18202a;
-  font:inherit;
-}
-.taskEditor textarea {
-  min-height:80px;
-  resize:vertical;
-  line-height:1.4;
-}
-.editorActions {
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:14px;
-}
-.editorStatus {
-  min-height:1.4em;
-  margin-top:9px;
-  color:#36735a;
-  font-size:.9rem;
-}
-@media (max-width:500px) {
-  .editorActions button {
-    width:100%;
-  }
-}
-  </style></head><body>
-    <main><div class="card"><h1>Lehrkraftbereich</h1><p>Erwartungsbild und interne Hinweise zur Unterrichtsvorbereitung.</p><label for="pw">Passwort</label><input id="pw" type="password" autocomplete="off" autofocus><button id="unlock">Lehrkraftbereich öffnen</button><div id="error" class="error" role="alert"></div><a class="back" href="index.html">← Zur Simulation</a></div></main><script>
-// DATA enthält den verschlüsselten Lehrkraftinhalt. Bitte hier nich händisch rumschreiben!
-const DATA =
-{
-  "salt":"EKEEb7MMjhyskZF5WBixxQ==","iv":"83As5FM2Xl0ajnR6","ciphertext":"t3GFMxS4GKOdZRhT4uhM0JXBD+0VawYgPuEtRNZ2bB2xwPoY1CP5UMknZ+VKE2e6oSHROdRHkuQVr4gpNZLRTMBmDrUqwXiI9l+5V0p6CeGyd4k3EXSnp/Si5R/e62JrLutry1QhqpPpnw7yCNUWZL5POddkbgC9WolXlghXWjIWn61Ms9TJ/JYZjaXr2iwKu4QrV7667chzLHb5T+6oWET1R/gq7rrJvSLfJlSXHgfk+9BpXWXkZfKNZJnIWv5k2HQzsVDCvG+G5P00f3PjLKUw4bmx0KKb03RZbztzcvOnoziv4fAf2nUECztwaWwQWOZOojVgF6kMAHZu/RFr4slqY7F7+cr7XgerNJyLE86o7dO664SLHf4UenrweClww/DOcSITiCKvvoj7IbYv+hK1crejK2uktrQAxk1+Nb/Ur3tYwlDdVVScTOLqrHFOajQH6TXwJhThP2U9YuCtKzMZgpFcwIdGALh1Wwx0F9urOe21pnJC/J6lltJ1ZGdFkbSlEl+Lk6JtCJ5iL9mOGMZklH2CEzeLU7sHFoILTy/hCbwhvoH81adTfgp/mZoBy8QXRwH7cRQD6HEgaLt0cJcEDoqwulzxcsNa/YdHTp6oSqLdN23dmS0cDRETimALyQmaApnebwGGDIUXki3H3KJVxn6eLLjT9TS2Iakkchyeu126KUTcT4clwGh/Zzy4r/Wx6BxvQCO/DOQCVhfIUhVui/Tq1pbBjdo0Ek6Fsrqa5iKxKZZXTpNflY8KMdw7XnOBux+RrZTwD9q3VF7j2ETr11JEuBnwjqgiUA/dsNexjJsiNfgIpcTfeF9Qf7SHHg8SCgJXMrpddUOvTRUdtAvinyHivw+Z0rRWLpYpgKsAahPdY/tpEzjieE140zeyUGEQHIA9zyihFVU30LjLCqYwS3fH/49tEizYEvINKDKU8tvVq7Pr7nAajKFiKKAWf/MI08Ywmo2g15xXEh1QvST1Vxj5RcMbC9Keg4fT7TwVAG3JOEsUsYZWSonjgw8mVXY5t4SuIgHjZ8+ZaTkdfPCMGvfCCumT33ONjLPiposAp6LR+KtMv0kdh17A6Xtx31Bb8bTt0RMRne6MNskkn+yyuSpRf8JfLh+SZWJD4Jy8ifsO3BjB1LLmqnZnhWeWlK0JbfLYo/MhHcG/OWLQM3+rb7XbbujQGoFg5tT24i9iZlcRFwn0XAoBEgDzz5t/VILckW28cUScngs1KtXiBIEjR6UVijfq+mhCI34gsNPdokJfcgI6ZhfGtWqGXX03zKHHJfdbjC59nO/thHk2sqlzzIF6pfmhGKRi3BNwKcDxmLLZdOoICwYiIQQhpLPCNuierBJXZZRrwlscCaO6EBYWUjEimoDBO6+REa4ZputiiVRJIVgteqOJB/5pdIoUvFEPifRw/Ok0a3wOWdCVzOeLBNBIWS8BtAgk+QW8lCAd4DY8CEjJP1muJ41yA7jUCuhSpY06IOrsr3jv28JU1u8Vyt3Vi5qIe8BvpUeQnJLYGY3qCVxTPpvZDFmemXkwuiOC7TG+7VoUHOlLs2zll168tXza6A==","iterations":600000
-}
-function b64(s)
-{
-  const x=atob(s),a=new Uint8Array(x.length);
-  for(let i=0;i<x.length;i++)a[i]=x.charCodeAt(i);
-  return a
-}
-// Passwort -> Schlüssel -> entschlüsseln -> Inhalt anzeigen
-async function openTeacher()
-{
-  const pw=document.getElementById("pw").value,e=document.getElementById("error");
-  e.textContent="";
-  if(!pw)
-  {
-    e.textContent="Bitte Passwort eingeben.";
-    return
-  }
-  try
-  {
-    const m=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
-    const k=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(DATA.salt),iterations:DATA.iterations,hash:"SHA-256"},m,{name:"AES-GCM",length:256},false,["decrypt"]);
-    const d=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(DATA.iv)},k,b64(DATA.ciphertext));
-    const s=new Blob([d]).stream().pipeThrough(new DecompressionStream("gzip"));
-    const html=await new Response(s).text();
-    const editor=`
+<!-- Loginpage -->
+<!-- https://23ke74e6r347.github.io/transfomator_sim/teacher.html -->
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>Transformator – Lehrkraftzugang</title>
+    <style>
+      body {
+        margin: 0;
+        background: #f4f6f8;
+        color: #18202a;
+        font-family: system-ui, sans-serif;
+      }
+      main {
+        max-width: 520px;
+        margin: 10vh auto;
+        padding: 18px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #d7dce2;
+        border-radius: 14px;
+        padding: 22px;
+      }
+      h1 {
+        margin-top: 0;
+      }
+      p {
+        line-height: 1.45;
+        color: #59636f;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        border: 1px solid #b9c1c9;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin: 8px 0 12px;
+      }
+      button {
+        border: 0;
+        border-radius: 9px;
+        padding: 11px 15px;
+        background: #263d53;
+        color: #fff;
+        cursor: pointer;
+      }
+      .error {
+        color: #a33;
+        margin-top: 10px;
+        min-height: 1.4em;
+      }
+      .back {
+        display: inline-block;
+        margin-top: 14px;
+        color: #315f8a;
+      }
+      .editor {
+        margin-top: 16px;
+      }
+      .editor h2 {
+        margin-top: 0;
+      }
+      .editor p.small {
+        color: #59636f;
+        font-size: 0.9rem;
+      }
+      .taskEditor {
+        margin-top: 14px;
+        padding-top: 14px;
+        border-top: 1px solid #d7dce2;
+      }
+      .taskEditor h3 {
+        margin: 0 0 10px;
+      }
+      .taskEditor label {
+        display: block;
+        margin: 10px 0;
+        color: #18202a;
+        font-weight: 600;
+      }
+      .taskEditor input,
+      .taskEditor textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #b9c1c9;
+        border-radius: 8px;
+        background: #fff;
+        color: #18202a;
+        font: inherit;
+      }
+      .taskEditor textarea {
+        min-height: 80px;
+        resize: vertical;
+        line-height: 1.4;
+      }
+      .editorActions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 14px;
+      }
+      .editorStatus {
+        min-height: 1.4em;
+        margin-top: 9px;
+        color: #36735a;
+        font-size: 0.9rem;
+      }
+      @media (max-width: 500px) {
+        .editorActions button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <h1>Lehrkraftbereich</h1>
+        <p>Erwartungsbild und interne Hinweise zur Unterrichtsvorbereitung.</p>
+        <label for="pw">Passwort</label
+        ><input id="pw" type="password" autocomplete="off" autofocus /><button
+          id="unlock"
+        >
+          Lehrkraftbereich öffnen
+        </button>
+        <div id="error" class="error" role="alert"></div>
+        <a class="back" href="index.html">← Zur Simulation</a>
+      </div>
+    </main>
+    <script>
+      // Encrypted Login Key
+      const DATA = {
+        salt: "EKEEb7MMjhyskZF5WBixxQ==",
+        iv: "83As5FM2Xl0ajnR6",
+        ciphertext:
+          "t3GFMxS4GKOdZRhT4uhM0JXBD+0VawYgPuEtRNZ2bB2xwPoY1CP5UMknZ+VKE2e6oSHROdRHkuQVr4gpNZLRTMBmDrUqwXiI9l+5V0p6CeGyd4k3EXSnp/Si5R/e62JrLutry1QhqpPpnw7yCNUWZL5POddkbgC9WolXlghXWjIWn61Ms9TJ/JYZjaXr2iwKu4QrV7667chzLHb5T+6oWET1R/gq7rrJvSLfJlSXHgfk+9BpXWXkZfKNZJnIWv5k2HQzsVDCvG+G5P00f3PjLKUw4bmx0KKb03RZbztzcvOnoziv4fAf2nUECztwaWwQWOZOojVgF6kMAHZu/RFr4slqY7F7+cr7XgerNJyLE86o7dO664SLHf4UenrweClww/DOcSITiCKvvoj7IbYv+hK1crejK2uktrQAxk1+Nb/Ur3tYwlDdVVScTOLqrHFOajQH6TXwJhThP2U9YuCtKzMZgpFcwIdGALh1Wwx0F9urOe21pnJC/J6lltJ1ZGdFkbSlEl+Lk6JtCJ5iL9mOGMZklH2CEzeLU7sHFoILTy/hCbwhvoH81adTfgp/mZoBy8QXRwH7cRQD6HEgaLt0cJcEDoqwulzxcsNa/YdHTp6oSqLdN23dmS0cDRETimALyQmaApnebwGGDIUXki3H3KJVxn6eLLjT9TS2Iakkchyeu126KUTcT4clwGh/Zzy4r/Wx6BxvQCO/DOQCVhfIUhVui/Tq1pbBjdo0Ek6Fsrqa5iKxKZZXTpNflY8KMdw7XnOBux+RrZTwD9q3VF7j2ETr11JEuBnwjqgiUA/dsNexjJsiNfgIpcTfeF9Qf7SHHg8SCgJXMrpddUOvTRUdtAvinyHivw+Z0rRWLpYpgKsAahPdY/tpEzjieE140zeyUGEQHIA9zyihFVU30LjLCqYwS3fH/49tEizYEvINKDKU8tvVq7Pr7nAajKFiKKAWf/MI08Ywmo2g15xXEh1QvST1Vxj5RcMbC9Keg4fT7TwVAG3JOEsUsYZWSonjgw8mVXY5t4SuIgHjZ8+ZaTkdfPCMGvfCCumT33ONjLPiposAp6LR+KtMv0kdh17A6Xtx31Bb8bTt0RMRne6MNskkn+yyuSpRf8JfLh+SZWJD4Jy8ifsO3BjB1LLmqnZnhWeWlK0JbfLYo/MhHcG/OWLQM3+rb7XbbujQGoFg5tT24i9iZlcRFwn0XAoBEgDzz5t/VILckW28cUScngs1KtXiBIEjR6UVijfq+mhCI34gsNPdokJfcgI6ZhfGtWqGXX03zKHHJfdbjC59nO/thHk2sqlzzIF6pfmhGKRi3BNwKcDxmLLZdOoICwYiIQQhpLPCNuierBJXZZRrwlscCaO6EBYWUjEimoDBO6+REa4ZputiiVRJIVgteqOJB/5pdIoUvFEPifRw/Ok0a3wOWdCVzOeLBNBIWS8BtAgk+QW8lCAd4DY8CEjJP1muJ41yA7jUCuhSpY06IOrsr3jv28JU1u8Vyt3Vi5qIe8BvpUeQnJLYGY3qCVxTPpvZDFmemXkwuiOC7TG+7VoUHOlLs2zll168tXza6A==",
+        iterations: 600000,
+      };
+      function b64(s) {
+        const x = atob(s),
+          a = new Uint8Array(x.length);
+        for (let i = 0; i < x.length; i++) a[i] = x.charCodeAt(i);
+        return a;
+      }
+      // Decrypt and Display Logic
+      async function openTeacher() {
+        const pw = document.getElementById("pw").value,
+          e = document.getElementById("error");
+        e.textContent = "";
+        if (!pw) {
+          e.textContent = "Bitte Passwort eingeben.";
+          return;
+        }
+        try {
+          const m = await crypto.subtle.importKey(
+            "raw",
+            new TextEncoder().encode(pw),
+            "PBKDF2",
+            false,
+            ["deriveKey"],
+          );
+          const k = await crypto.subtle.deriveKey(
+            {
+              name: "PBKDF2",
+              salt: b64(DATA.salt),
+              iterations: DATA.iterations,
+              hash: "SHA-256",
+            },
+            m,
+            { name: "AES-GCM", length: 256 },
+            false,
+            ["decrypt"],
+          );
+          const d = await crypto.subtle.decrypt(
+            { name: "AES-GCM", iv: b64(DATA.iv) },
+            k,
+            b64(DATA.ciphertext),
+          );
+          const s = new Blob([d])
+            .stream()
+            .pipeThrough(new DecompressionStream("gzip"));
+          const html = await new Response(s).text();
+          const editor = `
 <style>
 .taskEditorCard{margin-top:16px}
 .taskEditor{margin-top:14px;padding-top:14px;border-top:1px solid #d7dce2}
@@ -211,18 +258,18 @@ buildEditor();
 document.getElementById("saveTasks").onclick=editorSave;
 document.getElementById("resetTasks").onclick=editorReset;
 <\/script>`;
-    document.open();
-    document.write(html.replace("</body>",editor+"</body>"));
-    document.close()
-  }
-  catch(x)
-  {
-    e.textContent="Passwort falsch oder Inhalt konnte nicht entschlüsselt werden."
-  }
-}
-document.getElementById("unlock").onclick=openTeacher;
-document.getElementById("pw").onkeydown=e=>
-{
-  if(e.key==="Enter")openTeacher()
-}
-    </script></body></html>
+          document.open();
+          document.write(html.replace("</body>", editor + "</body>"));
+          document.close();
+        } catch (x) {
+          e.textContent =
+            "Passwort falsch oder Inhalt konnte nicht entschlüsselt werden.";
+        }
+      }
+      document.getElementById("unlock").onclick = openTeacher;
+      document.getElementById("pw").onkeydown = (e) => {
+        if (e.key === "Enter") openTeacher();
+      };
+    </script>
+  </body>
+</html>

@@ -1,51 +1,39 @@
-# Transformator – virtuelle Untersuchung
+# Transformator Simulator
 
-HTML/JavaScript-Simulation für Lilas
+HTML/CSS/JScript Sim für Lilas 👩🏻‍🏫
 
-Das Projekt ist als konkrete Unterrichtshilfe für Lilas Transformator-Thema gedacht. Deshalb ist der Code ohne Framework, ohne Build-System und ohne externe Bibliotheken gehalten: Datei öffnen, ändern, speichern, done
+Das Projekt ist als Unterrichtshilfe gedacht. Ohne Framework, ohne Build-System und ohne externe Libaries. Öffnen, ändern, speichern, done 👍
+
+## Zugriff
+
+SchülerInnenbereich: `https://23ke74e6r347.github.io/transfomator_sim/`
+Lehrkraftbereich: `https://23ke74e6r347.github.io/transfomator_sim/teacher.html`
 
 ## Elemente
 
-- Switch AC/DC
-- Switch Modell
-- Switch Last
-- Primärspannung U₁ Regler
-- Primärwindungszahl N₁ Regler
-- Sekundärwindungszahl N₂ Regler
-- Modellsimulation
-- virtuelle Messreihe
-- Untersuchungsaufträge A–F
+- Switch AC / DC
+- Switch Idealmodell / vereinfachtes Realmodell
+- Switch belastet / unbelastetet
+- Primärspannungsregler U1
+- Primärwindungszahlregler N1
+- Sekundärwindungszahlregler N2
+- Lastregler RLast
+- Dynamische Modellsimulation
+- Erweiterbare Messtabelle
+- Editierbare Untersuchungsaufträge
 
 ## Dateien
 
 ### `index.html`
 
-Die komplette Schülerseite
+Die Seite auf der SchülerInnen arbeiten
 
-- HTML = Inhalt und Struktur
-- CSS im `<style>)-Block = Aussehen
-- JavaScript im `<script>)-Block = Interaktion und Modell
-
-Die Datei ist absichtlich monolithisch. Lila muss also nicht erst irgendein Framework verstehen.
+Die Datei ist absichtlich monolithisch. Modularität ist eh überbewertet (^\_^)
 
 ### `teacher.html`
 
-Loginseite für den Lehrkraftbereich.
+Loginseite mit statischem PW (schreib Marv wenn du ein anderes brauchst)
 
-Der eigentliche Lehrkraftinhalt liegt verschlüsselt im `DATA)-Objekt.
+Das Erwartungsbild liegt verschlüsselt im `DATA)-Objekt
 
-Das ist bei einem öffentlichen GitHub-Pages-Projekt kein echter serverseitiger Schutz. Der Browser bekommt den verschlüsselten Inhalt und den Code zur Entschlüsselung. Außerdem bleiben alte Git-Commits grundsätzlich in der Repository-Historie.
-
-### `README.md`
-
-Diese Erklärung. Also ungefähr die Gebrauchsanweisung für das Ding, falls Marv irgendwann vergessen hat, was er hier eigentlich gebaut hat
-
-## Zugriff
-
-GitHub Pages:
-
-`https://23ke74e6r347.github.io/transfomator_sim/`
-
-Lehrkraftbereich:
-
-`https://23ke74e6r347.github.io/transfomator_sim/teacher.html`
+Kein echter serverseitiger Schutz. Sollte aber jedem Scriptkiddie mit nem ChatGTP Konto für paar Stunden standhalten 🤔
