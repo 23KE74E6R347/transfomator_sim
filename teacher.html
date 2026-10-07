@@ -258,7 +258,6 @@ buildEditor();
 document.getElementById("saveTasks").onclick=editorSave;
 document.getElementById("resetTasks").onclick=editorReset;
 <\/script>`;
-          document.open();
           // document.write() kann nach dem initialen Laden das Dokument ersetzen.
           // Deshalb übernehmen wir die entschlüsselte Seite direkt in den vorhandenen Body.
           const parsed = new DOMParser().parseFromString(html, "text/html");
@@ -459,7 +458,6 @@ document.getElementById("resetTasks").onclick=editorReset;
           };
 
           buildEditor();
-          document.close();
         } catch (x) {
           e.textContent =
             "Passwort falsch oder Inhalt konnte nicht entschlüsselt werden.";
