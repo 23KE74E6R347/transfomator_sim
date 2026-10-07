@@ -192,8 +192,19 @@
           // document.write() das Dokument ersetzen, bevor der Editor sauber aufgebaut ist.
           const parsed = new DOMParser().parseFromString(html, "text/html");
 
-          document.body.innerHTML = parsed.body.innerHTML;
+          // Die entschlüsselte Lehrkraftseite enthält ihr eigenes CSS im <head>.
+          // Beim bisherigen Einsetzen wurde nur der <body> übernommen.
+          // Dadurch ging die komplette Formatierung der Erwartungsbild-Seite verloren.
+          // Deshalb übernehmen wir zuerst alle Stylesheets und <style>-Blöcke
+          // aus dem entschlüsselten Dokument und setzen erst danach den Body ein.
+          parsed.head
+            .querySelectorAll('style, link[rel="stylesheet"]')
+            .forEach((node) => {
+              document.head.appendChild(node.cloneNode(true));
+            });
+
           document.title = parsed.title || document.title;
+          document.body.innerHTML = parsed.body.innerHTML;
 
           const editorStyle = document.createElement("style");
           editorStyle.textContent = `
