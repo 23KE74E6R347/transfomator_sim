@@ -332,7 +332,7 @@
       </div>
       <div class="topActions">
         <button id="reset" class="secondary">Zurücksetzen</button
-        ><a class="link" href="teacher.html">Lehrkraft / Erwartungsbild →</a>
+        ><a class="link" href="teacher.html">Lehrkraftbereich →</a>
       </div>
 
       <!-- 1. Setup -->
@@ -374,7 +374,7 @@
           <div>
             <h3>Primärseite</h3>
             <label
-              ><span class="labelName">U₁ (Effektivwert)</span
+              ><span class="labelName">U₁</span
               ><input
                 id="u1"
                 type="range"
@@ -384,7 +384,7 @@
                 value="12" /><span class="value" id="u1v"></span
             ></label>
             <label
-              ><span class="labelName">N₁ (Windungen)</span
+              ><span class="labelName">N₁</span
               ><input
                 id="n1"
                 type="range"
@@ -397,7 +397,7 @@
           <div>
             <h3>Sekundärseite</h3>
             <label
-              ><span class="labelName">N₂ (Windungen)</span
+              ><span class="labelName">N₂</span
               ><input
                 id="n2"
                 type="range"
@@ -650,9 +650,9 @@
                 <th>Modell</th>
                 <th>Sekundärkreis</th>
                 <th>U₁ / V</th>
-                <th>N₁</th>
-                <th>N₂</th>
-                <th>R<sub>Last</sub> / Ω</th>
+                <th>N₁ / Windungszahl</th>
+                <th>N₂ / Windungszahl</th>
+                <th>R / Ω</th>
                 <th>U₂ / V</th>
                 <th>I₁ / A</th>
                 <th>I₂ / A</th>
@@ -711,8 +711,8 @@
         },
         D: {
           title: "D – Last",
-          prediction: "Was passiert mit I₂, wenn R₍Last₎ kleiner wird?",
-          investigation: "Halte U₁, N₁ und N₂ fest und verringere R₍Last₎.",
+          prediction: "Was passiert mit I₂, wenn R kleiner wird?",
+          investigation: "Halte U₁, N₁ und N₂ fest und verringere R.",
           explain: "Warum sinkt im Realmodell gleichzeitig U₂?",
         },
         E: {
@@ -911,7 +911,7 @@
         $("r").disabled = !loaded;
         $("loadHint").textContent = loaded
           ? "Lastwiderstand aktiv: Er beeinflusst I₂ und im Realmodell auch U₂."
-          : "Unbelastet: Es fließt kein Sekundärstrom; R₍Last₎ ist nicht wirksam.";
+          : "Unbelastet: Es fließt kein Sekundärstrom; R ist nicht wirksam.";
         $("ideal").classList.toggle("active", model === "ideal");
         $("ideal").classList.toggle("secondary", model !== "ideal");
         $("real").classList.toggle("active", model === "real");
