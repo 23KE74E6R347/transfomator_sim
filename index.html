@@ -151,14 +151,24 @@
         color: var(--muted);
         font-size: 0.9rem;
       }
+      .modelLabel,
+      .modelBadge,
+      .modelDetail {
+        fill: #18202a;
+      }
       .modelBadge {
         font-size: 16px;
         font-weight: 700;
-        fill: #18202a;
       }
       .modelDetail {
         font-size: 17px;
-        fill: #59636f;
+      }
+      @media (prefers-color-scheme: dark) {
+        .modelLabel,
+        .modelBadge,
+        .modelDetail {
+          fill: #fff;
+        }
       }
       .metrics {
         display: grid;
@@ -490,6 +500,7 @@
             stroke-width="3"
           />
           <text
+            class="modelLabel"
             x="550"
             y="58"
             text-anchor="middle"
@@ -501,6 +512,7 @@
           <g id="primaryCoil"></g>
           <g id="secondaryCoil"></g>
           <text
+            class="modelLabel"
             x="165"
             y="65"
             text-anchor="middle"
@@ -510,6 +522,7 @@
             Primärseite
           </text>
           <text
+            class="modelLabel"
             x="935"
             y="65"
             text-anchor="middle"
@@ -518,10 +531,11 @@
           >
             Sekundärseite
           </text>
-          <text id="u1svg" x="65" y="120" font-size="22"></text>
-          <text id="i1svg" x="65" y="390" font-size="22"></text>
+          <text id="u1svg" class="modelLabel" x="65" y="120" font-size="22"></text>
+          <text id="i1svg" class="modelLabel" x="65" y="390" font-size="22"></text>
           <text
             id="u2svg"
+            class="modelLabel"
             x="1035"
             y="120"
             text-anchor="end"
@@ -529,14 +543,16 @@
           ></text>
           <text
             id="i2svg"
+            class="modelLabel"
             x="1035"
             y="390"
             text-anchor="end"
             font-size="22"
           ></text>
-          <text id="n1svg" x="65" y="435" font-size="20"></text>
+          <text id="n1svg" class="modelLabel" x="65" y="435" font-size="20"></text>
           <text
             id="n2svg"
+            class="modelLabel"
             x="1035"
             y="435"
             text-anchor="end"
@@ -1028,11 +1044,18 @@
               },
               g,
             );
-            el(
+            const riLabel = el(
               "text",
-              { x: x + 36, y: 216, "text-anchor": "middle", "font-size": "16" },
+              {
+                x: x + 36,
+                y: 216,
+                "text-anchor": "middle",
+                "font-size": "16",
+                class: "modelLabel",
+              },
               g,
-            ).textContent = "rᵢ = 0,08 Ω";
+            );
+            riLabel.textContent = "rᵢ = 0,08 Ω";
             x += 72;
             el(
               "line",
@@ -1074,11 +1097,18 @@
             },
             g,
           );
-          el(
+          const loadLabel = el(
             "text",
-            { x: x + 45, y: 215, "text-anchor": "middle", "font-size": "18" },
+            {
+              x: x + 45,
+              y: 215,
+              "text-anchor": "middle",
+              "font-size": "18",
+              class: "modelLabel",
+            },
             g,
-          ).textContent = "R = " + v.R + " Ω";
+          );
+          loadLabel.textContent = "R = " + v.R + " Ω";
         } else {
           el(
             "line",
@@ -1119,11 +1149,18 @@
           );
           el("circle", { cx: 900, cy: 250, r: 5, fill: "#333" }, g);
           el("circle", { cx: 990, cy: 250, r: 5, fill: "#333" }, g);
-          el(
+          const openLabel = el(
             "text",
-            { x: 945, y: 292, "text-anchor": "middle", "font-size": "18" },
+            {
+              x: 945,
+              y: 292,
+              "text-anchor": "middle",
+              "font-size": "18",
+              class: "modelLabel",
+            },
             g,
-          ).textContent = "Stromkreis offen";
+          );
+          openLabel.textContent = "Stromkreis offen";
         }
         $("flux1").setAttribute("opacity", source === "ac" ? "0.8" : "0");
         $("flux2").setAttribute("opacity", source === "ac" ? "0.45" : "0");
