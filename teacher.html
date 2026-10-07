@@ -187,31 +187,10 @@
             .stream()
             .pipeThrough(new DecompressionStream("gzip"));
           const html = await new Response(s).text();
-          const editor = `
-<style>
-.taskEditorCard{margin-top:16px}
-.taskEditor{margin-top:14px;padding-top:14px;border-top:1px solid #d7dce2}
-.taskEditor h3{margin:0 0 10px}
-.taskEditor label{display:block;margin:10px 0;color:#18202a;font-weight:600}
-.taskEditor input,.taskEditor textarea{width:100%;box-sizing:border-box;padding:10px;margin-top:5px;border:1px solid #b9c1c9;border-radius:8px;background:#fff;color:#18202a;font:inherit}
-.taskEditor textarea{min-height:80px;resize:vertical;line-height:1.4}
-.editorActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.editorStatus{min-height:1.4em;margin-top:9px;color:#36735a;font-size:.9rem}
-@media(max-width:500px){.editorActions button{width:100%}}
-</style>
-<div class="card taskEditorCard">
-<h2>Arbeitsaufgaben bearbeiten</h2>
-<p class="small">Hier kannst du die sechs Untersuchungsaufträge der Simulation anpassen. Die Darstellung auf der Startseite bleibt dabei gleich.</p>
-<p class="small"><b>Wichtig:</b> Die Änderungen werden nur in diesem Browser gespeichert. Der GitHub-Code selbst wird dadurch nicht verändert.</p>
-<div id="taskEditor"></div>
-<div class="editorActions">
-<button id="saveTasks">Arbeitsaufgaben speichern</button>
-<button id="resetTasks" type="button">Standardtexte wiederherstellen</button>
-</div>
-<div id="editorStatus" class="editorStatus" role="status"></div>
-</div>
-<script>
-const DEFAULT_TASKS_EDITOR = {"A":{"title":"A – Spannungstransformation","prediction":"Was passiert mit U₂, wenn du N₂ vergrößerst?","investigation":"Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂ und nimm mehrere Messwerte auf.","explain":"Welche Beziehung zwischen U₂ und N₂ erkennst du?"},"B":{"title":"B – Stromtransformation","prediction":"Wie verändert sich der Strom, wenn du das Windungsverhältnis änderst?","investigation":"Schalte auf „belastet“ und vergleiche mindestens zwei Windungsverhältnisse.","explain":"Nutze die Leistungsübertragung im Idealmodell."},"C":{"title":"C – Leerlauf und Belastung","investigation":"Vergleiche denselben Transformator zuerst „unbelastet“, dann „belastet“.","observe":"Welche Größen ändern sich? Welche bleiben im Idealmodell gleich?","explain":"Was bedeutet „belastet“ physikalisch?"},"D":{"title":"D – Last","prediction":"Was passiert mit I₂, wenn R₍Last₎ kleiner wird?","investigation":"Halte U₁, N₁ und N₂ fest und verringere R₍Last₎.","explain":"Warum sinkt im Realmodell gleichzeitig U₂?"},"E":{"title":"E – Wechselspannung und Gleichspannung","investigation":"Vergleiche „Wechselspannung“ und „Gleichspannung“ bei gleicher Einstellung.","explain":"Warum benötigt der Transformator eine zeitliche Änderung des magnetischen Flusses?"},"F":{"title":"F – Modellkritik","body":"Benenne mindestens zwei Annahmen des Idealmodells und zwei Dinge, die das vereinfachte Realmodell ebenfalls nicht abbildet."}};
+          // Die entschlüsselte Lehrkraftseite direkt ins bestehende Dokument übernehmen.
+          // document.write() ist hier absichtlich raus: Nach dem initialen Laden kann
+          // document.write() das Dokument ersetzen, bevor der Editor sauber aufgebaut ist.
+          const parsed = new DOMParser().parseFromString(html, "text/html");
 
 function editorLoad(){
   try{
