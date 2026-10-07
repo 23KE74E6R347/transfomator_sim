@@ -111,17 +111,7 @@ button {
   }
 }
   </style></head><body>
-    <main><div class="card"><h1>Lehrkraftbereich</h1><p>Erwartungsbild und interne Hinweise zur Unterrichtsvorbereitung.</p><label for="pw">Passwort</label><input id="pw" type="password" autocomplete="off" autofocus><button id="unlock">Lehrkraftbereich öffnen</button><div id="error" class="error" role="alert"></div><a class="back" href="index.html">← Zur Simulation</a></div><div class="card editor">
-  <h2>Arbeitsaufgaben bearbeiten</h2>
-  <p class="small">Hier kannst du die sechs Untersuchungsaufträge der Simulation anpassen. Die Darstellung auf der Startseite bleibt dabei gleich.</p>
-  <p class="small"><b>Wichtig:</b> Die Änderungen werden nur in diesem Browser gespeichert. Der GitHub-Code selbst wird dadurch nicht verändert.</p>
-  <div id="taskEditor"></div>
-  <div class="editorActions">
-    <button id="saveTasks">Arbeitsaufgaben speichern</button>
-    <button id="resetTasks" type="button">Standardtexte wiederherstellen</button>
-  </div>
-  <div id="editorStatus" class="editorStatus" role="status"></div>
-</div></main><script>
+    <main><div class="card"><h1>Lehrkraftbereich</h1><p>Erwartungsbild und interne Hinweise zur Unterrichtsvorbereitung.</p><label for="pw">Passwort</label><input id="pw" type="password" autocomplete="off" autofocus><button id="unlock">Lehrkraftbereich öffnen</button><div id="error" class="error" role="alert"></div><a class="back" href="index.html">← Zur Simulation</a></div></main><script>
 // DATA enthält den verschlüsselten Lehrkraftinhalt. Bitte hier nich händisch rumschreiben!
 const DATA =
 {
@@ -149,31 +139,43 @@ async function openTeacher()
     const k=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(DATA.salt),iterations:DATA.iterations,hash:"SHA-256"},m,{name:"AES-GCM",length:256},false,["decrypt"]);
     const d=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(DATA.iv)},k,b64(DATA.ciphertext));
     const s=new Blob([d]).stream().pipeThrough(new DecompressionStream("gzip"));
-    document.open();
-    document.write(await new Response(s).text());
-    document.close()
-  }
-  catch(x)
-  {
-    e.textContent="Passwort falsch oder Inhalt konnte nicht entschlüsselt werden."
-  }
-}
+    const html=await new Response(s).text();
+    const editor=`
+<style>
+.taskEditorCard{margin-top:16px}
+.taskEditor{margin-top:14px;padding-top:14px;border-top:1px solid #d7dce2}
+.taskEditor h3{margin:0 0 10px}
+.taskEditor label{display:block;margin:10px 0;color:#18202a;font-weight:600}
+.taskEditor input,.taskEditor textarea{width:100%;box-sizing:border-box;padding:10px;margin-top:5px;border:1px solid #b9c1c9;border-radius:8px;background:#fff;color:#18202a;font:inherit}
+.taskEditor textarea{min-height:80px;resize:vertical;line-height:1.4}
+.editorActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.editorStatus{min-height:1.4em;margin-top:9px;color:#36735a;font-size:.9rem}
+@media(max-width:500px){.editorActions button{width:100%}}
+</style>
+<div class="card taskEditorCard">
+<h2>Arbeitsaufgaben bearbeiten</h2>
+<p class="small">Hier kannst du die sechs Untersuchungsaufträge der Simulation anpassen. Die Darstellung auf der Startseite bleibt dabei gleich.</p>
+<p class="small"><b>Wichtig:</b> Die Änderungen werden nur in diesem Browser gespeichert. Der GitHub-Code selbst wird dadurch nicht verändert.</p>
+<div id="taskEditor"></div>
+<div class="editorActions">
+<button id="saveTasks">Arbeitsaufgaben speichern</button>
+<button id="resetTasks" type="button">Standardtexte wiederherstellen</button>
+</div>
+<div id="editorStatus" class="editorStatus" role="status"></div>
+</div>
+<script>
 const DEFAULT_TASKS_EDITOR = {"A":{"title":"A – Spannungstransformation","prediction":"Was passiert mit U₂, wenn du N₂ vergrößerst?","investigation":"Stelle N₁ = 200 und U₁ = 12 V ein. Verändere nur N₂ und nimm mehrere Messwerte auf.","explain":"Welche Beziehung zwischen U₂ und N₂ erkennst du?"},"B":{"title":"B – Stromtransformation","prediction":"Wie verändert sich der Strom, wenn du das Windungsverhältnis änderst?","investigation":"Schalte auf „belastet“ und vergleiche mindestens zwei Windungsverhältnisse.","explain":"Nutze die Leistungsübertragung im Idealmodell."},"C":{"title":"C – Leerlauf und Belastung","investigation":"Vergleiche denselben Transformator zuerst „unbelastet“, dann „belastet“.","observe":"Welche Größen ändern sich? Welche bleiben im Idealmodell gleich?","explain":"Was bedeutet „belastet“ physikalisch?"},"D":{"title":"D – Last","prediction":"Was passiert mit I₂, wenn R₍Last₎ kleiner wird?","investigation":"Halte U₁, N₁ und N₂ fest und verringere R₍Last₎.","explain":"Warum sinkt im Realmodell gleichzeitig U₂?"},"E":{"title":"E – Wechselspannung und Gleichspannung","investigation":"Vergleiche „Wechselspannung“ und „Gleichspannung“ bei gleicher Einstellung.","explain":"Warum benötigt der Transformator eine zeitliche Änderung des magnetischen Flusses?"},"F":{"title":"F – Modellkritik","body":"Benenne mindestens zwei Annahmen des Idealmodells und zwei Dinge, die das vereinfachte Realmodell ebenfalls nicht abbildet."}};
 
-function editorLoad() {
-  try {
+function editorLoad(){
+  try{
     const saved=JSON.parse(localStorage.getItem("transformatorTasks")||"null");
     return saved ? {...DEFAULT_TASKS_EDITOR,...saved} : DEFAULT_TASKS_EDITOR;
-  } catch {
-    return DEFAULT_TASKS_EDITOR;
-  }
+  }catch{return DEFAULT_TASKS_EDITOR}
 }
-
-function editorEsc(text) {
-  return String(text ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+function editorEsc(text){
+  return String(text??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 }
-
-function buildEditor() {
+function buildEditor(){
   const tasks=editorLoad();
   const fields={
     A:[["title","Überschrift"],["prediction","Vorhersage"],["investigation","Untersuchung"],["explain","Erkläre"]],
@@ -183,37 +185,41 @@ function buildEditor() {
     E:[["title","Überschrift"],["investigation","Untersuchung"],["explain","Erkläre"]],
     F:[["title","Überschrift"],["body","Aufgabe"]]
   };
-  let html="";
-  for(const key of ["A","B","C","D","E","F"]) {
-    html+="<div class=\"taskEditor\"><h3>"+key+"</h3>";
+  let out="";
+  for(const key of ["A","B","C","D","E","F"]){
+    out+="<div class=\"taskEditor\"><h3>"+key+"</h3>";
     fields[key].forEach(([field,label])=>{
       const value=editorEsc(tasks[key][field]||"");
-      html+="<label>"+label+(field==="title"?"<input":"<textarea")+" data-task=\""+key+"\" data-field=\""+field+"\""+(field==="title"?" value=\""+value+"\">":">"+value+"</textarea>")+"</label>";
+      out+="<label>"+label+(field==="title"?"<input":"<textarea")+" data-task=\""+key+"\" data-field=\""+field+"\""+(field==="title"?" value=\""+value+"\">":">"+value+"</textarea>")+"</label>";
     });
-    html+="</div>";
+    out+="</div>";
   }
-  document.getElementById("taskEditor").innerHTML=html;
+  document.getElementById("taskEditor").innerHTML=out;
 }
-
-function editorSave() {
+function editorSave(){
   const tasks=editorLoad();
-  document.querySelectorAll("#taskEditor [data-task]").forEach(el=>{
-    tasks[el.dataset.task][el.dataset.field]=el.value;
-  });
+  document.querySelectorAll("#taskEditor [data-task]").forEach(el=>tasks[el.dataset.task][el.dataset.field]=el.value);
   localStorage.setItem("transformatorTasks",JSON.stringify(tasks));
   document.getElementById("editorStatus").textContent="Gespeichert. Öffne die Simulation neu, um die Aufgaben zu sehen.";
 }
-
-function editorReset() {
+function editorReset(){
   localStorage.removeItem("transformatorTasks");
   buildEditor();
   document.getElementById("editorStatus").textContent="Die Standardtexte sind wiederhergestellt.";
 }
-
 buildEditor();
 document.getElementById("saveTasks").onclick=editorSave;
 document.getElementById("resetTasks").onclick=editorReset;
-
+<\/script>`;
+    document.open();
+    document.write(html.replace("</body>",editor+"</body>"));
+    document.close()
+  }
+  catch(x)
+  {
+    e.textContent="Passwort falsch oder Inhalt konnte nicht entschlüsselt werden."
+  }
+}
 document.getElementById("unlock").onclick=openTeacher;
 document.getElementById("pw").onkeydown=e=>
 {
