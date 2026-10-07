@@ -258,18 +258,12 @@ buildEditor();
 document.getElementById("saveTasks").onclick=editorSave;
 document.getElementById("resetTasks").onclick=editorReset;
 <\/script>`;
-          // document.write() kann nach dem initialen Laden das Dokument ersetzen.
-          // Deshalb übernehmen wir die entschlüsselte Seite direkt in den vorhandenen Body.
+          // Die entschlüsselte Seite ist ein vollständiges HTML-Dokument.
+          // Deshalb ersetzen wir das aktuelle Dokument komplett, statt nur den Body
+          // zu übernehmen. So bleiben auch das ursprüngliche <head>, CSS und Layout
+          // des Erwartungsbilds erhalten.
           const parsed = new DOMParser().parseFromString(html, "text/html");
-
-          // Die entschlüsselte Seite bringt ihr eigenes CSS im <head> mit.
-          // Beim Einsetzen nur des <body> würden diese Styles verloren gehen.
-          // Deshalb übernehmen wir Stylesheets und <style>-Blöcke separat.
-          parsed.head.querySelectorAll('style, link[rel="stylesheet"]').forEach((node) => {
-            document.head.appendChild(node.cloneNode(true));
-          });
-
-          document.body.innerHTML = parsed.body.innerHTML;
+          document.documentElement.replaceWith(parsed.documentElement);
 
           const editorStyle = document.createElement("style");
           editorStyle.textContent = `
